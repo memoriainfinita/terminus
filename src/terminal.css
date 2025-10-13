@@ -116,17 +116,49 @@ a {
 }
 
 .cursor { 
-  display: inline-block; 
-  width: 8px; 
-  height: 1.1em; 
-  background: var(--accent); 
-  vertical-align: text-bottom; 
-  margin-left: 2px; 
-  animation: blink 1s steps(1) infinite; 
+  display: none; /* Ocultamos el cursor personalizado cuando hay input real */
 }
 
-@keyframes blink { 
-  50% { opacity: 0; } 
+/* Input del terminal - Invisible e integrado */
+.gnu-terminal .input-line {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.gnu-terminal .terminal-input {
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+  color: var(--fg) !important;
+  font-family: inherit !important;
+  font-size: inherit !important;
+  line-height: inherit !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  margin-left: 4px !important;
+  flex: 1;
+  box-shadow: none !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  caret-color: var(--accent) !important; /* Color del cursor como el tema */
+}
+
+.gnu-terminal .terminal-input:focus {
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.gnu-terminal .terminal-input::selection {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+.gnu-terminal .output-line {
+  margin-bottom: 4px;
 }
 
 /* Animación de escritura */
@@ -167,4 +199,120 @@ pre.code {
 
 .muted { 
   color: var(--muted); 
+}
+
+/* ================================================
+   TEMAS ESPECÍFICOS DEL TERMINAL
+   ================================================ */
+
+/* Tema Matrix - Verde clásico con variaciones */
+.gnu-terminal[data-theme="matrix"] {
+  --terminal-bg: #0a0f0a;
+  --terminal-fg: #00cc33;           /* Verde base para texto normal */
+  --terminal-accent: #00ff41;       /* Verde brillante para prompt */
+  --terminal-secondary: #66ff66;    /* Verde claro para comandos */
+  --terminal-muted: #44aa44;        /* Verde oscuro para comentarios */
+  --terminal-border: #1a2f1a;
+}
+
+.gnu-terminal[data-theme="matrix"] {
+  background: var(--terminal-bg);
+  border-color: var(--terminal-border);
+  color: var(--terminal-fg);
+}
+
+.gnu-terminal[data-theme="matrix"] .prompt {
+  color: var(--terminal-accent);
+}
+
+.gnu-terminal[data-theme="matrix"] .terminal-input {
+  caret-color: var(--terminal-accent) !important;
+  color: var(--terminal-secondary) !important;
+}
+
+.gnu-terminal[data-theme="matrix"] .output-line {
+  color: var(--terminal-fg);
+}
+
+/* Tema Ocean - Azul océano con variaciones */
+.gnu-terminal[data-theme="ocean"] {
+  --terminal-bg: #0a0f1f;
+  --terminal-fg: #87ceeb;           /* Azul cielo para texto normal */
+  --terminal-accent: #00bfff;       /* Azul brillante para prompt */
+  --terminal-secondary: #add8e6;    /* Azul claro para comandos */
+  --terminal-muted: #4682b4;        /* Azul acero para comentarios */
+  --terminal-border: #1a2f4f;
+}
+
+.gnu-terminal[data-theme="ocean"] {
+  background: var(--terminal-bg);
+  border-color: var(--terminal-border);
+  color: var(--terminal-fg);
+}
+
+.gnu-terminal[data-theme="ocean"] .prompt {
+  color: var(--terminal-accent);
+}
+
+.gnu-terminal[data-theme="ocean"] .terminal-input {
+  caret-color: var(--terminal-accent) !important;
+  color: var(--terminal-secondary) !important;
+}
+
+.gnu-terminal[data-theme="ocean"] .output-line {
+  color: var(--terminal-fg);
+}
+
+/* Tema Amber - Ámbar cálido con variaciones */
+.gnu-terminal[data-theme="amber"] {
+  --terminal-bg: #1f1a0a;
+  --terminal-fg: #daa520;           /* Oro oscuro para texto normal */
+  --terminal-accent: #ffa500;       /* Naranja brillante para prompt */
+  --terminal-secondary: #ffcc80;    /* Ámbar claro para comandos */
+  --terminal-muted: #cd853f;        /* Marrón dorado para comentarios */
+  --terminal-border: #4f3f1a;
+}
+
+.gnu-terminal[data-theme="amber"] {
+  background: var(--terminal-bg);
+  border-color: var(--terminal-border);
+  color: var(--terminal-fg);
+}
+
+.gnu-terminal[data-theme="amber"] .prompt {
+  color: var(--terminal-accent);
+}
+
+.gnu-terminal[data-theme="amber"] .terminal-input {
+  caret-color: var(--terminal-accent) !important;
+  color: var(--terminal-secondary) !important;
+}
+
+.gnu-terminal[data-theme="amber"] .output-line {
+  color: var(--terminal-fg);
+}
+
+/* Tema Dark - Oscuro clásico con variaciones (ya estaba bien) */
+.gnu-terminal[data-theme="dark"] {
+  --terminal-bg: #0a0c10;
+  --terminal-fg: #d6deeb;           /* Gris azulado para texto normal */
+  --terminal-accent: #82aaff;       /* Azul brillante para prompt */
+  --terminal-secondary: #c3e88d;    /* Verde claro para comandos */
+  --terminal-muted: #697098;        /* Gris violeta para comentarios */
+  --terminal-border: #1d2330;
+}
+
+.gnu-terminal[data-theme="dark"] {
+  background: var(--terminal-bg);
+  border-color: var(--terminal-border);
+  color: var(--terminal-fg);
+}
+
+.gnu-terminal[data-theme="dark"] .prompt {
+  color: var(--terminal-accent);
+}
+
+.gnu-terminal[data-theme="dark"] .terminal-input {
+  caret-color: var(--terminal-accent) !important;
+  color: var(--terminal-secondary) !important;
 }
