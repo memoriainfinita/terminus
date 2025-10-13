@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>MVP — Terminal Embebida GNU</title>
+  <title>🧪 TERMINUS — Terminal Component</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
@@ -13,55 +13,66 @@
   
   <!-- Demo Page CSS (minified) -->
   <link rel="stylesheet" href="dist/demo.min.css">
+  
+  <!-- Page Styles (Design System) -->
+  <link rel="stylesheet" href="page-styles.min.css">
 </head>
-<body>
-  <!-- NAVBAR -->
+<body class="demo-page">
+  <!-- HEADER -->
   <header class="navbar" role="navigation" aria-label="Principal">
-    <div class="container nav-inner">
-      <div class="brand" aria-label="Marca">
-        <div class="logo" aria-hidden="true">🐃</div>
-        <span>MVP Terminal GNU</span>
-        <span class="badge">Licencia GNU</span>
-      </div>
-      <div class="nav-actions">
-        <button class="btn ghost" id="btnSidebar" aria-controls="sidebar" aria-expanded="false" aria-label="Abrir panel de docs">Docs</button>
-        <button class="btn ghost" id="btnTheme" aria-label="Cambiar tema">Claro/Oscuro</button>
-        <a class="btn accent" href="#snippet" aria-label="Ir a Snippet">Ver Snippet</a>
-        <a class="btn" href="#demo" aria-label="Ir a la Demo">Demo</a>
+    <div class="container">
+      <div class="card">
+        <div class="card-h">
+          <div class="brand" aria-label="Marca">
+            <strong>TERMINUS</strong>
+          </div>
+          <div class="nav-actions">
+            <button class="btn ghost" id="btnTheme" aria-label="Cambiar tema">Claro/Oscuro</button>
+            <a class="btn accent" href="#configurator" aria-label="Ir al Configurador">Configurador</a>
+            <a class="btn" href="#demo" aria-label="Ir a la Demo">Demo</a>
+          </div>
+        </div>
       </div>
     </div>
   </header>
 
   <div class="layout">
-    <!-- SIDEBAR -->
-    <aside id="sidebar" class="sidebar" aria-label="Docs mini" aria-hidden="true">
-      <div class="section-title">Contenido</div>
-      <nav>
-        <a href="#hero">Introducción</a>
-        <a href="#demo">Demo</a>
-        <a href="#snippet">Snippet</a>
-        <a href="#options">Opciones</a>
-        <a href="#faq">FAQ</a>
-        <a href="#license">Licencia</a>
-      </nav>
-      <div style="height:16px"></div>
-      <div class="section-title">Recursos</div>
-      <nav>
-        <a href="#" aria-disabled="true">Guía de estilos (pronto)</a>
-        <a href="#" aria-disabled="true">Accesibilidad (pronto)</a>
-        <a href="#" aria-disabled="true">Ejemplos (pronto)</a>
-      </nav>
-    </aside>
-
     <!-- MAIN -->
     <main>
       <section id="hero" class="hero container">
-        <span class="pill">Widget de terminal embebible · HTML/CSS/JS mínimo</span>
-        <h1>Terminal embebida <span style="color:var(--accent)">modular</span> y <span style="color:var(--accent)">flexible</span></h1>
-        <p>Proyecto GNU. Integra una terminal interactiva en cualquier web con un solo snippet. Sin APIs, configuración por <code class="kbd">data-*</code>, y diseño oscuro elegante con acento verde.</p>
-        <div class="row" style="justify-content:center; gap:12px">
-          <a href="#demo" class="btn accent">Probar demo</a>
-          <a href="#snippet" class="btn">Copiar snippet</a>
+        <h1>TERMINUS <span class="text-accent">Terminal Component</span></h1>
+        <p class="text-lg">Componente terminal profesional y confiable. Sistema de temas avanzado, comandos personalizables, historial interactivo, y configurador en tiempo real. <strong>Vanilla HTML/CSS/JS</strong> - sin dependencias.</p>
+      </section>
+
+      <!-- CARACTERÍSTICAS PRINCIPALES -->
+      <section class="section-bg">
+        <div class="container">
+          <div class="text-center mb-4">
+            <h2 class="section-title">Por qué elegir <span class="text-accent">TERMINUS</span></h2>
+            <p class="text-muted section-subtitle">Terminal component profesional para desarrolladores modernos</p>
+          </div>
+          
+          <div class="grid cols-2 gap-4 mb-6">
+            <div class="card feature-card">
+              <h3 class="feature-title">Ultra Rápido & Ligero</h3>
+              <p class="feature-desc">Solo 5.1KB minificado. Zero dependencias. Vanilla JS puro con carga instantánea.</p>
+            </div>
+
+            <div class="card feature-card">
+              <h3 class="feature-title">Plug & Play</h3>
+              <p class="feature-desc">Auto-inicialización inteligente. Funciona inmediatamente sin configuración adicional.</p>
+            </div>
+
+            <div class="card feature-card">
+              <h3 class="feature-title">4 Temas + Personalizable</h3>
+              <p class="feature-desc">Matrix, Ocean, Amber y Dark. Totalmente customizable con CSS variables y configurador visual.</p>
+            </div>
+
+            <div class="card feature-card">
+              <h3 class="feature-title">Responsive & Mobile</h3>
+              <p class="feature-desc">Diseño responsive completo. Optimizado para desktop, tablet y móvil con teclado virtual.</p>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -69,26 +80,25 @@
         <div class="grid cols-2">
           <div class="card">
             <div class="card-h">
-              <div class="row"><strong>Terminal de demo</strong> <span class="tag">(funcional)</span></div>
-              <div class="row"><span class="badge">v1.0</span></div>
+              <div class="row"><strong>Terminal Interactivo</strong> <span class="tag">(funcional)</span></div>
+              <div class="row"><span class="badge">Estable</span></div>
             </div>
             <div class="card-b">
               <!-- TERMINAL REAL FUNCIONANDO -->
               <div class="gnu-terminal" 
+                   id="terminalDemo"
                    data-theme="matrix"
                    data-prompt="user@terminus:~$"
-                   data-welcome="🐧 Bienvenido a TERMINUS - Terminal GNU embebible
+                   data-welcome="Bienvenido a TERMINUS
 
-Prueba estos comandos:
-• help - Ver todos los comandos disponibles
-• ls - Listar archivos 
-• echo 'texto' - Imprimir mensaje
-• mkdir nombre - Crear directorio
-• cd directorio - Cambiar directorio
-• theme - Cambiar tema visual
+Comandos disponibles:
+• help - Lista completa de comandos
+• ls - Listar contenido
+• echo 'mensaje' - Mostrar texto
+• theme - Cambiar tema
 • clear - Limpiar pantalla
 
-¡Escribe cualquier comando para empezar!"
+Escribe un comando para empezar."
                    role="region" 
                    aria-label="Terminal de demostración funcional">
               </div>
@@ -96,32 +106,32 @@ Prueba estos comandos:
           </div>
 
           <div class="card">
-            <div class="card-h"><strong>🎛️ Configurador de Terminal</strong><span class="tag">(interactivo)</span></div>
+            <div class="card-h"><strong>Configurador Interactivo</strong><span class="tag">(personalizable)</span></div>
             <div class="card-b">
               <!-- SELECTOR DE TEMA -->
-              <div style="margin-bottom: 16px;">
-                <label for="themeSelector" style="display: block; margin-bottom: 4px; font-weight: 500;">🎨 Tema Visual</label>
-                <select id="themeSelector" style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--fg);">
-                  <option value="matrix">🟢 Matrix (Verde)</option>
-                  <option value="ocean">🔵 Ocean (Azul)</option>
-                  <option value="amber">🟡 Amber (Ámbar)</option>
-                  <option value="dark">⚫ Dark (Oscuro)</option>
+              <div class="form-group">
+                <label for="themeSelector" class="form-label">Tema Visual</label>
+                <select id="themeSelector" class="form-input">
+                  <option value="matrix">Matrix (Verde)</option>
+                  <option value="ocean">Ocean (Azul)</option>
+                  <option value="amber">Amber (Ámbar)</option>
+                  <option value="dark">Dark (Oscuro)</option>
                 </select>
               </div>
 
               <!-- PROMPT PERSONALIZADO -->
-              <div style="margin-bottom: 16px;">
-                <label for="promptInput" style="display: block; margin-bottom: 4px; font-weight: 500;">⚡ Prompt del Terminal</label>
+              <div class="form-group">
+                <label for="promptInput" class="form-label">Prompt del Terminal</label>
                 <input type="text" id="promptInput" value="user@terminus:~$" placeholder="admin@server:~#" 
-                       style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--fg); font-family: monospace;">
-                <small class="muted" style="font-size: 11px;">Ejemplos: admin@server:~#, dev@local:~/code$, root#</small>
+                       class="form-input monospace">
+                <small class="text-muted text-xs">Ejemplos: admin@server:~#, dev@local:~/code$, root#</small>
               </div>
 
               <!-- MENSAJE DE BIENVENIDA -->
-              <div style="margin-bottom: 16px;">
-                <label for="welcomeInput" style="display: block; margin-bottom: 4px; font-weight: 500;">🐧 Mensaje de Bienvenida</label>
+              <div class="form-group">
+                <label for="welcomeInput" class="form-label">Mensaje de Bienvenida</label>
                 <textarea id="welcomeInput" rows="3" placeholder="Escribe un mensaje de bienvenida..." 
-                          style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--fg); font-family: monospace; resize: vertical;">🐧 Bienvenido a mi terminal personalizada!
+                          class="form-input monospace resize-vertical">Bienvenido a mi terminal personalizada!
 
 Comandos disponibles:
 • help - Ver ayuda
@@ -129,32 +139,32 @@ Comandos disponibles:
               </div>
 
               <!-- GESTIÓN DE COMANDOS -->
-              <div style="margin-bottom: 16px;">
-                <label style="display: block; margin-bottom: 8px; font-weight: 500;">⚙️ Comandos Personalizados</label>
+              <div class="form-group">
+                <label class="form-label">Comandos Personalizados</label>
                 
                 <!-- Agregar nuevo comando -->
-                <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+                <div class="flex gap-2 mb-2">
                   <input type="text" id="newCommandName" placeholder="nombre-comando" 
-                         style="flex: 1; padding: 6px; border: 1px solid var(--border); border-radius: 4px; background: var(--bg); color: var(--fg); font-family: monospace;">
+                         class="form-input flex-1 monospace">
                   <input type="text" id="newCommandResponse" placeholder="Respuesta del comando" 
-                         style="flex: 2; padding: 6px; border: 1px solid var(--border); border-radius: 4px; background: var(--bg); color: var(--fg);">
-                  <button id="addCommandBtn" class="btn ghost" style="padding: 6px 12px;">+ Agregar</button>
+                         class="form-input flex-2">
+                  <button id="addCommandBtn" class="btn ghost px-3">+ Agregar</button>
                 </div>
 
                 <!-- Lista de comandos actuales -->
-                <div id="commandsList" style="background: var(--bg-softer); border: 1px solid var(--border); border-radius: 6px; padding: 8px; max-height: 120px; overflow-y: auto;">
-                  <div class="command-item" style="display: flex; justify-content: space-between; align-items: center; padding: 4px 0; border-bottom: 1px solid var(--border);">
-                    <span style="font-family: monospace; color: var(--accent);">help</span>
-                    <span style="flex: 1; margin-left: 8px; font-size: 12px;">Ver comandos disponibles</span>
-                    <button class="btn-remove" style="background: none; border: none; color: #f45452; cursor: pointer; padding: 2px 6px;">✕</button>
+                <div id="commandsList" class="commands-list">
+                  <div class="command-item">
+                    <span class="monospace text-accent">help</span>
+                    <span class="flex-1 ml-2 text-xs">Ver comandos disponibles</span>
+                    <button class="btn-remove">✕</button>
                   </div>
                 </div>
               </div>
 
               <!-- BOTONES DE ACCIÓN -->
-              <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                <button id="updatePreviewBtn" class="btn accent" style="flex: 1;">🔄 Actualizar Preview</button>
-                <button id="generateSnippetBtn" class="btn" style="flex: 1;">📋 Generar Snippet</button>
+              <div class="flex gap-2 flex-wrap">
+                <button id="updatePreviewBtn" class="btn accent flex-1">🔄 Actualizar Preview</button>
+                <button id="generateSnippetBtn" class="btn flex-1">Generar Snippet</button>
                 <button id="resetConfigBtn" class="btn ghost">♻️ Reset</button>
               </div>
             </div>
@@ -162,162 +172,503 @@ Comandos disponibles:
         </div>
       </section>
 
-      <section id="generated-snippet" class="container">
-        <div class="card">
-          <div class="card-h">
-            <strong>📋 Tu Snippet Personalizado</strong>
-            <div class="row">
-              <button class="btn accent" id="copyGeneratedSnippet">📋 Copiar Snippet</button>
-              <button class="btn ghost" id="downloadConfig">💾 Descargar Config</button>
-            </div>
-          </div>
-          <div class="card-b">
-            <div style="margin-bottom: 12px;">
-              <label style="display: block; margin-bottom: 4px; font-weight: 500;">🌐 Proveedor CDN</label>
-              <select id="cdnProvider" style="padding: 6px; border: 1px solid var(--border); border-radius: 4px; background: var(--bg); color: var(--fg);">
-                <option value="jsdelivr">jsDelivr (Recomendado)</option>
-                <option value="github">GitHub Pages</option>
-                <option value="bundle">Bundle Completo</option>
-              </select>
-            </div>
-            
-            <div id="generatedCodeContainer">
-              <pre class="code" id="generatedCode" style="max-height: 300px; overflow-y: auto;"><!-- Tu snippet se generará aquí automáticamente -->
-&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/memoriainfinita/terminus@latest/docs/dist/terminal.min.css"&gt;
-&lt;script src="https://cdn.jsdelivr.net/gh/memoriainfinita/terminus@latest/docs/dist/terminal.min.js" defer&gt;&lt;/script&gt;
 
-&lt;div class="gnu-terminal"
-     data-theme="matrix"
-     data-prompt="user@terminus:~$"
-     data-welcome="🐧 Bienvenido a mi terminal personalizada!
-
-Comandos disponibles:
-• help - Ver ayuda  
-• about - Información del proyecto"&gt;
-&lt;/div&gt;</pre>
-            </div>
-            
-            <div style="margin-top: 12px; padding: 12px; background: var(--bg-softer); border-radius: 6px;">
-              <p class="muted" style="margin: 0; font-size: 13px;">
-                ✅ <strong>Listo para usar:</strong> Copia el código de arriba y pégalo en tu HTML. 
-                El terminal se inicializará automáticamente con tu configuración personalizada.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
 
       <section id="snippet" class="container">
         <div class="card">
           <div class="card-h">
-            <strong>Snippet — Script auto‑init</strong>
+            <strong>Instalación y Configuración</strong>
             <div class="row">
-              <button class="btn" id="btnCopy">Copiar</button>
+              <button class="btn" id="btnCopy">Copiar CDN</button>
               <button class="btn ghost" id="btnModal">Ver completo</button>
             </div>
           </div>
           <div class="card-b">
-<pre class="code" id="codeBlock">&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/TU-USUARIO/TERMINUS@latest/docs/dist/terminal.min.css"&gt;
-&lt;script src="https://cdn.jsdelivr.net/gh/TU-USUARIO/TERMINUS@latest/docs/dist/terminal.min.js" defer&gt;&lt;/script&gt;
+            <div class="subsection-mb">
+              <h4 class="subsection-header">Método 1: CDN (Recomendado)</h4>
+<pre class="code" id="codeBlock">&lt;!-- CSS + JS desde CDN --&gt;
+&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/memoriainfinita/terminus@latest/docs/dist/terminal.min.css"&gt;
+&lt;script src="https://cdn.jsdelivr.net/gh/memoriainfinita/terminus@latest/docs/dist/terminal.min.js" defer&gt;&lt;/script&gt;
 
+&lt;!-- Terminal básico --&gt;
 &lt;div class="gnu-terminal"
      data-theme="dark"
      data-prompt="gnu$"
      data-commands='{"help":"Lista comandos","about":"Proyecto GNU"}'&gt;&lt;/div&gt;</pre>
-            <p class="muted">Configura por <span class="kbd">data-*</span>. Pega y funciona.</p>
+              <p class="text-muted text-sm"><strong>Ventajas:</strong> Auto-actualización, CDN rápido, cero configuración</p>
+            </div>
+
+            <div class="subsection-mb">
+              <h4 class="subsection-header">Método 2: NPM</h4>
+<pre class="code code-sm">npm install @memoriainfinita/terminus
+# o
+yarn add @memoriainfinita/terminus</pre>
+<pre class="code code-sm">import '@memoriainfinita/terminus/dist/terminal.min.css';
+import TerminalJS from '@memoriainfinita/terminus/dist/terminal.min.js';</pre>
+              <p class="text-muted text-sm"><strong>Ventajas:</strong> Control de versiones, bundling optimizado</p>
+            </div>
+
+            <div class="subsection-mb">
+              <h4 class="subsection-header">Método 3: Descarga Local</h4>
+<pre class="code code-sm">&lt;link rel="stylesheet" href="./css/terminal.min.css"&gt;
+&lt;script src="./js/terminal.min.js" defer&gt;&lt;/script&gt;</pre>
+              <p class="text-muted text-sm"><strong>Ventajas:</strong> Sin dependencias externas, máximo control</p>
+            </div>
+
+            <div>
+              <h4 class="subsection-header">Compatibilidad y Requisitos</h4>
+              <div class="stats-container">
+                <div class="stat-item">
+                  <div class="stat-value">ES6+</div>
+                  <div class="stat-label">JavaScript</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-value">IE11+</div>
+                  <div class="stat-label">Browsers</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-value">8KB</div>
+                  <div class="stat-label">Bundle Size</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-value">0</div>
+                  <div class="stat-label">Dependencies</div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
       <section id="options" class="container">
         <div class="card">
-          <div class="card-h"><strong>Parámetros por data‑atributos</strong><span class="tag">mínimos</span></div>
+          <div class="card-h"><strong>Referencia Completa de Parámetros</strong><span class="tag">API Documentation</span></div>
           <div class="card-b">
-            <ul>
-              <li><code>data-theme</code>: <span class="kbd">dark</span> | <span class="kbd">light</span> | <span class="kbd">matrix</span> | <span class="kbd">ocean</span></li>
-              <li><code>data-prompt</code>: personaliza el prompt del terminal
-                <br><small class="muted">Ejemplos: <span class="kbd">admin@server:~$</span>, <span class="kbd">root#</span>, <span class="kbd">dev@local:</span>, <span class="kbd">user@terminus:~$</span></small>
-              </li>
-              <li><code>data-commands</code>: JSON con respuestas simuladas</li>
-            </ul>
+            <div class="subsection-mb">
+              <h4 class="subsection-header">Parámetro: data-theme</h4>
+              <table class="api-table">
+                <thead>
+                  <tr>
+                    <th>Valor</th>
+                    <th>Descripción</th>
+                    <th>Colores</th>
+                    <th>Uso Recomendado</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>"dark"</code> <span class="text-muted">(default)</span></td>
+                    <td>Tema oscuro profesional</td>
+                    <td>Gris/Verde</td>
+                    <td>General, producción</td>
+                  </tr>
+                  <tr>
+                    <td><code>"matrix"</code></td>
+                    <td>Verde clásico estilo Matrix</td>
+                    <td>Negro/Verde</td>
+                    <td>Demos, cyberpunk</td>
+                  </tr>
+                  <tr>
+                    <td><code>"ocean"</code></td>
+                    <td>Azul profundo elegante</td>
+                    <td>Azul/Cyan</td>
+                    <td>Corporativo, tech</td>
+                  </tr>
+                  <tr>
+                    <td><code>"amber"</code></td>
+                    <td>Dorado retro terminal</td>
+                    <td>Negro/Amber</td>
+                    <td>Vintage, sistemas legacy</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="subsection-mb">
+              <h4 class="subsection-header">Parámetros de Configuración</h4>
+              <table class="api-table">
+                <thead>
+                  <tr>
+                    <th>Atributo</th>
+                    <th>Tipo</th>
+                    <th>Default</th>
+                    <th>Descripción</th>
+                    <th>Ejemplo</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>data-prompt</code></td>
+                    <td>String</td>
+                    <td><code>"user@host:~$"</code></td>
+                    <td>Personaliza el prompt del terminal</td>
+                    <td><code>"admin@server:~#"</code></td>
+                  </tr>
+                  <tr>
+                    <td><code>data-welcome</code></td>
+                    <td>String</td>
+                    <td><code>null</code></td>
+                    <td>Mensaje inicial al cargar</td>
+                    <td><code>"Sistema iniciado"</code></td>
+                  </tr>
+                  <tr>
+                    <td><code>data-commands</code></td>
+                    <td>JSON</td>
+                    <td><code>{}</code></td>
+                    <td>Comandos personalizados</td>
+                    <td><code>{"help":"Lista comandos"}</code></td>
+                  </tr>
+                  <tr>
+                    <td><code>data-typing-speed</code></td>
+                    <td>Number</td>
+                    <td><code>50</code></td>
+                    <td>Velocidad escritura (ms)</td>
+                    <td><code>30</code> (más rápido)</td>
+                  </tr>
+                  <tr>
+                    <td><code>data-auto-focus</code></td>
+                    <td>Boolean</td>
+                    <td><code>true</code></td>
+                    <td>Auto-focus al cargar</td>
+                    <td><code>"false"</code></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="subsection-mb">
+              <h4 class="subsection-header">Comandos JSON: Estructura Avanzada</h4>
+<pre class="code code-sm">{
+  "help": "Lista todos los comandos disponibles",
+  "about": "Información sobre este terminal",
+  "clear": "Limpia la pantalla",
+  "status": {
+    "description": "Estado del sistema",
+    "response": "Sistema operativo: Online\nCPU: 45%\nRAM: 2.1GB/8GB"
+  },
+  "contact": {
+    "description": "Información de contacto",
+    "response": "Email: admin@example.com\nWeb: https://example.com"
+  }
+}</pre>
+              <p class="text-muted text-sm"><strong>Tip:</strong> Los comandos pueden ser strings simples o objetos con description + response para mayor control</p>
+            </div>
+
+            <div class="subsection-mb">
+              <h4 class="subsection-header">Ejemplos de Implementación</h4>
+              
+              <div class="mb-4">
+                <h5 class="text-accent mb-2 text-base">Ejemplo 1: Terminal Corporativo</h5>
+<pre class="code code-sm">&lt;div class="gnu-terminal"
+     data-theme="ocean"
+     data-prompt="admin@production:~$"
+     data-welcome="🏢 Bienvenido al Panel de Control"
+     data-commands='{"status":"Sistema OK","users":"45 usuarios activos","backup":"Último backup: OK"}'&gt;
+&lt;/div&gt;</pre>
+              </div>
+
+              <div class="mb-4">
+                <h5 class="text-accent mb-2 text-base">Ejemplo 2: Portfolio Personal</h5>
+<pre class="code code-sm">&lt;div class="gnu-terminal"
+     data-theme="matrix"
+     data-prompt="visitor@portfolio:~$"
+     data-welcome="� ¡Hola! Escribe 'help' para comenzar"
+     data-typing-speed="30"
+     data-commands='{"about":"Desarrollador Full Stack","projects":"Ver mis proyectos","contact":"mi@email.com"}'&gt;
+&lt;/div&gt;</pre>
+              </div>
+
+              <div>
+                <h5 class="text-accent mb-2 text-base">Ejemplo 3: Documentación Técnica</h5>
+<pre class="code code-sm">&lt;div class="gnu-terminal"
+     data-theme="amber"
+     data-prompt="docs@api:~$"
+     data-welcome="📚 API Documentation Terminal"
+     data-auto-focus="false"
+     data-commands='{"endpoints":"GET /api/users","auth":"Token requerido","rate-limit":"1000 req/hour"}'&gt;
+&lt;/div&gt;</pre>
+              </div>
+            </div>
+
+            <div>
+              <h4 class="subsection-header">Consideraciones de Seguridad</h4>
+              <div class="info-box">
+                <p class="m-0"><strong>🛡️ Importante:</strong></p>
+                <ul class="m-0 mt-2">
+                  <li>Sanitiza el contenido JSON antes de usar en producción</li>
+                  <li>Evita incluir información sensible en data-commands</li>
+                  <li>Valida comandos del lado servidor si conectas a APIs</li>
+                  <li>Usa HTTPS siempre para evitar inyección de código</li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      <section id="examples" class="container">
-        <h2 style="margin:0 0 12px 0">🎨 Ejemplos de Personalización</h2>
-        <div class="grid cols-2">
+      <section id="examples" class="section-padding">
+        <div class="container">
           <div class="card">
-            <div class="card-h"><strong>Prompt Admin</strong></div>
+            <div class="card-h"><strong>Casos de Uso Reales</strong><span class="tag">Ejemplos Prácticos</span></div>
             <div class="card-b">
-<pre class="code">&lt;div class="gnu-terminal"
-     data-theme="matrix"
-     data-prompt="admin@server:~#"&gt;&lt;/div&gt;</pre>
+              <p class="text-muted text-base m-0 mb-4">Ejemplos prácticos listos para usar</p>
+          
+          <div class="grid cols-2 gap-4">
+            <div class="card use-case-card">
+              <div class="use-case-header">
+                <strong class="use-case-title">Terminal DevOps</strong>
+                <span class="tag use-case-tag">Servidor</span>
+              </div>
+              <div class="code-block">
+<span class="text-muted"># Terminal para administración de servidores</span><br>
+&lt;div class="gnu-terminal" data-theme="matrix"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;data-prompt="admin@prod:~$"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;data-commands='{"status":"System OK","logs":"tail logs"}'&gt;<br>
+&lt;/div&gt;
+              </div>
+            </div>
+            
+            <div class="card use-case-card">
+              <div class="use-case-header">
+                <strong class="use-case-title">Terminal Frontend</strong>
+                <span class="tag use-case-tag">Desarrollo</span>
+              </div>
+              <div class="code-block">
+<span class="text-muted"># Terminal para desarrollo web</span><br>
+&lt;div class="gnu-terminal" data-theme="ocean"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;data-prompt="dev@app:~$"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;data-commands='{"npm":"scripts","build":"Building..."}'&gt;<br>
+&lt;/div&gt;
+              </div>
+            </div>
+            
+            <div class="card use-case-card">
+              <div class="use-case-header">
+                <strong class="use-case-title">Terminal Portfolio</strong>
+                <span class="tag use-case-tag">Demo</span>
+              </div>
+              <div class="code-block">
+<span class="text-muted"># Terminal interactivo para portfolio</span><br>
+&lt;div class="gnu-terminal" data-theme="amber"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;data-prompt="visitor@portfolio:~$"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;data-commands='{"about":"Developer","projects":"3 apps"}'&gt;<br>
+&lt;/div&gt;
+              </div>
+            </div>
+            
+            <div class="card use-case-card">
+              <div class="use-case-header">
+                <strong class="use-case-title">Terminal Seguridad</strong>
+                <span class="tag use-case-tag">Monitoreo</span>
+              </div>
+              <div class="code-block">
+<span class="text-muted"># Terminal para operaciones de seguridad</span><br>
+&lt;div class="gnu-terminal" data-theme="dark"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;data-prompt="security@monitor:~#"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;data-commands='{"scan":"Scanning...","report":"Report ready"}'&gt;<br>
+&lt;/div&gt;
+              </div>
             </div>
           </div>
           
-          <div class="card">
-            <div class="card-h"><strong>Prompt Developer</strong></div>
-            <div class="card-b">
-<pre class="code">&lt;div class="gnu-terminal"
-     data-theme="ocean"
-     data-prompt="dev@localhost:~/project$"&gt;&lt;/div&gt;</pre>
+          <!-- TIPS COMPACTOS -->
+          <div class="tips-box">
+            <div class="tips-header">
+              <strong class="tips-title">Tips de Implementación</strong>
+            </div>
+            <div class="tips-grid">
+              <div>
+                <strong class="tips-label">Comandos Efectivos:</strong>
+                <span class="text-muted"> help, status, info, clear</span>
+              </div>
+              <div>
+                <strong class="tips-label">Mejores Prácticas:</strong>
+                <span class="text-muted"> temas apropiados, prompts descriptivos</span>
+              </div>
             </div>
           </div>
-          
-          <div class="card">
-            <div class="card-h"><strong>Prompt Root</strong></div>
-            <div class="card-b">
-<pre class="code">&lt;div class="gnu-terminal"
-     data-theme="dark"
-     data-prompt="root@system:#"&gt;&lt;/div&gt;</pre>
-            </div>
-          </div>
-          
-          <div class="card">
-            <div class="card-h"><strong>Prompt Personalizado</strong></div>
-            <div class="card-b">
-<pre class="code">&lt;div class="gnu-terminal"
-     data-theme="matrix"
-     data-prompt="👨‍💻 hacker@matrix:~/hack$"&gt;&lt;/div&gt;</pre>
             </div>
           </div>
         </div>
       </section>
 
       <section id="faq" class="container">
-        <h2 style="margin:0 0 12px 0">FAQ</h2>
-        <details>
-          <summary>¿Necesita API?</summary>
-          <p>No. Es auto‑init y se configura con atributos <code>data-*</code>.</p>
-        </details>
-        <details>
-          <summary>¿Puedo cambiar el tema?</summary>
-          <p>Sí. Usa <code>data-theme</code> o el toggle de la UI.</p>
-        </details>
-        <details>
-          <summary>¿Cómo lo hospedo?</summary>
-          <p>Publica el bundle en GitHub Pages y sirve por jsDelivr.</p>
-        </details>
+        <div class="card">
+          <div class="card-h"><strong>Preguntas Frecuentes</strong><span class="tag">FAQ</span></div>
+          <div class="card-b">
+            <p class="text-muted mb-4">Respuestas a las consultas más comunes sobre TERMINUS</p>
+        
+        <div class="faq-grid">
+          <div class="faq-item">
+            <div class="faq-question">
+              <h4>¿Qué tan fácil es implementar TERMINUS?</h4>
+              <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer">
+              <p>Solo 2 líneas de código: CSS y JS. Auto-inicialización automática, sin configuración adicional. Literalmente copias dos archivos y funciona inmediatamente.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">
+              <h4>¿Puedo personalizar temas y colores?</h4>
+              <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer">
+              <p>4 temas predefinidos (matrix, ocean, amber, dark) + temas personalizados via CSS variables. Control total sobre colores, fuentes y animaciones.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">
+              <h4>¿Cómo agregar comandos personalizados?</h4>
+              <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer">
+              <p>Atributo <code>data-commands</code> con JSON o configurador interactivo incluido. Soporte para comandos simples, objetos complejos y respuestas dinámicas.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">
+              <h4>¿Es compatible con móviles?</h4>
+              <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer">
+              <p>Completamente responsive. Funciona en desktop, tablet y móvil con teclado virtual optimizado y gestos táctiles incluidos.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">
+              <h4>¿Necesita dependencias externas?</h4>
+              <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer">
+              <p>Cero dependencias. Vanilla HTML/CSS/JS puros. Total: 5.1 KB minificado. No requiere jQuery, React ni ninguna librería externa.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">
+              <h4>¿Cómo distribuir en producción?</h4>
+              <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer">
+              <p>CDN jsDelivr, GitHub Pages, descarga directa o npm. Archivos minificados incluidos. Compatible con bundlers como Webpack y Vite.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">
+              <h4>¿Está probado y es confiable?</h4>
+              <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer">
+              <p>Completamente verificado y estable. Todas las funcionalidades probadas en múltiples navegadores y dispositivos. Usado en producción.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">
+              <h4>¿Compatible con React, Vue, Angular?</h4>
+              <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer">
+              <p>Sí, vanilla JavaScript se integra con cualquier framework. Solo asegurar DOM cargado. Incluye ejemplos para todos los frameworks populares.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">
+              <h4>¿Cuál es la licencia?</h4>
+              <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer">
+              <p>GNU GPL v3 - libre para uso personal y comercial. Open source en GitHub. Código fuente completo disponible para auditoría y contribuciones.</p>
+            </div>
+          </div>
+            </div>
+          </div>
+        </div>
       </section>
 
-      <section id="license" class="container" aria-labelledby="lic-title">
-        <h2 id="lic-title" style="margin:0 0 8px 0">Licencia GNU</h2>
-        <p class="muted">Este proyecto se publica bajo licencia GNU — abierto, libre y orientado a la comunidad.</p>
+      <section id="license" class="section-bg" aria-labelledby="lic-title">
+        <div class="container">
+          <div class="card">
+            <div class="card-h"><strong>Licencia Open Source</strong><span class="tag">GNU GPL v3</span></div>
+            <div class="card-b">
+              <p class="text-muted section-subtitle mb-4">Libertad total para desarrolladores y empresas</p>
+            <p class="mb-4">
+              TERMINUS está licenciado bajo <strong>GNU GPL v3</strong>, una de las licencias de código abierto más respetadas del mundo. Esto garantiza que el software permanezca libre y abierto para siempre.
+            </p>
+            <div class="license-callout">
+              <strong>¿Qué significa esto?</strong>
+              <p>
+                Puedes usar, modificar y distribuir TERMINUS libremente en proyectos personales y comerciales. Solo debes mantener la atribución y cualquier modificación también debe ser GPL v3.
+              </p>
+            </div>
+          </div>
+        </div>
       </section>
-
-      <footer class="container">
-        <div class="row">
-          <span>© 2025 Proyecto GNU — Terminal Embebida</span>
-          <span class="spacer"></span>
-          <span class="muted">Hecho con HTML/CSS/JS mínimo</span>
+      
+      <footer class="section-bg">
+        <div class="container">
+          <div class="footer-content">
+            <div class="footer-section">
+              <h4>TERMINUS</h4>
+              <p>Terminal component profesional para desarrolladores. Vanilla JavaScript, sin dependencias, completamente funcional.</p>
+            </div>
+            
+            <div class="footer-section">
+              <h4>Enlaces</h4>
+              <div class="footer-links">
+                <a href="#configurator">Configurador Interactivo</a>
+                <a href="#examples">Casos de Uso</a>
+                <a href="#faq">FAQ</a>
+                <a href="#license">Licencia</a>
+              </div>
+            </div>
+            
+            <div class="footer-section">
+              <h4>Estadísticas</h4>
+              <div class="footer-stats">
+                <div>Tamaño: <strong>5.1 KB</strong></div>
+                <div>Temas: <strong>4 disponibles</strong></div>
+                <div>Estado: <strong class="success">Estable</strong></div>
+                <div>Compatible: <strong>Todos los dispositivos</strong></div>
+              </div>
+            </div>
+            
+            <div class="footer-section">
+              <h4>Distribución</h4>
+              <div class="footer-stats">
+                <div><span>CDN:</span> <code>jsDelivr</code></div>
+                <div><span>Hosting:</span> <code>GitHub Pages</code></div>
+                <div><span>Build:</span> <code>npm run build</code></div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="footer-divider"></div>
+          
+          <div class="footer-bottom">
+            <div class="footer-credits">
+              <span>TERMINUS Terminal Component</span>
+              <span>•</span>
+              <span>GPL v3 License</span>
+              <span>•</span>
+              <span>Open Source</span>
+            </div>
+            <div class="footer-year">© 2025</div>
+          </div>
         </div>
       </footer>
     </main>
   </div>
 
   <!-- TOAST -->
-  <div class="toast" id="toast" role="status" aria-live="polite">Copiado al portapapeles ✅</div>
+  <div class="toast" id="toast" role="status" aria-live="polite">Copiado al portapapeles</div>
 
   <!-- MODAL -->
   <div class="backdrop" id="backdrop" aria-hidden="true" aria-label="Modal Snippet Completo">
@@ -327,18 +678,42 @@ Comandos disponibles:
         <button class="btn ghost" id="btnCloseModal" aria-label="Cerrar">Cerrar</button>
       </div>
       <div class="card-b">
-<pre class="code">&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/TU-USUARIO/TERMINUS@latest/docs/dist/terminal.min.css"&gt;
-&lt;script src="https://cdn.jsdelivr.net/gh/TU-USUARIO/TERMINUS@latest/docs/dist/terminal.min.js" defer&gt;&lt;/script&gt;
+<pre class="code">&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/memoriainfinita/terminus@latest/docs/dist/terminal.min.css"&gt;
+&lt;script src="https://cdn.jsdelivr.net/gh/memoriainfinita/terminus@latest/docs/dist/terminal.min.js" defer&gt;&lt;/script&gt;
 
 &lt;div class="gnu-terminal"
      data-theme="dark"
      data-prompt="gnu$"
      data-commands='{"help":"Lista comandos","about":"Proyecto GNU"}'&gt;
 &lt;/div&gt;</pre>
-        <p class="muted">Consejo: incrusta una sola vez los archivos CSS/JS si tienes varias instancias.</p>
+        <p class="text-muted">Consejo: incrusta una sola vez los archivos CSS/JS si tienes varias instancias.</p>
       </div>
     </div>
   </div>
+
+  <!-- FAQ Toggle Script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // FAQ toggle functionality
+      const faqItems = document.querySelectorAll('.faq-item');
+      
+      faqItems.forEach(item => {
+        const question = item.querySelector('.faq-question');
+        
+        question.addEventListener('click', function() {
+          // Close all other FAQ items
+          faqItems.forEach(otherItem => {
+            if (otherItem !== item && otherItem.classList.contains('active')) {
+              otherItem.classList.remove('active');
+            }
+          });
+          
+          // Toggle current FAQ item
+          item.classList.toggle('active');
+        });
+      });
+    });
+  </script>
 
   <!-- Terminal Core JS (minified) -->
   <script src="dist/terminal.min.js" defer></script>

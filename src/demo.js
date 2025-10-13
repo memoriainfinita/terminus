@@ -24,9 +24,7 @@ class TerminusDemo {
    */
   cacheElements() {
     this.elements = {
-      // Elementos del sidebar y navegación
-      sidebar: document.getElementById('sidebar'),
-      btnSidebar: document.getElementById('btnSidebar'),
+      // Elementos de navegación
       btnTheme: document.getElementById('btnTheme'),
       codeBlock: document.getElementById('codeBlock'),
       btnCopy: document.getElementById('btnCopy'),
@@ -54,7 +52,7 @@ class TerminusDemo {
       generatedCode: document.getElementById('generatedCode'),
       
       // Terminal de demo
-      terminal: document.querySelector('.gnu-terminal')
+      terminal: document.getElementById('terminalDemo')
     };
   }
 
@@ -62,24 +60,10 @@ class TerminusDemo {
    * Configura todos los event listeners
    */
   setupEventListeners() {
-    this.setupSidebar();
     this.setupThemeToggle();
     this.setupClipboard();
     this.setupModal();
     this.setupConfigurator();
-  }
-
-  /**
-   * Configura la funcionalidad del sidebar
-   */
-  setupSidebar() {
-    if (!this.elements.btnSidebar || !this.elements.sidebar) return;
-
-    this.elements.btnSidebar.addEventListener('click', () => {
-      const isOpen = this.elements.sidebar.classList.toggle('open');
-      this.elements.sidebar.setAttribute('aria-hidden', String(!isOpen));
-      this.elements.btnSidebar.setAttribute('aria-expanded', String(isOpen));
-    });
   }
 
   /**
@@ -395,6 +379,28 @@ class TerminusDemo {
   }
 
   /**
+   * Edita un comando existente
+   */
+  editCommand(commandName, currentResponse) {
+    // Rellenar los inputs con los valores actuales
+    if (this.elements.newCommandName) {
+      this.elements.newCommandName.value = commandName;
+    }
+    if (this.elements.newCommandResponse) {
+      this.elements.newCommandResponse.value = currentResponse;
+    }
+
+    // Eliminar el comando actual para evitar duplicados
+    delete this.config.commands[commandName];
+    this.renderCommandsList();
+    this.updatePreview();
+    this.generateSnippet();
+
+    // Mensaje informativo
+    this.showToast(`✏️ Editando "${commandName}" - Modifica y presiona Agregar`);
+  }
+
+  /**
    * Renderiza la lista de comandos
    */
   renderCommandsList() {
@@ -404,7 +410,14 @@ class TerminusDemo {
       <div class="command-item" style="display: flex; justify-content: space-between; align-items: center; padding: 4px 0; border-bottom: 1px solid var(--border);">
         <span style="font-family: monospace; color: var(--accent);">${name}</span>
         <span style="flex: 1; margin-left: 8px; font-size: 12px; max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${response}</span>
-        <button class="btn-remove" onclick="window.terminusDemo.removeCommand('${name}')" style="background: none; border: none; color: #f45452; cursor: pointer; padding: 2px 6px;">✕</button>
+        <div style="display: flex; gap: 4px;">
+          <button class="btn-edit" onclick="window.terminusDemo.editCommand('${name}', \`${response.replace(/`/g, '\\`')}\`)" 
+                  style="background: none; border: none; color: var(--accent); cursor: pointer; padding: 2px 6px; font-size: 12px;" 
+                  title="Editar comando">✏️</button>
+          <button class="btn-remove" onclick="window.terminusDemo.removeCommand('${name}')" 
+                  style="background: none; border: none; color: #f45452; cursor: pointer; padding: 2px 6px;" 
+                  title="Eliminar comando">✕</button>
+        </div>
       </div>
     `).join('');
 
@@ -612,7 +625,7 @@ class TerminusDemo {
  */
 function initDemo() {
   // Solo inicializar si estamos en la página de demo
-  if (document.querySelector('.demo-page') || document.querySelector('#sidebar')) {
+  if (document.querySelector('.demo-page')) {
     window.terminusDemo = new TerminusDemo();
   }
 }
