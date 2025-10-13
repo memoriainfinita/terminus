@@ -1,14 +1,14 @@
-# Terminus — Terminal Embebida GNU 🐃
+# Terminus — Terminal Embebida GNU
 
 [![GitHub Pages](https://img.shields.io/badge/demo-live-brightgreen)](https://memoriainfinita.github.io/TERMINUS/)
 [![jsDelivr](https://img.shields.io/badge/CDN-jsDelivr-orange)](https://cdn.jsdelivr.net/gh/memoriainfinita/TERMINUS@latest/docs/dist/)
 [![License](https://img.shields.io/badge/license-GNU-blue)](LICENSE)
 [![Build](https://img.shields.io/badge/build-passing-success)]()
 
-## 📜 Descripción
+## Descripción
 **Terminus** es una terminal embebible para la web, creada bajo el espíritu del software libre (GNU). Su objetivo es ofrecer una interfaz ligera, modular y sin dependencias que pueda integrarse en cualquier página HTML con un simple snippet.
 
-## 🚀 Características principales
+## Características principales
 - **HTML/CSS/JS puro** — sin frameworks ni APIs externas
 - **Modo auto-init** — se activa automáticamente al detectar un elemento con la clase `gnu-terminal`
 - **Sistema de temas avanzado** — Matrix, Ocean, Amber y Dark con CSS variables
@@ -20,7 +20,7 @@
 - **Extensible** — pensado para crecer hacia mini-docs o componentes adicionales
 - **Súper ligero** — Solo 4.9 KB CSS + 3.4 KB JS minificados para funcionalidad completa
 
-## ⚡ Instalación rápida
+## Instalación rápida
 
 ### Opción 1: CSS + JS separados
 ```html
@@ -43,10 +43,10 @@
      data-commands='{"help":"Lista comandos","about":"Proyecto GNU"}'></div>
 ```
 
-## 🎮 Demo en Vivo
-👉 **[Ver Demo Completa](https://memoriainfinita.github.io/TERMINUS/)**
+## Demo en Vivo
+**[Ver Demo Completa](https://memoriainfinita.github.io/TERMINUS/)**
 
-### ✨ Nuevas Características del Demo
+### Nuevas Características del Demo
 - **Configurador Interactivo** — Cambia temas, prompts y comandos en tiempo real
 - **4 Temas Visuales** — Matrix, Ocean, Amber y Dark
 - **Editor de Comandos** — Agrega, edita y elimina comandos personalizados
@@ -54,7 +54,7 @@
 - **Preview en Vivo** — Ve los cambios aplicados instantáneamente
 - **UI Optimizada** — Diseño limpio y profesional sin elementos redundantes
 
-## ⚙️ Configuración avanzada
+## Configuración avanzada
 
 ### Temas disponibles
 - **Matrix** — Verde clásico tipo Matrix
@@ -84,15 +84,15 @@ Comandos disponibles:
 • theme - Cambiar tema
 • clear - Limpiar pantalla"
      data-commands='{
-       "help": "📋 Comandos: ls, echo, theme, clear, about",
-       "ls": "📁 directorio1/\n📁 directorio2/\n📄 archivo.txt",
-       "about": "� TERMINUS v2.0 - Terminal Component",
-       "theme": "🎨 Temas: matrix, ocean, amber, dark"
+       "help": "Comandos: ls, echo, theme, clear, about",
+       "ls": "directorio1/\ndirectorio2/\narchivo.txt",
+       "about": "TERMINUS v2.0 - Terminal Component",
+       "theme": "Temas: matrix, ocean, amber, dark"
      }'>
 </div>
 ```
 
-## 🛠️ Desarrollo
+## Desarrollo
 
 ### Clonar repositorio
 ```bash
@@ -124,7 +124,7 @@ TERMINUS/
 └── package.json
 ```
 
-## 📦 Archivos de Distribución
+## Archivos de Distribución
 
 ### Core Terminal (Listo para producción)
 - `terminal.min.css` — 4.9 KB (estilos optimizados -40.8%)
@@ -145,22 +145,22 @@ Versión específica:
 https://cdn.jsdelivr.net/gh/memoriainfinita/TERMINUS@v1.0.0/docs/dist/
 ```
 
-## 🧠 Filosofía
+## Filosofía
 Inspirado en la sencillez del software libre: **código claro, integrable y accesible para todos los niveles técnicos**.
 
-## 🔧 Tecnologías
+## Tecnologías
 - HTML5 + CSS3 (sin frameworks)
 - Vanilla JavaScript
 - GitHub Pages + jsDelivr para distribución
 - Build system con clean-css y uglify-js
 
-## 🧑‍💻 Contribuir
+## Contribuir
 1. Haz un fork del repositorio
 2. Crea una rama para tu feature: `git checkout -b feature/nueva-funcion`
 3. Haz commit de tus cambios: `git commit -m 'Añadir nueva función'`
 4. Envía un pull request
 
-## 🤖 Desarrollo Asistido por IA
+## Desarrollo Asistido por IA
 Este proyecto ha sido desarrollado por un **humano** con asistencia de **Claude Sonnet 3.5** (Anthropic). La arquitectura, decisiones de diseño y implementación fueron dirigidas por el desarrollador humano, mientras que Claude proporcionó asistencia en:
 - Generación de código base y estructura modular
 - **Optimización masiva del CSS** (eliminación de 22% del código)
@@ -172,7 +172,7 @@ Este proyecto ha sido desarrollado por un **humano** con asistencia de **Claude 
 
 El resultado es un código **100% funcional**, **altamente optimizado** y **listo para producción**, combinando la creatividad humana con la eficiencia de la asistencia de IA para lograr un componente terminal profesional con configurador en tiempo real.
 
-## 📊 Estadísticas del Build (Última Optimización)
+## Estadísticas del Build (Última Optimización)
 - **Reducción CSS**: 40.8% (8.3 KB → 4.9 KB)
 - **Reducción JS**: 46.3% (6.3 KB → 3.4 KB)  
 - **Optimización Demo**: 22% menos código CSS general
@@ -181,7 +181,7 @@ El resultado es un código **100% funcional**, **altamente optimizado** y **list
 - **Elementos eliminados**: Sidebar, estadísticas redundantes, botones duplicados
 - **Funcionalidad añadida**: Configurador interactivo en tiempo real
 
-## 📄 Licencia
+## Licencia
 Publicado bajo **Licencia GNU** — libre, abierta y comunitaria.
 
 ---
