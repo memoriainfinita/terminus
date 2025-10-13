@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="es" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MVP — Terminal Embebida GNU</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+  
+  <!-- Terminal Core CSS (minified) -->
+  <link rel="stylesheet" href="dist/terminal.min.css">
+  
+  <!-- Demo Page CSS (minified) -->
+  <link rel="stylesheet" href="dist/demo.min.css">
+</head>
+<body>
+  <!-- NAVBAR -->
+  <header class="navbar" role="navigation" aria-label="Principal">
+    <div class="container nav-inner">
+      <div class="brand" aria-label="Marca">
+        <div class="logo" aria-hidden="true">🐃</div>
+        <span>MVP Terminal GNU</span>
+        <span class="badge">Licencia GNU</span>
+      </div>
+      <div class="nav-actions">
+        <button class="btn ghost" id="btnSidebar" aria-controls="sidebar" aria-expanded="false" aria-label="Abrir panel de docs">Docs</button>
+        <button class="btn ghost" id="btnTheme" aria-label="Cambiar tema">Claro/Oscuro</button>
+        <a class="btn accent" href="#snippet" aria-label="Ir a Snippet">Ver Snippet</a>
+        <a class="btn" href="#demo" aria-label="Ir a la Demo">Demo</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="layout">
+    <!-- SIDEBAR -->
+    <aside id="sidebar" class="sidebar" aria-label="Docs mini" aria-hidden="true">
+      <div class="section-title">Contenido</div>
+      <nav>
+        <a href="#hero">Introducción</a>
+        <a href="#demo">Demo</a>
+        <a href="#snippet">Snippet</a>
+        <a href="#options">Opciones</a>
+        <a href="#faq">FAQ</a>
+        <a href="#license">Licencia</a>
+      </nav>
+      <div style="height:16px"></div>
+      <div class="section-title">Recursos</div>
+      <nav>
+        <a href="#" aria-disabled="true">Guía de estilos (pronto)</a>
+        <a href="#" aria-disabled="true">Accesibilidad (pronto)</a>
+        <a href="#" aria-disabled="true">Ejemplos (pronto)</a>
+      </nav>
+    </aside>
+
+    <!-- MAIN -->
+    <main>
+      <section id="hero" class="hero container">
+        <span class="pill">Widget de terminal embebible · HTML/CSS/JS mínimo</span>
+        <h1>Terminal embebida <span style="color:var(--accent)">modular</span> y <span style="color:var(--accent)">flexible</span></h1>
+        <p>Proyecto GNU. Integra una terminal interactiva en cualquier web con un solo snippet. Sin APIs, configuración por <code class="kbd">data-*</code>, y diseño oscuro elegante con acento verde.</p>
+        <div class="row" style="justify-content:center; gap:12px">
+          <a href="#demo" class="btn accent">Probar demo</a>
+          <a href="#snippet" class="btn">Copiar snippet</a>
+        </div>
+      </section>
+
+      <section id="demo" class="container">
+        <div class="grid cols-2">
+          <div class="card">
+            <div class="card-h">
+              <div class="row"><strong>Terminal de demo</strong> <span class="tag">(simulada)</span></div>
+              <div class="row"><span class="badge">v0.1</span></div>
+            </div>
+            <div class="card-b">
+              <div class="terminal" role="region" aria-label="Terminal de demostración">
+                <div class="titlebar"><span class="dot"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                <div class="viewport" id="terminalViewport">
+                  <div><span class="prompt">gnu@web</span>:<span style="color:#78dce8">~</span>$ <span class="typing">help</span><span class="cursor" aria-hidden="true"></span></div>
+                  <div class="muted" style="margin-top:8px">Comandos: <span class="kbd">help</span>, <span class="kbd">about</span>, <span class="kbd">clear</span></div>
+                  <div style="margin-top:16px">GNU Terminal — widget embebible listo para producción mínima.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-h"><strong>Opciones rápidas</strong><span class="tag">(mock)</span></div>
+            <div class="card-b">
+              <div class="row" style="justify-content:space-between">
+                <label class="row" for="optTheme">
+                  <input type="checkbox" id="optTheme" />
+                  Tema oscuro por defecto
+                </label>
+                <span class="muted">toggle</span>
+              </div>
+              <div class="row" style="justify-content:space-between; margin-top:10px">
+                <label class="row" for="optCursor">
+                  <input type="checkbox" id="optCursor" checked />
+                  Cursor parpadeante
+                </label>
+                <span class="muted">micro</span>
+              </div>
+              <div class="row" style="justify-content:space-between; margin-top:10px">
+                <label class="row" for="optType">
+                  <input type="checkbox" id="optType" checked />
+                  Escritura gradual
+                </label>
+                <span class="muted">animación</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="snippet" class="container">
+        <div class="card">
+          <div class="card-h">
+            <strong>Snippet — Script auto‑init</strong>
+            <div class="row">
+              <button class="btn" id="btnCopy">Copiar</button>
+              <button class="btn ghost" id="btnModal">Ver completo</button>
+            </div>
+          </div>
+          <div class="card-b">
+<pre class="code" id="codeBlock">&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/TU-USUARIO/TERMINUS@latest/docs/dist/terminal.min.css"&gt;
+&lt;script src="https://cdn.jsdelivr.net/gh/TU-USUARIO/TERMINUS@latest/docs/dist/terminal.min.js" defer&gt;&lt;/script&gt;
+
+&lt;div class="gnu-terminal"
+     data-theme="dark"
+     data-prompt="gnu$"
+     data-commands='{"help":"Lista comandos","about":"Proyecto GNU"}'&gt;&lt;/div&gt;</pre>
+            <p class="muted">Configura por <span class="kbd">data-*</span>. Pega y funciona.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="options" class="container">
+        <div class="card">
+          <div class="card-h"><strong>Parámetros por data‑atributos</strong><span class="tag">mínimos</span></div>
+          <div class="card-b">
+            <ul>
+              <li><code>data-theme</code>: <span class="kbd">dark</span> | <span class="kbd">light</span> | <span class="kbd">auto</span></li>
+              <li><code>data-prompt</code>: texto del prompt (p. ej. <span class="kbd">gnu$</span>)</li>
+              <li><code>data-commands</code>: JSON con respuestas simuladas</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="faq" class="container">
+        <h2 style="margin:0 0 12px 0">FAQ</h2>
+        <details>
+          <summary>¿Necesita API?</summary>
+          <p>No. Es auto‑init y se configura con atributos <code>data-*</code>.</p>
+        </details>
+        <details>
+          <summary>¿Puedo cambiar el tema?</summary>
+          <p>Sí. Usa <code>data-theme</code> o el toggle de la UI.</p>
+        </details>
+        <details>
+          <summary>¿Cómo lo hospedo?</summary>
+          <p>Publica el bundle en GitHub Pages y sirve por jsDelivr.</p>
+        </details>
+      </section>
+
+      <section id="license" class="container" aria-labelledby="lic-title">
+        <h2 id="lic-title" style="margin:0 0 8px 0">Licencia GNU</h2>
+        <p class="muted">Este proyecto se publica bajo licencia GNU — abierto, libre y orientado a la comunidad.</p>
+      </section>
+
+      <footer class="container">
+        <div class="row">
+          <span>© 2025 Proyecto GNU — Terminal Embebida</span>
+          <span class="spacer"></span>
+          <span class="muted">Hecho con HTML/CSS/JS mínimo</span>
+        </div>
+      </footer>
+    </main>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast" role="status" aria-live="polite">Copiado al portapapeles ✅</div>
+
+  <!-- MODAL -->
+  <div class="backdrop" id="backdrop" aria-hidden="true" aria-label="Modal Snippet Completo">
+    <div class="modal">
+      <div class="card-h">
+        <strong>Snippet completo</strong>
+        <button class="btn ghost" id="btnCloseModal" aria-label="Cerrar">Cerrar</button>
+      </div>
+      <div class="card-b">
+<pre class="code">&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/TU-USUARIO/TERMINUS@latest/docs/dist/terminal.min.css"&gt;
+&lt;script src="https://cdn.jsdelivr.net/gh/TU-USUARIO/TERMINUS@latest/docs/dist/terminal.min.js" defer&gt;&lt;/script&gt;
+
+&lt;div class="gnu-terminal"
+     data-theme="dark"
+     data-prompt="gnu$"
+     data-commands='{"help":"Lista comandos","about":"Proyecto GNU"}'&gt;
+&lt;/div&gt;</pre>
+        <p class="muted">Consejo: incrusta una sola vez los archivos CSS/JS si tienes varias instancias.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Terminal Core JS (minified) -->
+  <script src="dist/terminal.min.js" defer></script>
+  
+  <!-- Demo Page JS (minified) -->
+  <script src="dist/demo.min.js" defer></script>
+</body>
+</html>

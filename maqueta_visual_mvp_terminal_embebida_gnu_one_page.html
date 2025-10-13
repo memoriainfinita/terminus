@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="es" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MVP — Terminal Embebida GNU</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0f1115;        /* antracita */
+      --bg-soft: #141821;   /* cards */
+      --bg-softer: #0b0d12; /* sidebar */
+      --fg: #e6e8ee;        /* texto */
+      --muted: #9aa3b2;     /* texto secundario */
+      --border: #232837;    /* bordes */
+      --accent: #00ff88;    /* verde terminal */
+      --accent-weak: #1b4b38; /* hover suave */
+      --shadow: rgba(0,0,0,.25);
+      --radius: 10px;
+      --gap: 16px;
+    }
+    @media (prefers-color-scheme: light) {
+      :root[data-theme="auto"] { --bg:#f7f8fb; --bg-soft:#ffffff; --bg-softer:#f0f2f7; --fg:#0b0d12; --muted:#4a5568; --border:#e6e8ee; --shadow: rgba(0,0,0,.12); }
+    }
+    [data-theme="light"] { --bg:#f7f8fb; --bg-soft:#ffffff; --bg-softer:#f0f2f7; --fg:#0b0d12; --muted:#4a5568; --border:#e6e8ee; --shadow: rgba(0,0,0,.12); }
+
+    * { box-sizing: border-box } html,body { height: 100% }
+    body {
+      margin: 0; font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, 'Helvetica Neue', Arial, "Noto Sans", sans-serif;
+      background: var(--bg); color: var(--fg);
+    }
+    a { color: var(--fg); text-decoration: none }
+    .container { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+
+    /* NAVBAR */
+    header.navbar {
+      position: sticky; top: 0; z-index: 50;
+      backdrop-filter: saturate(1.2) blur(10px);
+      background: color-mix(in oklab, var(--bg) 80%, transparent);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 600; }
+    .brand .logo { width: 28px; height: 28px; border-radius: 8px; display: grid; place-items:center; background: var(--bg-soft); border:1px solid var(--border); box-shadow: 0 4px 14px var(--shadow); }
+    .nav-actions { display: flex; gap:10px; align-items:center }
+    .btn { display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border-radius: var(--radius); border: 1px solid var(--border); background: var(--bg-soft); color: var(--fg); cursor:pointer; transition:.2s ease; }
+    .btn:hover { transform: translateY(-1px); box-shadow: 0 8px 20px var(--shadow); border-color: color-mix(in oklab, var(--border) 60%, var(--accent) 40%); }
+    .btn.ghost { background: transparent }
+    .btn.accent { background: color-mix(in oklab, var(--accent) 15%, var(--bg-soft) 85%); border-color: var(--accent-weak); }
+
+    /* LAYOUT */
+    .layout { display: grid; grid-template-columns: 280px 1fr; }
+    aside.sidebar { position: sticky; top: 64px; height: calc(100dvh - 64px); border-right:1px solid var(--border); background: var(--bg-softer); padding: 20px; overflow:auto; transform: translateX(-100%); transition: transform .28s cubic-bezier(.22,.61,.36,1); }
+    aside.sidebar.open { transform: translateX(0); }
+    .sidebar .section-title { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin: 10px 0; }
+    .sidebar a { display:block; padding:8px 10px; border-radius:8px; color: var(--muted); border:1px solid transparent }
+    .sidebar a:hover { color: var(--fg); border-color: var(--border); background: var(--bg-soft); }
+
+    main { min-height: 100dvh; }
+    section { padding: 56px 0; border-bottom: 1px solid var(--border); }
+
+    /* HERO */
+    .hero { display:grid; gap: 18px; text-align: center; padding: 72px 0 56px; }
+    .hero h1 { margin: 0; font-size: clamp(28px, 4vw, 40px); letter-spacing:-.01em }
+    .hero p { margin:0 auto; max-width: 720px; color: var(--muted) }
+    .pill { display:inline-flex; align-items:center; gap:8px; border:1px solid var(--border); background: var(--bg-soft); padding:6px 10px; border-radius: 999px; font-size: 12px; opacity:.9 }
+
+    /* GRID */
+    .grid { display:grid; gap: var(--gap); }
+    .grid.cols-2 { grid-template-columns: 1fr; }
+    @media (min-width: 960px) { .grid.cols-2 { grid-template-columns: 1.1fr .9fr; } }
+
+    /* CARD */
+    .card { background: var(--bg-soft); border:1px solid var(--border); border-radius: var(--radius); box-shadow: 0 8px 24px var(--shadow); }
+    .card .card-h { display:flex; align-items:center; justify-content:space-between; padding: 14px 16px; border-bottom:1px solid var(--border); }
+    .card .card-b { padding: 16px; }
+    .muted { color: var(--muted) }
+
+    /* TERMINAL */
+    .terminal { font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; background: #0a0c10; border:1px solid #1d2330; border-radius: var(--radius); box-shadow: inset 0 0 0 1px rgba(255,255,255,.02); }
+    .terminal .titlebar { display:flex; align-items:center; gap:8px; padding: 10px 12px; border-bottom:1px solid #1d2330; background: linear-gradient(180deg,#0c0f14,#0a0c10); border-top-left-radius: var(--radius); border-top-right-radius: var(--radius); }
+    .dot { width:10px; height:10px; border-radius:999px; background:#f45452 }
+    .dot.yellow { background:#f7b84b } .dot.green{ background:#6ac38f }
+    .terminal .viewport { padding:16px; min-height: 260px; line-height: 1.6; }
+    .prompt { color: var(--accent) }
+    .cursor { display:inline-block; width: 8px; height: 1.1em; background: var(--accent); vertical-align: text-bottom; margin-left: 2px; animation: blink 1s steps(1) infinite; }
+    @keyframes blink { 50% { opacity: 0 } }
+    .typing { overflow: hidden; white-space: nowrap; border-right: 0 solid transparent; animation: typing 2.6s steps(36,end) 0.4s 1 both; }
+    @keyframes typing { from { width: 0 } to { width: 100% } }
+
+    /* CODE BLOCK / SNIPPET */
+    pre.code { background:#0a0c10; color:#d6deeb; border:1px solid #1d2330; padding: 14px; border-radius: 10px; overflow:auto; font-family: 'IBM Plex Mono', monospace; font-size: 13px; }
+    .kbd { font-family: 'IBM Plex Mono', monospace; background: var(--bg-softer); border:1px solid var(--border); padding:2px 6px; border-radius:6px; font-size: 12px; }
+
+    /* FAQ */
+    details { background: var(--bg-soft); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; }
+    details + details { margin-top: 10px }
+    summary { cursor: pointer; font-weight: 600 }
+    summary::marker { color: var(--accent) }
+
+    /* FOOTER */
+    footer { padding: 24px 0; color: var(--muted) }
+
+    /* TOAST */
+    .toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%) translateY(24px); opacity: 0; background: var(--bg-soft); color: var(--fg); border:1px solid var(--border); border-radius: 10px; padding: 10px 14px; box-shadow: 0 10px 28px var(--shadow); transition: transform .25s ease, opacity .25s ease; pointer-events: none; }
+    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1 }
+
+    /* MODAL */
+    .backdrop { position: fixed; inset: 0; background: rgba(0,0,0,.55); display:none; align-items:center; justify-content:center; }
+    .backdrop.open { display:flex }
+    .modal { width: min(880px, 92vw); background: var(--bg-soft); border:1px solid var(--border); border-radius: 14px; box-shadow: 0 30px 70px var(--shadow) }
+
+    /* UTIL */
+    .row { display:flex; align-items:center; gap:10px }
+    .spacer { flex: 1 }
+    .tag { font-size: 12px; color: var(--muted) }
+    .badge { padding: 2px 8px; border:1px solid var(--border); border-radius: 999px; background: var(--bg-softer) }
+
+    /* RESPONSIVE */
+    @media (max-width: 960px) {
+      .layout { grid-template-columns: 1fr; }
+      aside.sidebar { position: fixed; left: 0; width: 78%; max-width: 300px; height: 100dvh; top: 64px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- NAVBAR -->
+  <header class="navbar" role="navigation" aria-label="Principal">
+    <div class="container nav-inner">
+      <div class="brand" aria-label="Marca">
+        <div class="logo" aria-hidden="true">🐃</div>
+        <span>MVP Terminal GNU</span>
+        <span class="badge">Licencia GNU</span>
+      </div>
+      <div class="nav-actions">
+        <button class="btn ghost" id="btnSidebar" aria-controls="sidebar" aria-expanded="false" aria-label="Abrir panel de docs">Docs</button>
+        <button class="btn ghost" id="btnTheme" aria-label="Cambiar tema">Claro/Oscuro</button>
+        <a class="btn accent" href="#snippet" aria-label="Ir a Snippet">Ver Snippet</a>
+        <a class="btn" href="#demo" aria-label="Ir a la Demo">Demo</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="layout">
+    <!-- SIDEBAR -->
+    <aside id="sidebar" class="sidebar" aria-label="Docs mini" aria-hidden="true">
+      <div class="section-title">Contenido</div>
+      <nav>
+        <a href="#hero">Introducción</a>
+        <a href="#demo">Demo</a>
+        <a href="#snippet">Snippet</a>
+        <a href="#options">Opciones</a>
+        <a href="#faq">FAQ</a>
+        <a href="#license">Licencia</a>
+      </nav>
+      <div style="height:16px"></div>
+      <div class="section-title">Recursos</div>
+      <nav>
+        <a href="#" aria-disabled="true">Guía de estilos (pronto)</a>
+        <a href="#" aria-disabled="true">Accesibilidad (pronto)</a>
+        <a href="#" aria-disabled="true">Ejemplos (pronto)</a>
+      </nav>
+    </aside>
+
+    <!-- MAIN -->
+    <main>
+      <section id="hero" class="hero container">
+        <span class="pill">Widget de terminal embebible · HTML/CSS/JS mínimo</span>
+        <h1>Terminal embebida <span style="color:var(--accent)">modular</span> y <span style="color:var(--accent)">flexible</span></h1>
+        <p>Proyecto GNU. Integra una terminal interactiva en cualquier web con un solo snippet. Sin APIs, configuración por <code class="kbd">data-*</code>, y diseño oscuro elegante con acento verde.</p>
+        <div class="row" style="justify-content:center; gap:12px">
+          <a href="#demo" class="btn accent">Probar demo</a>
+          <a href="#snippet" class="btn">Copiar snippet</a>
+        </div>
+      </section>
+
+      <section id="demo" class="container">
+        <div class="grid cols-2">
+          <div class="card">
+            <div class="card-h">
+              <div class="row"><strong>Terminal de demo</strong> <span class="tag">(simulada)</span></div>
+              <div class="row"><span class="badge">v0.1</span></div>
+            </div>
+            <div class="card-b">
+              <div class="terminal" role="region" aria-label="Terminal de demostración">
+                <div class="titlebar"><span class="dot"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                <div class="viewport" id="terminalViewport">
+                  <div><span class="prompt">gnu@web</span>:<span style="color:#78dce8">~</span>$ <span class="typing">help</span><span class="cursor" aria-hidden="true"></span></div>
+                  <div class="muted" style="margin-top:8px">Comandos: <span class="kbd">help</span>, <span class="kbd">about</span>, <span class="kbd">clear</span></div>
+                  <div style="margin-top:16px">GNU Terminal — widget embebible listo para producción mínima.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-h"><strong>Opciones rápidas</strong><span class="tag">(mock)</span></div>
+            <div class="card-b">
+              <div class="row" style="justify-content:space-between">
+                <label class="row" for="optTheme">
+                  <input type="checkbox" id="optTheme" />
+                  Tema oscuro por defecto
+                </label>
+                <span class="muted">toggle</span>
+              </div>
+              <div class="row" style="justify-content:space-between; margin-top:10px">
+                <label class="row" for="optCursor">
+                  <input type="checkbox" id="optCursor" checked />
+                  Cursor parpadeante
+                </label>
+                <span class="muted">micro</span>
+              </div>
+              <div class="row" style="justify-content:space-between; margin-top:10px">
+                <label class="row" for="optType">
+                  <input type="checkbox" id="optType" checked />
+                  Escritura gradual
+                </label>
+                <span class="muted">animación</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="snippet" class="container">
+        <div class="card">
+          <div class="card-h">
+            <strong>Snippet — Script auto‑init</strong>
+            <div class="row">
+              <button class="btn" id="btnCopy">Copiar</button>
+              <button class="btn ghost" id="btnModal">Ver completo</button>
+            </div>
+          </div>
+          <div class="card-b">
+<pre class="code" id="codeBlock">&lt;link rel="stylesheet" href="https://cdn.example.com/terminal.min.css"&gt;
+&lt;script src="https://cdn.example.com/terminal.min.js" defer&gt;&lt;/script&gt;
+
+&lt;div class="gnu-terminal"
+     data-theme="dark"
+     data-prompt="gnu$"
+     data-commands='{"help":"Lista comandos","about":"Proyecto GNU"}'&gt;&lt;/div&gt;</pre>
+            <p class="muted">Configura por <span class="kbd">data-*</span>. Pega y funciona.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="options" class="container">
+        <div class="card">
+          <div class="card-h"><strong>Parámetros por data‑atributos</strong><span class="tag">mínimos</span></div>
+          <div class="card-b">
+            <ul>
+              <li><code>data-theme</code>: <span class="kbd">dark</span> | <span class="kbd">light</span> | <span class="kbd">auto</span></li>
+              <li><code>data-prompt</code>: texto del prompt (p. ej. <span class="kbd">gnu$</span>)</li>
+              <li><code>data-commands</code>: JSON con respuestas simuladas</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="faq" class="container">
+        <h2 style="margin:0 0 12px 0">FAQ</h2>
+        <details>
+          <summary>¿Necesita API?</summary>
+          <p>No. Es auto‑init y se configura con atributos <code>data-*</code>.</p>
+        </details>
+        <details>
+          <summary>¿Puedo cambiar el tema?</summary>
+          <p>Sí. Usa <code>data-theme</code> o el toggle de la UI.</p>
+        </details>
+        <details>
+          <summary>¿Cómo lo hospedo?</summary>
+          <p>Publica el bundle en GitHub Pages y sirve por jsDelivr.</p>
+        </details>
+      </section>
+
+      <section id="license" class="container" aria-labelledby="lic-title">
+        <h2 id="lic-title" style="margin:0 0 8px 0">Licencia GNU</h2>
+        <p class="muted">Este proyecto se publica bajo licencia GNU — abierto, libre y orientado a la comunidad.</p>
+      </section>
+
+      <footer class="container">
+        <div class="row">
+          <span>© 2025 Proyecto GNU — Terminal Embebida</span>
+          <span class="spacer"></span>
+          <span class="muted">Hecho con HTML/CSS/JS mínimo</span>
+        </div>
+      </footer>
+    </main>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast" role="status" aria-live="polite">Copiado al portapapeles ✅</div>
+
+  <!-- MODAL -->
+  <div class="backdrop" id="backdrop" aria-hidden="true" aria-label="Modal Snippet Completo">
+    <div class="modal">
+      <div class="card-h">
+        <strong>Snippet completo</strong>
+        <button class="btn ghost" id="btnCloseModal" aria-label="Cerrar">Cerrar</button>
+      </div>
+      <div class="card-b">
+<pre class="code">&lt;link rel="stylesheet" href="https://cdn.example.com/terminal.min.css"&gt;
+&lt;script src="https://cdn.example.com/terminal.min.js" defer&gt;&lt;/script&gt;
+
+&lt;div class="gnu-terminal"
+     data-theme="dark"
+     data-prompt="gnu$"
+     data-commands='{"help":"Lista comandos","about":"Proyecto GNU"}'&gt;
+&lt;/div&gt;</pre>
+        <p class="muted">Consejo: incrusta una sola vez los archivos CSS/JS si tienes varias instancias.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const sidebar = document.getElementById('sidebar');
+    const btnSidebar = document.getElementById('btnSidebar');
+    const btnTheme = document.getElementById('btnTheme');
+    const codeBlock = document.getElementById('codeBlock');
+    const btnCopy = document.getElementById('btnCopy');
+    const toast = document.getElementById('toast');
+    const backdrop = document.getElementById('backdrop');
+    const btnModal = document.getElementById('btnModal');
+    const btnCloseModal = document.getElementById('btnCloseModal');
+
+    // Sidebar toggle
+    btnSidebar.addEventListener('click', () => {
+      const isOpen = sidebar.classList.toggle('open');
+      sidebar.setAttribute('aria-hidden', String(!isOpen));
+      btnSidebar.setAttribute('aria-expanded', String(isOpen));
+    });
+
+    // Theme toggle (dark/light/auto)
+    function cycleTheme() {
+      const html = document.documentElement;
+      const current = html.getAttribute('data-theme') || 'dark';
+      const next = current === 'dark' ? 'light' : current === 'light' ? 'auto' : 'dark';
+      html.setAttribute('data-theme', next);
+      btnTheme.textContent = {
+        dark: 'Claro/Oscuro',
+        light: 'Auto',
+        auto: 'Oscuro'
+      }[next];
+    }
+    btnTheme.addEventListener('click', cycleTheme);
+
+    // Copy snippet
+    btnCopy.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(codeBlock.innerText);
+        toast.classList.add('show');
+        setTimeout(()=> toast.classList.remove('show'), 1600);
+      } catch(e) {
+        alert('No se pudo copiar.');
+      }
+    });
+
+    // Modal
+    btnModal.addEventListener('click', () => { backdrop.classList.add('open'); backdrop.setAttribute('aria-hidden','false'); });
+    btnCloseModal.addEventListener('click', () => { backdrop.classList.remove('open'); backdrop.setAttribute('aria-hidden','true'); });
+    backdrop.addEventListener('click', (e) => { if (e.target === backdrop) { backdrop.classList.remove('open'); backdrop.setAttribute('aria-hidden','true'); } });
+
+    // Mock: control de microinteracciones
+    const optCursor = document.getElementById('optCursor');
+    const optType = document.getElementById('optType');
+    const viewport = document.getElementById('terminalViewport');
+
+    optCursor.addEventListener('change', (e) => {
+      viewport.querySelectorAll('.cursor').forEach(el => el.style.display = e.target.checked ? 'inline-block' : 'none');
+    });
+    optType.addEventListener('change', (e) => {
+      viewport.querySelectorAll('.typing').forEach(el => el.style.animationPlayState = e.target.checked ? 'running' : 'paused');
+    });
+  </script>
+</body>
+</html>

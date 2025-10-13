@@ -1,0 +1,170 @@
+/**
+ * TERMINUS - Terminal Embebible GNU
+ * Estilos Core del Terminal
+ * Versión: 1.0.0
+ */
+
+/* ================================================
+   VARIABLES CSS - Sistema de Temas
+   ================================================ */
+:root {
+  /* Tema Oscuro (default) */
+  --bg: #0f1115;        /* antracita */
+  --bg-soft: #141821;   /* cards */
+  --bg-softer: #0b0d12; /* sidebar */
+  --fg: #e6e8ee;        /* texto */
+  --muted: #9aa3b2;     /* texto secundario */
+  --border: #232837;    /* bordes */
+  --accent: #00ff88;    /* verde terminal */
+  --accent-weak: #1b4b38; /* hover suave */
+  --shadow: rgba(0,0,0,.25);
+  --radius: 10px;
+  --gap: 16px;
+}
+
+/* Tema Claro (media query) */
+@media (prefers-color-scheme: light) {
+  :root[data-theme="auto"] { 
+    --bg:#f7f8fb; 
+    --bg-soft:#ffffff; 
+    --bg-softer:#f0f2f7; 
+    --fg:#0b0d12; 
+    --muted:#4a5568; 
+    --border:#e6e8ee; 
+    --shadow: rgba(0,0,0,.12); 
+  }
+}
+
+/* Tema Claro (forced) */
+[data-theme="light"] { 
+  --bg:#f7f8fb; 
+  --bg-soft:#ffffff; 
+  --bg-softer:#f0f2f7; 
+  --fg:#0b0d12; 
+  --muted:#4a5568; 
+  --border:#e6e8ee; 
+  --shadow: rgba(0,0,0,.12); 
+}
+
+/* ================================================
+   RESET Y BASE
+   ================================================ */
+* { 
+  box-sizing: border-box; 
+}
+
+html, body { 
+  height: 100%; 
+}
+
+body {
+  margin: 0; 
+  font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, 'Helvetica Neue', Arial, "Noto Sans", sans-serif;
+  background: var(--bg); 
+  color: var(--fg);
+}
+
+a { 
+  color: var(--fg); 
+  text-decoration: none; 
+}
+
+/* ================================================
+   TERMINAL - Componente Principal
+   ================================================ */
+.gnu-terminal,
+.terminal { 
+  font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; 
+  background: #0a0c10; 
+  border: 1px solid #1d2330; 
+  border-radius: var(--radius); 
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.02); 
+}
+
+.gnu-terminal .titlebar,
+.terminal .titlebar { 
+  display: flex; 
+  align-items: center; 
+  gap: 8px; 
+  padding: 10px 12px; 
+  border-bottom: 1px solid #1d2330; 
+  background: linear-gradient(180deg,#0c0f14,#0a0c10); 
+  border-top-left-radius: var(--radius); 
+  border-top-right-radius: var(--radius); 
+}
+
+.gnu-terminal .viewport,
+.terminal .viewport { 
+  padding: 16px; 
+  min-height: 260px; 
+  line-height: 1.6; 
+}
+
+/* Dots del titlebar */
+.dot { 
+  width: 10px; 
+  height: 10px; 
+  border-radius: 999px; 
+  background: #f45452; 
+}
+.dot.yellow { background: #f7b84b; }
+.dot.green { background: #6ac38f; }
+
+/* Prompt y cursor */
+.prompt { 
+  color: var(--accent); 
+}
+
+.cursor { 
+  display: inline-block; 
+  width: 8px; 
+  height: 1.1em; 
+  background: var(--accent); 
+  vertical-align: text-bottom; 
+  margin-left: 2px; 
+  animation: blink 1s steps(1) infinite; 
+}
+
+@keyframes blink { 
+  50% { opacity: 0; } 
+}
+
+/* Animación de escritura */
+.typing { 
+  overflow: hidden; 
+  white-space: nowrap; 
+  border-right: 0 solid transparent; 
+  animation: typing 2.6s steps(36,end) 0.4s 1 both; 
+}
+
+@keyframes typing { 
+  from { width: 0; } 
+  to { width: 100%; } 
+}
+
+/* ================================================
+   CODE BLOCKS Y ELEMENTOS TÉCNICOS
+   ================================================ */
+pre.code { 
+  background: #0a0c10; 
+  color: #d6deeb; 
+  border: 1px solid #1d2330; 
+  padding: 14px; 
+  border-radius: 10px; 
+  overflow: auto; 
+  font-family: 'IBM Plex Mono', monospace; 
+  font-size: 13px; 
+}
+
+.kbd { 
+  font-family: 'IBM Plex Mono', monospace; 
+  background: var(--bg-softer); 
+  border: 1px solid var(--border); 
+  padding: 2px 6px; 
+  border-radius: 6px; 
+  font-size: 12px; 
+}
+
+.muted { 
+  color: var(--muted); 
+}

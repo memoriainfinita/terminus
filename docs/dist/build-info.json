@@ -1,0 +1,32 @@
+{
+  "version": "1.0.0",
+  "buildDate": "2025-10-13T00:59:27.893Z",
+  "files": {
+    "terminal.min.css": {
+      "bytes": 2205,
+      "formatted": "2.2 KB"
+    },
+    "terminal.min.js": {
+      "bytes": 3003,
+      "formatted": "2.9 KB"
+    },
+    "demo.min.css": {
+      "bytes": 3899,
+      "formatted": "3.8 KB"
+    },
+    "demo.min.js": {
+      "bytes": 3795,
+      "formatted": "3.7 KB"
+    },
+    "terminal.bundle.min.js": {
+      "bytes": 5604,
+      "formatted": "5.5 KB"
+    }
+  },
+  "cdn": {
+    "base": "https://cdn.jsdelivr.net/gh/TU-USUARIO/TERMINUS@latest/docs/dist",
+    "terminal_css": "https://cdn.jsdelivr.net/gh/TU-USUARIO/TERMINUS@latest/docs/dist/terminal.min.css",
+    "terminal_js": "https://cdn.jsdelivr.net/gh/TU-USUARIO/TERMINUS@latest/docs/dist/terminal.min.js",
+    "terminal_bundle": "https://cdn.jsdelivr.net/gh/TU-USUARIO/TERMINUS@latest/docs/dist/terminal.bundle.min.js"
+  }
+}
