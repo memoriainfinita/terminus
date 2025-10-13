@@ -69,45 +69,139 @@
         <div class="grid cols-2">
           <div class="card">
             <div class="card-h">
-              <div class="row"><strong>Terminal de demo</strong> <span class="tag">(simulada)</span></div>
-              <div class="row"><span class="badge">v0.1</span></div>
+              <div class="row"><strong>Terminal de demo</strong> <span class="tag">(funcional)</span></div>
+              <div class="row"><span class="badge">v1.0</span></div>
             </div>
             <div class="card-b">
-              <div class="terminal" role="region" aria-label="Terminal de demostración">
-                <div class="titlebar"><span class="dot"></span><span class="dot yellow"></span><span class="dot green"></span></div>
-                <div class="viewport" id="terminalViewport">
-                  <div><span class="prompt">gnu@web</span>:<span style="color:#78dce8">~</span>$ <span class="typing">help</span><span class="cursor" aria-hidden="true"></span></div>
-                  <div class="muted" style="margin-top:8px">Comandos: <span class="kbd">help</span>, <span class="kbd">about</span>, <span class="kbd">clear</span></div>
-                  <div style="margin-top:16px">GNU Terminal — widget embebible listo para producción mínima.</div>
-                </div>
+              <!-- TERMINAL REAL FUNCIONANDO -->
+              <div class="gnu-terminal" 
+                   data-theme="matrix"
+                   data-prompt="user@terminus:~$"
+                   data-welcome="🐧 Bienvenido a TERMINUS - Terminal GNU embebible
+
+Prueba estos comandos:
+• help - Ver todos los comandos disponibles
+• ls - Listar archivos 
+• echo 'texto' - Imprimir mensaje
+• mkdir nombre - Crear directorio
+• cd directorio - Cambiar directorio
+• theme - Cambiar tema visual
+• clear - Limpiar pantalla
+
+¡Escribe cualquier comando para empezar!"
+                   role="region" 
+                   aria-label="Terminal de demostración funcional">
               </div>
             </div>
           </div>
 
           <div class="card">
-            <div class="card-h"><strong>Opciones rápidas</strong><span class="tag">(mock)</span></div>
+            <div class="card-h"><strong>🎛️ Configurador de Terminal</strong><span class="tag">(interactivo)</span></div>
             <div class="card-b">
-              <div class="row" style="justify-content:space-between">
-                <label class="row" for="optTheme">
-                  <input type="checkbox" id="optTheme" />
-                  Tema oscuro por defecto
-                </label>
-                <span class="muted">toggle</span>
+              <!-- SELECTOR DE TEMA -->
+              <div style="margin-bottom: 16px;">
+                <label for="themeSelector" style="display: block; margin-bottom: 4px; font-weight: 500;">🎨 Tema Visual</label>
+                <select id="themeSelector" style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--fg);">
+                  <option value="matrix">🟢 Matrix (Verde)</option>
+                  <option value="ocean">🔵 Ocean (Azul)</option>
+                  <option value="amber">🟡 Amber (Ámbar)</option>
+                  <option value="dark">⚫ Dark (Oscuro)</option>
+                </select>
               </div>
-              <div class="row" style="justify-content:space-between; margin-top:10px">
-                <label class="row" for="optCursor">
-                  <input type="checkbox" id="optCursor" checked />
-                  Cursor parpadeante
-                </label>
-                <span class="muted">micro</span>
+
+              <!-- PROMPT PERSONALIZADO -->
+              <div style="margin-bottom: 16px;">
+                <label for="promptInput" style="display: block; margin-bottom: 4px; font-weight: 500;">⚡ Prompt del Terminal</label>
+                <input type="text" id="promptInput" value="user@terminus:~$" placeholder="admin@server:~#" 
+                       style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--fg); font-family: monospace;">
+                <small class="muted" style="font-size: 11px;">Ejemplos: admin@server:~#, dev@local:~/code$, root#</small>
               </div>
-              <div class="row" style="justify-content:space-between; margin-top:10px">
-                <label class="row" for="optType">
-                  <input type="checkbox" id="optType" checked />
-                  Escritura gradual
-                </label>
-                <span class="muted">animación</span>
+
+              <!-- MENSAJE DE BIENVENIDA -->
+              <div style="margin-bottom: 16px;">
+                <label for="welcomeInput" style="display: block; margin-bottom: 4px; font-weight: 500;">🐧 Mensaje de Bienvenida</label>
+                <textarea id="welcomeInput" rows="3" placeholder="Escribe un mensaje de bienvenida..." 
+                          style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--fg); font-family: monospace; resize: vertical;">🐧 Bienvenido a mi terminal personalizada!
+
+Comandos disponibles:
+• help - Ver ayuda
+• about - Información del proyecto</textarea>
               </div>
+
+              <!-- GESTIÓN DE COMANDOS -->
+              <div style="margin-bottom: 16px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 500;">⚙️ Comandos Personalizados</label>
+                
+                <!-- Agregar nuevo comando -->
+                <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+                  <input type="text" id="newCommandName" placeholder="nombre-comando" 
+                         style="flex: 1; padding: 6px; border: 1px solid var(--border); border-radius: 4px; background: var(--bg); color: var(--fg); font-family: monospace;">
+                  <input type="text" id="newCommandResponse" placeholder="Respuesta del comando" 
+                         style="flex: 2; padding: 6px; border: 1px solid var(--border); border-radius: 4px; background: var(--bg); color: var(--fg);">
+                  <button id="addCommandBtn" class="btn ghost" style="padding: 6px 12px;">+ Agregar</button>
+                </div>
+
+                <!-- Lista de comandos actuales -->
+                <div id="commandsList" style="background: var(--bg-softer); border: 1px solid var(--border); border-radius: 6px; padding: 8px; max-height: 120px; overflow-y: auto;">
+                  <div class="command-item" style="display: flex; justify-content: space-between; align-items: center; padding: 4px 0; border-bottom: 1px solid var(--border);">
+                    <span style="font-family: monospace; color: var(--accent);">help</span>
+                    <span style="flex: 1; margin-left: 8px; font-size: 12px;">Ver comandos disponibles</span>
+                    <button class="btn-remove" style="background: none; border: none; color: #f45452; cursor: pointer; padding: 2px 6px;">✕</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- BOTONES DE ACCIÓN -->
+              <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <button id="updatePreviewBtn" class="btn accent" style="flex: 1;">🔄 Actualizar Preview</button>
+                <button id="generateSnippetBtn" class="btn" style="flex: 1;">📋 Generar Snippet</button>
+                <button id="resetConfigBtn" class="btn ghost">♻️ Reset</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="generated-snippet" class="container">
+        <div class="card">
+          <div class="card-h">
+            <strong>📋 Tu Snippet Personalizado</strong>
+            <div class="row">
+              <button class="btn accent" id="copyGeneratedSnippet">📋 Copiar Snippet</button>
+              <button class="btn ghost" id="downloadConfig">💾 Descargar Config</button>
+            </div>
+          </div>
+          <div class="card-b">
+            <div style="margin-bottom: 12px;">
+              <label style="display: block; margin-bottom: 4px; font-weight: 500;">🌐 Proveedor CDN</label>
+              <select id="cdnProvider" style="padding: 6px; border: 1px solid var(--border); border-radius: 4px; background: var(--bg); color: var(--fg);">
+                <option value="jsdelivr">jsDelivr (Recomendado)</option>
+                <option value="github">GitHub Pages</option>
+                <option value="bundle">Bundle Completo</option>
+              </select>
+            </div>
+            
+            <div id="generatedCodeContainer">
+              <pre class="code" id="generatedCode" style="max-height: 300px; overflow-y: auto;"><!-- Tu snippet se generará aquí automáticamente -->
+&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/memoriainfinita/terminus@latest/docs/dist/terminal.min.css"&gt;
+&lt;script src="https://cdn.jsdelivr.net/gh/memoriainfinita/terminus@latest/docs/dist/terminal.min.js" defer&gt;&lt;/script&gt;
+
+&lt;div class="gnu-terminal"
+     data-theme="matrix"
+     data-prompt="user@terminus:~$"
+     data-welcome="🐧 Bienvenido a mi terminal personalizada!
+
+Comandos disponibles:
+• help - Ver ayuda  
+• about - Información del proyecto"&gt;
+&lt;/div&gt;</pre>
+            </div>
+            
+            <div style="margin-top: 12px; padding: 12px; background: var(--bg-softer); border-radius: 6px;">
+              <p class="muted" style="margin: 0; font-size: 13px;">
+                ✅ <strong>Listo para usar:</strong> Copia el código de arriba y pégalo en tu HTML. 
+                El terminal se inicializará automáticamente con tu configuración personalizada.
+              </p>
             </div>
           </div>
         </div>
@@ -140,10 +234,53 @@
           <div class="card-h"><strong>Parámetros por data‑atributos</strong><span class="tag">mínimos</span></div>
           <div class="card-b">
             <ul>
-              <li><code>data-theme</code>: <span class="kbd">dark</span> | <span class="kbd">light</span> | <span class="kbd">auto</span></li>
-              <li><code>data-prompt</code>: texto del prompt (p. ej. <span class="kbd">gnu$</span>)</li>
+              <li><code>data-theme</code>: <span class="kbd">dark</span> | <span class="kbd">light</span> | <span class="kbd">matrix</span> | <span class="kbd">ocean</span></li>
+              <li><code>data-prompt</code>: personaliza el prompt del terminal
+                <br><small class="muted">Ejemplos: <span class="kbd">admin@server:~$</span>, <span class="kbd">root#</span>, <span class="kbd">dev@local:</span>, <span class="kbd">user@terminus:~$</span></small>
+              </li>
               <li><code>data-commands</code>: JSON con respuestas simuladas</li>
             </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="examples" class="container">
+        <h2 style="margin:0 0 12px 0">🎨 Ejemplos de Personalización</h2>
+        <div class="grid cols-2">
+          <div class="card">
+            <div class="card-h"><strong>Prompt Admin</strong></div>
+            <div class="card-b">
+<pre class="code">&lt;div class="gnu-terminal"
+     data-theme="matrix"
+     data-prompt="admin@server:~#"&gt;&lt;/div&gt;</pre>
+            </div>
+          </div>
+          
+          <div class="card">
+            <div class="card-h"><strong>Prompt Developer</strong></div>
+            <div class="card-b">
+<pre class="code">&lt;div class="gnu-terminal"
+     data-theme="ocean"
+     data-prompt="dev@localhost:~/project$"&gt;&lt;/div&gt;</pre>
+            </div>
+          </div>
+          
+          <div class="card">
+            <div class="card-h"><strong>Prompt Root</strong></div>
+            <div class="card-b">
+<pre class="code">&lt;div class="gnu-terminal"
+     data-theme="dark"
+     data-prompt="root@system:#"&gt;&lt;/div&gt;</pre>
+            </div>
+          </div>
+          
+          <div class="card">
+            <div class="card-h"><strong>Prompt Personalizado</strong></div>
+            <div class="card-b">
+<pre class="code">&lt;div class="gnu-terminal"
+     data-theme="matrix"
+     data-prompt="👨‍💻 hacker@matrix:~/hack$"&gt;&lt;/div&gt;</pre>
+            </div>
           </div>
         </div>
       </section>

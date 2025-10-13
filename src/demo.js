@@ -24,6 +24,7 @@ class TerminusDemo {
    */
   cacheElements() {
     this.elements = {
+      // Elementos del sidebar y navegación
       sidebar: document.getElementById('sidebar'),
       btnSidebar: document.getElementById('btnSidebar'),
       btnTheme: document.getElementById('btnTheme'),
@@ -33,9 +34,27 @@ class TerminusDemo {
       backdrop: document.getElementById('backdrop'),
       btnModal: document.getElementById('btnModal'),
       btnCloseModal: document.getElementById('btnCloseModal'),
-      optCursor: document.getElementById('optCursor'),
-      optType: document.getElementById('optType'),
-      viewport: document.getElementById('terminalViewport')
+      
+      // Elementos del configurador
+      themeSelector: document.getElementById('themeSelector'),
+      promptInput: document.getElementById('promptInput'),
+      welcomeInput: document.getElementById('welcomeInput'),
+      newCommandName: document.getElementById('newCommandName'),
+      newCommandResponse: document.getElementById('newCommandResponse'),
+      addCommandBtn: document.getElementById('addCommandBtn'),
+      commandsList: document.getElementById('commandsList'),
+      updatePreviewBtn: document.getElementById('updatePreviewBtn'),
+      generateSnippetBtn: document.getElementById('generateSnippetBtn'),
+      resetConfigBtn: document.getElementById('resetConfigBtn'),
+      
+      // Elementos del snippet generado
+      copyGeneratedSnippet: document.getElementById('copyGeneratedSnippet'),
+      downloadConfig: document.getElementById('downloadConfig'),
+      cdnProvider: document.getElementById('cdnProvider'),
+      generatedCode: document.getElementById('generatedCode'),
+      
+      // Terminal de demo
+      terminal: document.querySelector('.gnu-terminal')
     };
   }
 
@@ -47,7 +66,7 @@ class TerminusDemo {
     this.setupThemeToggle();
     this.setupClipboard();
     this.setupModal();
-    this.setupMockControls();
+    this.setupConfigurator();
   }
 
   /**
@@ -220,6 +239,363 @@ class TerminusDemo {
         });
       });
     }
+  }
+
+  /**
+   * Configura el sistema de configuración completo
+   */
+  setupConfigurator() {
+    // Inicializar configuración por defecto
+    this.config = {
+      theme: 'matrix',
+      prompt: 'user@terminus:~$',
+      welcome: '🐧 Bienvenido a mi terminal personalizada!\n\nComandos disponibles:\n• help - Ver ayuda\n• about - Información del proyecto',
+      commands: {
+        'help': 'Ver comandos disponibles',
+        'about': 'Terminal GNU embebible v1.0'
+      }
+    };
+
+    this.setupConfiguratorEvents();
+    this.loadConfiguration();
+    this.updatePreview();
+  }
+
+  /**
+   * Configura todos los event listeners del configurador
+   */
+  setupConfiguratorEvents() {
+    // Theme selector
+    if (this.elements.themeSelector) {
+      this.elements.themeSelector.addEventListener('change', (e) => {
+        this.config.theme = e.target.value;
+        this.updatePreview();
+        this.generateSnippet();
+      });
+    }
+
+    // Prompt input
+    if (this.elements.promptInput) {
+      this.elements.promptInput.addEventListener('input', (e) => {
+        this.config.prompt = e.target.value || 'gnu$';
+        this.updatePreview();
+        this.generateSnippet();
+      });
+    }
+
+    // Welcome message
+    if (this.elements.welcomeInput) {
+      this.elements.welcomeInput.addEventListener('input', (e) => {
+        this.config.welcome = e.target.value;
+        this.updatePreview();
+        this.generateSnippet();
+      });
+    }
+
+    // Add command button
+    if (this.elements.addCommandBtn) {
+      this.elements.addCommandBtn.addEventListener('click', () => {
+        this.addCommand();
+      });
+    }
+
+    // Enter key in command inputs
+    if (this.elements.newCommandName) {
+      this.elements.newCommandName.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') this.addCommand();
+      });
+    }
+    if (this.elements.newCommandResponse) {
+      this.elements.newCommandResponse.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') this.addCommand();
+      });
+    }
+
+    // Action buttons
+    if (this.elements.updatePreviewBtn) {
+      this.elements.updatePreviewBtn.addEventListener('click', () => {
+        this.updatePreview();
+      });
+    }
+
+    if (this.elements.generateSnippetBtn) {
+      this.elements.generateSnippetBtn.addEventListener('click', () => {
+        this.generateSnippet();
+      });
+    }
+
+    if (this.elements.resetConfigBtn) {
+      this.elements.resetConfigBtn.addEventListener('click', () => {
+        this.resetConfiguration();
+      });
+    }
+
+    // Copy generated snippet
+    if (this.elements.copyGeneratedSnippet) {
+      this.elements.copyGeneratedSnippet.addEventListener('click', () => {
+        this.copySnippet();
+      });
+    }
+
+    // Download config
+    if (this.elements.downloadConfig) {
+      this.elements.downloadConfig.addEventListener('click', () => {
+        this.downloadConfiguration();
+      });
+    }
+
+    // CDN provider change
+    if (this.elements.cdnProvider) {
+      this.elements.cdnProvider.addEventListener('change', () => {
+        this.generateSnippet();
+      });
+    }
+  }
+
+  /**
+   * Añade un nuevo comando personalizado
+   */
+  addCommand() {
+    const name = this.elements.newCommandName?.value.trim();
+    const response = this.elements.newCommandResponse?.value.trim();
+
+    if (!name || !response) {
+      this.showToast('⚠️ Completa ambos campos para agregar el comando');
+      return;
+    }
+
+    if (this.config.commands[name]) {
+      this.showToast('⚠️ El comando ya existe. Usa otro nombre.');
+      return;
+    }
+
+    // Agregar comando
+    this.config.commands[name] = response;
+    
+    // Limpiar inputs
+    this.elements.newCommandName.value = '';
+    this.elements.newCommandResponse.value = '';
+
+    // Actualizar UI
+    this.renderCommandsList();
+    this.updatePreview();
+    this.generateSnippet();
+    this.showToast(`✅ Comando "${name}" agregado`);
+  }
+
+  /**
+   * Elimina un comando
+   */
+  removeCommand(commandName) {
+    delete this.config.commands[commandName];
+    this.renderCommandsList();
+    this.updatePreview();
+    this.generateSnippet();
+    this.showToast(`🗑️ Comando "${commandName}" eliminado`);
+  }
+
+  /**
+   * Renderiza la lista de comandos
+   */
+  renderCommandsList() {
+    if (!this.elements.commandsList) return;
+
+    const commandsHTML = Object.entries(this.config.commands).map(([name, response]) => `
+      <div class="command-item" style="display: flex; justify-content: space-between; align-items: center; padding: 4px 0; border-bottom: 1px solid var(--border);">
+        <span style="font-family: monospace; color: var(--accent);">${name}</span>
+        <span style="flex: 1; margin-left: 8px; font-size: 12px; max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${response}</span>
+        <button class="btn-remove" onclick="window.terminusDemo.removeCommand('${name}')" style="background: none; border: none; color: #f45452; cursor: pointer; padding: 2px 6px;">✕</button>
+      </div>
+    `).join('');
+
+    this.elements.commandsList.innerHTML = commandsHTML || '<div style="text-align: center; color: var(--muted); padding: 16px;">No hay comandos personalizados</div>';
+  }
+
+  /**
+   * Actualiza el preview del terminal
+   */
+  updatePreview() {
+    if (!this.elements.terminal) return;
+
+    // Remover tema anterior forzando re-render
+    this.elements.terminal.removeAttribute('data-theme');
+    
+    // Aplicar nueva configuración
+    setTimeout(() => {
+      this.elements.terminal.dataset.theme = this.config.theme;
+      this.elements.terminal.dataset.prompt = this.config.prompt;
+      this.elements.terminal.dataset.welcome = this.config.welcome;
+      this.elements.terminal.dataset.commands = JSON.stringify(this.config.commands);
+
+      // Actualizar elementos visuales
+      const promptElement = this.elements.terminal.querySelector('.prompt');
+      if (promptElement) {
+        promptElement.textContent = this.config.prompt;
+      }
+
+      // Actualizar instancia del terminal si existe
+      if (window.terminalInstances) {
+        const terminalInstance = window.terminalInstances.find(t => t.element === this.elements.terminal);
+        if (terminalInstance) {
+          terminalInstance.options.theme = this.config.theme;
+          terminalInstance.options.prompt = this.config.prompt;
+          terminalInstance.options.commands = this.config.commands;
+          
+          // Aplicar tema
+          if (terminalInstance.applyTheme) {
+            terminalInstance.applyTheme();
+          }
+          
+          // Actualizar prompt visual
+          if (terminalInstance.setPrompt) {
+            terminalInstance.setPrompt(this.config.prompt);
+          }
+          
+          // Limpiar y mostrar nuevo mensaje de bienvenida
+          if (terminalInstance.clear && terminalInstance.showWelcomeMessage) {
+            terminalInstance.clear();
+            terminalInstance.showWelcomeMessage();
+          }
+        }
+      }
+      
+      // Forzar re-renderizado
+      this.elements.terminal.offsetHeight;
+      
+    }, 10);
+
+    this.showToast('🔄 Preview actualizado');
+  }
+
+  /**
+   * Genera el snippet de código
+   */
+  generateSnippet() {
+    if (!this.elements.generatedCode) return;
+
+    const cdnProvider = this.elements.cdnProvider?.value || 'jsdelivr';
+    let cssUrl, jsUrl;
+
+    switch (cdnProvider) {
+      case 'jsdelivr':
+        cssUrl = 'https://cdn.jsdelivr.net/gh/memoriainfinita/terminus@latest/docs/dist/terminal.min.css';
+        jsUrl = 'https://cdn.jsdelivr.net/gh/memoriainfinita/terminus@latest/docs/dist/terminal.min.js';
+        break;
+      case 'github':
+        cssUrl = 'https://memoriainfinita.github.io/terminus/dist/terminal.min.css';
+        jsUrl = 'https://memoriainfinita.github.io/terminus/dist/terminal.min.js';
+        break;
+      case 'bundle':
+        cssUrl = 'https://cdn.jsdelivr.net/gh/memoriainfinita/terminus@latest/docs/dist/bundle.min.css';
+        jsUrl = 'https://cdn.jsdelivr.net/gh/memoriainfinita/terminus@latest/docs/dist/bundle.min.js';
+        break;
+    }
+
+    const welcomeAttr = this.config.welcome ? `\n     data-welcome="${this.escapeHtml(this.config.welcome)}"` : '';
+    const commandsAttr = Object.keys(this.config.commands).length > 0 ? `\n     data-commands='${JSON.stringify(this.config.commands)}'` : '';
+
+    const snippet = `&lt;link rel="stylesheet" href="${cssUrl}"&gt;
+&lt;script src="${jsUrl}" defer&gt;&lt;/script&gt;
+
+&lt;div class="gnu-terminal"
+     data-theme="${this.config.theme}"
+     data-prompt="${this.escapeHtml(this.config.prompt)}"${welcomeAttr}${commandsAttr}&gt;
+&lt;/div&gt;`;
+
+    this.elements.generatedCode.innerHTML = snippet;
+  }
+
+  /**
+   * Escapa HTML para atributos
+   */
+  escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML.replace(/"/g, '&quot;');
+  }
+
+  /**
+   * Copia el snippet generado
+   */
+  async copySnippet() {
+    if (!this.elements.generatedCode) return;
+
+    const snippet = this.elements.generatedCode.textContent;
+    
+    try {
+      await navigator.clipboard.writeText(snippet);
+      this.showToast('📋 Snippet copiado al portapapeles');
+    } catch (err) {
+      // Fallback para navegadores antiguos
+      const textarea = document.createElement('textarea');
+      textarea.value = snippet;
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
+      this.showToast('📋 Snippet copiado');
+    }
+  }
+
+  /**
+   * Descarga la configuración como JSON
+   */
+  downloadConfiguration() {
+    const configJson = JSON.stringify(this.config, null, 2);
+    const blob = new Blob([configJson], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'terminus-config.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    
+    this.showToast('💾 Configuración descargada');
+  }
+
+  /**
+   * Resetea la configuración a los valores por defecto
+   */
+  resetConfiguration() {
+    if (!confirm('¿Estás seguro de que quieres resetear toda la configuración?')) return;
+
+    // Resetear configuración
+    this.config = {
+      theme: 'matrix',
+      prompt: 'user@terminus:~$',
+      welcome: '🐧 Bienvenido a mi terminal personalizada!\n\nComandos disponibles:\n• help - Ver ayuda\n• about - Información del proyecto',
+      commands: {
+        'help': 'Ver comandos disponibles',
+        'about': 'Terminal GNU embebible v1.0'
+      }
+    };
+
+    this.loadConfiguration();
+    this.renderCommandsList();
+    this.updatePreview();
+    this.generateSnippet();
+    this.showToast('♻️ Configuración reseteada');
+  }
+
+  /**
+   * Carga la configuración en los inputs
+   */
+  loadConfiguration() {
+    if (this.elements.themeSelector) {
+      this.elements.themeSelector.value = this.config.theme;
+    }
+    if (this.elements.promptInput) {
+      this.elements.promptInput.value = this.config.prompt;
+    }
+    if (this.elements.welcomeInput) {
+      this.elements.welcomeInput.value = this.config.welcome;
+    }
+    
+    this.renderCommandsList();
+    this.generateSnippet();
   }
 
   /**

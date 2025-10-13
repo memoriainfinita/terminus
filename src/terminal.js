@@ -56,6 +56,11 @@ class TerminalComponent {
     this.render();
     this.setupEventListeners();
     this.applyTheme();
+    this.showWelcomeMessage();
+    // Auto-enfoque después de un pequeño delay
+    setTimeout(() => {
+      this.inputElement.focus();
+    }, 100);
   }
 
   /**
@@ -73,7 +78,6 @@ class TerminalComponent {
         <div class="input-line">
           <span class="prompt">${this.options.prompt}</span>
           <input type="text" class="terminal-input" autocomplete="off" spellcheck="false">
-          <span class="cursor"></span>
         </div>
       </div>
     `;
@@ -170,10 +174,39 @@ class TerminalComponent {
   }
 
   /**
+   * Muestra mensaje de bienvenida si está configurado
+   */
+  showWelcomeMessage() {
+    const welcomeMessage = this.element.dataset.welcome;
+    if (welcomeMessage) {
+      // Dividir por líneas y agregar cada una
+      const lines = welcomeMessage.split('\n');
+      lines.forEach(line => {
+        if (line.trim()) {
+          this.addToOutput(line);
+        } else {
+          // Línea vacía
+          const emptyLine = document.createElement('div');
+          emptyLine.className = 'output-line';
+          emptyLine.innerHTML = '&nbsp;';
+          this.outputElement.appendChild(emptyLine);
+        }
+      });
+    }
+  }
+
+  /**
    * Aplica el tema
    */
   applyTheme() {
+    // Remover temas existentes
+    this.element.removeAttribute('data-theme');
+    
+    // Aplicar nuevo tema
     this.element.setAttribute('data-theme', this.options.theme);
+    
+    // Forzar re-renderizado
+    this.element.offsetHeight;
   }
 
   /**
@@ -197,9 +230,16 @@ class TerminalComponent {
  * Busca elementos con clase 'gnu-terminal' y los inicializa automáticamente
  */
 function initTerminals() {
+  // Inicializar array global de instancias si no existe
+  if (!window.terminalInstances) {
+    window.terminalInstances = [];
+  }
+
   document.querySelectorAll('.gnu-terminal').forEach(element => {
     if (!element.terminalComponent) {
-      element.terminalComponent = new TerminalComponent(element);
+      const instance = new TerminalComponent(element);
+      element.terminalComponent = instance;
+      window.terminalInstances.push(instance);
     }
   });
 }
