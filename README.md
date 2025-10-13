@@ -11,11 +11,14 @@
 ## 🚀 Características principales
 - **HTML/CSS/JS puro** — sin frameworks ni APIs externas
 - **Modo auto-init** — se activa automáticamente al detectar un elemento con la clase `gnu-terminal`
-- **Diseño oscuro elegante** con acento verde y tipografía *Inter* + *IBM Plex Mono*
+- **Sistema de temas avanzado** — Matrix, Ocean, Amber y Dark con CSS variables
+- **Configurador interactivo en tiempo real** — cambia temas, prompts y comandos instantáneamente
+- **Diseño profesional optimizado** con tipografía *Inter* + *IBM Plex Mono*
 - **Microinteracciones técnicas** (cursor parpadeante, escritura gradual, animaciones suaves)
 - **Responsive** y compatible con modo claro/oscuro
+- **Arquitectura modular limpia** — código optimizado con 22% menos CSS
 - **Extensible** — pensado para crecer hacia mini-docs o componentes adicionales
-- **Súper ligero** — Solo 5.1 KB minificado para funcionalidad completa
+- **Súper ligero** — Solo 4.9 KB CSS + 3.4 KB JS minificados para funcionalidad completa
 
 ## ⚡ Instalación rápida
 
@@ -43,23 +46,48 @@
 ## 🎮 Demo en Vivo
 👉 **[Ver Demo Completa](https://memoriainfinita.github.io/TERMINUS/)**
 
-## ⚙️ Configuración por data-attributes
+### ✨ Nuevas Características del Demo
+- **Configurador Interactivo** — Cambia temas, prompts y comandos en tiempo real
+- **4 Temas Visuales** — Matrix, Ocean, Amber y Dark
+- **Editor de Comandos** — Agrega, edita y elimina comandos personalizados
+- **Generador de Snippet** — Obtén el código HTML listo para usar
+- **Preview en Vivo** — Ve los cambios aplicados instantáneamente
+- **UI Optimizada** — Diseño limpio y profesional sin elementos redundantes
+
+## ⚙️ Configuración avanzada
+
+### Temas disponibles
+- **Matrix** — Verde clásico tipo Matrix
+- **Ocean** — Azul profesional
+- **Amber** — Ámbar retro terminal
+- **Dark** — Oscuro minimalista
+
+### Configuración por data-attributes
 | Atributo | Descripción | Valores | Ejemplo |
 |-----------|-------------|---------|---------|
-| `data-theme` | Tema visual | `dark`, `light`, `auto` | `data-theme="dark"` |
-| `data-prompt` | Texto del prompt | Cualquier string | `data-prompt="user@host$"` |
+| `data-theme` | Tema visual | `matrix`, `ocean`, `amber`, `dark` | `data-theme="matrix"` |
+| `data-prompt` | Texto del prompt | Cualquier string | `data-prompt="user@terminus:~$"` |
+| `data-welcome` | Mensaje de bienvenida | Texto multilínea | `data-welcome="¡Bienvenido!"` |
 | `data-commands` | Comandos simulados (JSON) | Objeto JSON | `data-commands='{"help":"Ayuda"}'` |
 
-### Ejemplo avanzado:
+### Ejemplo avanzado con configurador:
 ```html
 <div class="gnu-terminal"
-     data-theme="auto"
-     data-prompt="servidor@produccion$"
+     data-theme="matrix"
+     data-prompt="user@terminus:~$"
+     data-welcome="Bienvenido a TERMINUS
+
+Comandos disponibles:
+• help - Lista completa de comandos
+• ls - Listar contenido
+• echo 'mensaje' - Mostrar texto
+• theme - Cambiar tema
+• clear - Limpiar pantalla"
      data-commands='{
-       "help": "Comandos disponibles: status, deploy, logs",
-       "status": "✅ Sistema operativo: OK",
-       "deploy": "🚀 Desplegando aplicación...",
-       "logs": "📋 Mostrando logs recientes..."
+       "help": "📋 Comandos: ls, echo, theme, clear, about",
+       "ls": "📁 directorio1/\n📁 directorio2/\n📄 archivo.txt",
+       "about": "� TERMINUS v2.0 - Terminal Component",
+       "theme": "🎨 Temas: matrix, ocean, amber, dark"
      }'>
 </div>
 ```
@@ -84,13 +112,14 @@ npm run serve    # Servidor docs (puerto 8080)
 ```
 TERMINUS/
 ├── docs/                    # GitHub Pages
-│   ├── index.html          # Demo page
+│   ├── index.html          # Demo page con configurador interactivo
+│   ├── page-styles.css     # Sistema de diseño optimizado
 │   └── dist/               # Archivos distribuibles
 ├── src/                    # Código fuente
-│   ├── terminal.css        # Estilos del terminal
+│   ├── terminal.css        # Estilos del terminal (optimizados)
 │   ├── terminal.js         # Lógica del terminal
-│   ├── demo.css           # Estilos de la demo
-│   ├── demo.js            # Interacciones demo
+│   ├── demo.css           # Estilos de la demo (22% menos código)
+│   ├── demo.js            # Configurador interactivo
 │   └── build.js           # Sistema de build
 └── package.json
 ```
@@ -98,9 +127,14 @@ TERMINUS/
 ## 📦 Archivos de Distribución
 
 ### Core Terminal (Listo para producción)
-- `terminal.min.css` — 2.2 KB (estilos minificados)
-- `terminal.min.js` — 2.9 KB (JavaScript minificado)
-- `terminal.bundle.min.js` — 5.5 KB (CSS + JS todo-en-uno)
+- `terminal.min.css` — 4.9 KB (estilos optimizados -40.8%)
+- `terminal.min.js` — 3.4 KB (JavaScript optimizado -46.3%)
+- `terminal.bundle.min.js` — 8.7 KB (CSS + JS todo-en-uno)
+
+### Demo Interactivo
+- `demo.min.css` — 3.1 KB (configurador -46.2%)
+- `demo.min.js` — 11.8 KB (funcionalidad completa -40.1%)
+- `page-styles.min.css` — Sistema de diseño unificado
 
 ### URLs de CDN (jsDelivr)
 ```
@@ -129,22 +163,30 @@ Inspirado en la sencillez del software libre: **código claro, integrable y acce
 ## 🤖 Desarrollo Asistido por IA
 Este proyecto ha sido desarrollado por un **humano** con asistencia de **Claude Sonnet 3.5** (Anthropic). La arquitectura, decisiones de diseño y implementación fueron dirigidas por el desarrollador humano, mientras que Claude proporcionó asistencia en:
 - Generación de código base y estructura modular
-- Optimización del sistema de build
-- Documentación técnica
+- **Optimización masiva del CSS** (eliminación de 22% del código)
+- **Implementación del configurador interactivo**
+- **Debugging y corrección de funcionalidades**
+- Sistema de build avanzado
+- Documentación técnica completa
 - Mejores prácticas de desarrollo web
 
-El resultado es un código **100% funcional**, **bien estructurado** y **listo para producción**, combinando la creatividad humana con la eficiencia de la asistencia de IA.
+El resultado es un código **100% funcional**, **altamente optimizado** y **listo para producción**, combinando la creatividad humana con la eficiencia de la asistencia de IA para lograr un componente terminal profesional con configurador en tiempo real.
 
-## 📊 Estadísticas del Build
-- **Reducción CSS**: 43.6% (3.8 KB → 2.2 KB)
-- **Reducción JS**: 42.5% (5.1 KB → 2.9 KB)  
-- **Total minificado**: 5.1 KB para terminal completo
-- **Tiempo de build**: ~6 segundos
+## 📊 Estadísticas del Build (Última Optimización)
+- **Reducción CSS**: 40.8% (8.3 KB → 4.9 KB)
+- **Reducción JS**: 46.3% (6.3 KB → 3.4 KB)  
+- **Optimización Demo**: 22% menos código CSS general
+- **Total Core**: 8.3 KB para terminal completo
+- **Tiempo de build**: ~6.7 segundos
+- **Elementos eliminados**: Sidebar, estadísticas redundantes, botones duplicados
+- **Funcionalidad añadida**: Configurador interactivo en tiempo real
 
 ## 📄 Licencia
 Publicado bajo **Licencia GNU** — libre, abierta y comunitaria.
 
 ---
 **Terminus** © 2025 — Un proyecto GNU minimalista para terminales embebibles.
+
+**Última actualización**: Octubre 2025 — Configurador interactivo, optimización de código y UI profesional
 
 Desarrollado por [@memoriainfinita](https://github.com/memoriainfinita)
