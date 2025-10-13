@@ -126,6 +126,15 @@ Inspirado en la sencillez del software libre: **código claro, integrable y acce
 3. Haz commit de tus cambios: `git commit -m 'Añadir nueva función'`
 4. Envía un pull request
 
+## 🤖 Desarrollo Asistido por IA
+Este proyecto ha sido desarrollado por un **humano** con asistencia de **Claude Sonnet 3.5** (Anthropic). La arquitectura, decisiones de diseño y implementación fueron dirigidas por el desarrollador humano, mientras que Claude proporcionó asistencia en:
+- Generación de código base y estructura modular
+- Optimización del sistema de build
+- Documentación técnica
+- Mejores prácticas de desarrollo web
+
+El resultado es un código **100% funcional**, **bien estructurado** y **listo para producción**, combinando la creatividad humana con la eficiencia de la asistencia de IA.
+
 ## 📊 Estadísticas del Build
 - **Reducción CSS**: 43.6% (3.8 KB → 2.2 KB)
 - **Reducción JS**: 42.5% (5.1 KB → 2.9 KB)  
