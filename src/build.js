@@ -99,17 +99,6 @@ class TerminusBuild {
     console.log(`   Bundle: ${this.formatBytes(bundleSize)}`);
   }
 
-  generateSnippet() {
-    console.log('Snippets...');
-    const snippets = {
-      separado: `<!-- CSS + JS separados -->\n<link rel="stylesheet" href="${CDN_BASE}/terminal.min.css">\n<script src="${CDN_BASE}/terminal.min.js" defer></script>\n\n<div class="gnu-terminal"\n     data-theme="dark"\n     data-prompt="gnu$"\n     data-commands='{"help":"Lista comandos","about":"Proyecto GNU"}'>\n</div>`,
-      bundle: `<!-- Bundle todo-en-uno -->\n<script src="${CDN_BASE}/terminal.bundle.min.js" defer></script>\n\n<div class="gnu-terminal"\n     data-theme="dark"\n     data-prompt="gnu$"\n     data-commands='{"help":"Lista comandos","about":"Proyecto GNU"}'>\n</div>`
-    };
-    fs.writeFileSync(path.join(PATHS.dist, 'snippet-separado.html'), snippets.separado);
-    fs.writeFileSync(path.join(PATHS.dist, 'snippet-bundle.html'), snippets.bundle);
-    console.log('   Snippets guardados en docs/dist/');
-  }
-
   createBuildInfo() {
     const buildInfo = {
       version: this.version,
@@ -162,8 +151,6 @@ class TerminusBuild {
       this.minifyJS(FILES.js.demo, 'demo.min.js');
       console.log('\nBundles...');
       this.createTerminalBundle();
-      console.log('\nSnippets...');
-      this.generateSnippet();
       console.log('\nMetadatos...');
       this.createBuildInfo();
       const duration = Date.now() - startTime;
