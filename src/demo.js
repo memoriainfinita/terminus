@@ -305,6 +305,7 @@ class TerminusDemo {
     if (this.elements.generateSnippetBtn) {
       this.elements.generateSnippetBtn.addEventListener('click', () => {
         this.generateSnippet();
+        this.openModal();
       });
     }
 
