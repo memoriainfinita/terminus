@@ -104,6 +104,15 @@ t.enterMode({
   onCtrlC: (term) => term.exitMode()
 });
 
+// Tab autocomplete — por defecto completa nombres de comando de una sola palabra.
+// Para completado contextual (paths, flags, argumentos) define onTab:
+t.options.onTab = (val, term) => {
+  const files = ['README.md', 'src/', 'dist/'];
+  const match = files.filter(f => f.startsWith(val.split(' ').pop()));
+  if (match.length === 1) term.inputElement.value = match[0];
+  else if (match.length > 1) term.addToOutput(match.join('  '));
+};
+
 // Dimensiones del viewport
 console.log(t.rows, t.cols);
 ```
