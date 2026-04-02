@@ -244,7 +244,8 @@ header.navbar {
   box-shadow: 0 8px 24px var(--shadow); 
 }
 
-.card .card-h { 
+.card .card-h,
+.modal .card-h { 
   display: flex; 
   align-items: center; 
   justify-content: space-between; 
@@ -252,7 +253,8 @@ header.navbar {
   border-bottom: 1px solid var(--border); 
 }
 
-.card .card-b { 
+.card .card-b,
+.modal .card-b { 
   padding: 16px; 
 }
 
