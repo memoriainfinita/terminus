@@ -52,50 +52,71 @@
         <div class="mb-4">
           <p class="hero-label">Casos de uso</p>
           <h2 style="margin: 0.25rem 0 0.5rem;">Pruébalos en vivo</h2>
-          <p class="text-muted text-sm">Cada terminal está configurada para un caso real. Escribe comandos para interactuar.</p>
+          <p class="text-muted text-sm">Cuatro ejemplos reales. Cada uno demuestra una capa distinta de la API — desde atributos HTML hasta TUI con teclado.</p>
         </div>
 
         <div class="grid grid-4 mb-6">
+
+          <!-- 1: Portfolio — data-commands -->
           <div>
-            <div class="card" style="margin-bottom: 8px; padding: 10px 14px;">
+            <div class="card" style="margin-bottom:8px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;">
               <strong>Portfolio</strong>
-              <span class="tag">amber</span>
+              <div style="display:flex;gap:6px;">
+                <span class="tag">data-commands</span>
+                <span class="tag">amber</span>
+              </div>
             </div>
-            <div class="gnu-terminal" data-theme="amber" data-prompt="visitor@portfolio:~$"
-                 data-welcome="Bienvenido a mi portfolio.&#10;Escribe help para ver comandos."
-                 data-commands='{"help":"about · skills · projects · contact","about":"Desarrollador Full Stack","skills":"HTML · CSS · JS · Python · Docker","projects":"terminus | portfolio | api-gateway","contact":"hola@ejemplo.dev"}'
-                 style="min-height: 260px;"></div>
+            <div class="gnu-terminal" id="ex-portfolio" data-theme="amber" data-prompt="mykl@portfolio:~$"
+                 data-welcome="README.md  about.txt  projects/  contact.txt&#10;&#10;Escribe help para ver los comandos."
+                 data-commands='{"help":"ls · about · projects · contact · clear","ls":"README.md  about.txt  projects/  contact.txt","about":"Desarrollador Full Stack — HTML · CSS · JS · Node · Python\nDisponible para proyectos. Open source enthusiast.","projects":"terminus/       terminal embebible vanilla JS\nportfolio-v3/  esta web\napi-gateway/   proxy REST con rate limiting","contact":"email:   hola@ejemplo.dev\ngithub:  github.com/ejemplo\nweb:     ejemplo.dev"}'
+                 style="min-height:300px;"></div>
           </div>
+
+          <!-- 2: CI/CD Deploy — play() -->
           <div>
-            <div class="card" style="margin-bottom: 8px; padding: 10px 14px;">
-              <strong>DevOps</strong>
-              <span class="tag">matrix</span>
+            <div class="card" style="margin-bottom:8px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;">
+              <strong>CI/CD Deploy</strong>
+              <div style="display:flex;gap:6px;align-items:center;">
+                <span class="tag">play()</span>
+                <span class="tag">matrix</span>
+                <button class="btn ghost" id="btnDeploy" style="padding:4px 10px;font-size:12px;">▶ Deploy</button>
+              </div>
             </div>
-            <div class="gnu-terminal" data-theme="matrix" data-prompt="admin@production:~$"
-                 data-welcome="Panel de administración.&#10;Escribe help para ver comandos."
-                 data-commands='{"help":"status · logs · deploy · health","status":"API: ok | DB: ok | Cache: ok","logs":"[INFO] 14:32:01 request 200 /api/users","deploy":"Desplegado en 2.3s — build 847","health":"CPU: 12% | RAM: 1.2GB/4GB | Disk: 45%"}'
-                 style="min-height: 260px;"></div>
+            <div class="gnu-terminal" id="ex-cicd" data-theme="matrix" data-prompt="user@prod:~$"
+                 data-welcome="-- CI/CD PIPELINE v3 --&#10;&#10;Pulsa ▶ Deploy para ejecutar."
+                 style="min-height:300px;"></div>
           </div>
+
+          <!-- 3: Test Voight-Kampff — readline() -->
           <div>
-            <div class="card" style="margin-bottom: 8px; padding: 10px 14px;">
-              <strong>Documentación API</strong>
-              <span class="tag">ocean</span>
+            <div class="card" style="margin-bottom:8px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;">
+              <strong>Test Voight-Kampff</strong>
+              <div style="display:flex;gap:6px;">
+                <span class="tag">readline()</span>
+                <span class="tag">ocean</span>
+              </div>
             </div>
-            <div class="gnu-terminal" data-theme="ocean" data-prompt="docs@api:~$"
-                 data-welcome="API Documentation v2.0.&#10;Escribe help para ver comandos."
-                 data-commands='{"help":"endpoints · auth · rate-limit · examples","endpoints":"GET /api/users\nPOST /api/users\nDELETE /api/users/:id","auth":"Bearer token requerido en Authorization header","rate-limit":"1000 req/hora por token","examples":"Ver github.com/memoriainfinita/terminus"}'
-                 style="min-height: 260px;"></div>
+            <div class="gnu-terminal" id="ex-vk" data-theme="ocean" data-prompt="VK-UNIT>"
+                 data-welcome="NEXUS-6 VOIGHT-KAMPFF UNIT&#10;Módulo de empatía v4.2&#10;&#10;Escribe start para iniciar el test."
+                 data-commands='{"help":"start · clear"}'
+                 style="min-height:300px;"></div>
           </div>
+
+          <!-- 4: WOPR / WarGames — enterMode() -->
           <div>
-            <div class="card" style="margin-bottom: 8px; padding: 10px 14px;">
-              <strong>Onboarding</strong>
-              <span class="tag">dark</span>
+            <div class="card" style="margin-bottom:8px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;">
+              <strong>WOPR · WarGames</strong>
+              <div style="display:flex;gap:6px;">
+                <span class="tag">enterMode()</span>
+                <span class="tag">dark</span>
+              </div>
             </div>
-            <div class="gnu-terminal" data-theme="dark" data-prompt="setup@wizard:~$"
-                 data-welcome="Asistente de configuración.&#10;Escribe start para comenzar."
-                 data-commands='{"start":"Paso 1: Copia el CDN snippet\nPaso 2: Añade class=gnu-terminal\nPaso 3: Listo.","help":"start · requisitos · install","requisitos":"Navegador moderno (ES2015+) — sin más","install":"npm install no requerido — usa el CDN"}'
-                 style="min-height: 260px;"></div>
+            <div class="gnu-terminal" id="ex-wopr" data-theme="dark" data-prompt="WOPR>"
+                 data-welcome="GREETINGS, PROFESSOR FALKEN.&#10;&#10;Escribe wopr para comenzar."
+                 data-commands='{"help":"wopr · clear"}'
+                 style="min-height:300px;"></div>
           </div>
+
         </div>
       </section>
 
@@ -318,5 +339,163 @@ t.setCommands({
 
   <script src="dist/terminal.min.js" defer></script>
   <script src="dist/demo.min.js" defer></script>
+
+  <!-- Ejemplos interactivos: play(), readline(), enterMode() -->
+  <script>
+  window.addEventListener('load', function() {
+    function sleep(ms) { return new Promise(function(r) { setTimeout(r, ms); }); }
+    function getT(id) { var el = document.getElementById(id); return el && el.terminalComponent; }
+
+    // ── 2. CI/CD Deploy — play() ─────────────────────────────────────
+    var tCicd = getT('ex-cicd');
+    if (tCicd) {
+      tCicd.setCommands({ git: function(){}, npm: function(){}, docker: function(){} });
+
+      var deployScript = [
+        { type: 'outputHTML', html: '<span style="color:var(--accent)">→ Iniciando pipeline...</span>' },
+        { type: 'cmd',        text: 'git pull origin main',           delay: 700 },
+        { type: 'output',     text: 'Already up to date.',            delay: 900 },
+        { type: 'cmd',        text: 'npm run build',                  delay: 900 },
+        { type: 'output',     text: '  Compiling...',                 delay: 1400 },
+        { type: 'outputHTML', html: '  <span style="color:var(--accent)">✓ Build OK — 4.2s</span>', delay: 1000 },
+        { type: 'cmd',        text: 'npm test',                       delay: 800 },
+        { type: 'output',     text: '  24 tests passed, 0 failed',    delay: 1600 },
+        { type: 'cmd',        text: 'docker push registry/app:v1.4.7',delay: 900 },
+        { type: 'output',     text: '  Uploading layers... done',     delay: 1800 },
+        { type: 'outputHTML', html: '<span style="color:var(--accent)">✓ Deploy completado — build #847</span>', delay: 1000 },
+      ];
+
+      var btnDeploy = document.getElementById('btnDeploy');
+      if (btnDeploy) {
+        btnDeploy.addEventListener('click', function() {
+          tCicd.clear();
+          tCicd.play(deployScript);
+        });
+      }
+    }
+
+    // ── 3. Voight-Kampff — readline() ─────────────────────────────────
+    var tVk = getT('ex-vk');
+    if (tVk) {
+      tVk.setCommands({
+        'start': async function(args, term) {
+          term.addOutputHTML('<span style="color:var(--accent)">ACTIVANDO MÓDULO DE EMPATÍA...</span>');
+          await sleep(900);
+          term.addOutputHTML('');
+
+          var a1 = await term.readline('P.1 › Estás en el desierto. Ves una tortuga boca arriba, agitándose bajo el sol. No la ayudas. ¿Por qué? ');
+          await sleep(600);
+          if (a1.toLowerCase().includes('tortuga') || a1.toLowerCase().includes('turtle')) {
+            term.addOutputHTML('<span style="color:var(--muted)">[ANOMALÍA] Referencia al sujeto detectada. Recalibrando...</span>');
+            await sleep(600);
+          }
+
+          var a2 = await term.readline('P.2 › Describe en una sola palabra algo bueno de tu madre. ');
+          await sleep(600);
+
+          var a3 = await term.readline('P.3 › Te regalan una cartera de piel de ternero en tu cumpleaños. ¿Qué haces? ');
+          await sleep(800);
+
+          term.addOutputHTML('<span style="color:var(--muted)">Procesando patrones de respuesta...</span>');
+          await sleep(1500);
+
+          var human = (a1.length > 12) && (a2.length > 1) && (a3.length > 8);
+          if (human) {
+            term.addOutputHTML('<span style="color:var(--accent);font-weight:bold">RESULTADO: HUMANO VERIFICADO</span>');
+            term.addOutputHTML('<span style="color:var(--muted)">              ...o eso queremos que creas.</span>');
+          } else {
+            term.addOutputHTML('<span style="color:#f45452;font-weight:bold">RESULTADO: NEXUS-6 DETECTADO</span>');
+            term.addOutputHTML('<span style="color:var(--muted)">Alerta enviada a la División Blade Runner.</span>');
+          }
+          term.addOutputHTML('');
+          term.addOutputHTML('<span style="color:var(--muted)">Escribe start para repetir el test.</span>');
+        },
+        'help': 'start · clear'
+      });
+    }
+
+    // ── 4. WOPR / WarGames — enterMode() ──────────────────────────────
+    var tWopr = getT('ex-wopr');
+    if (tWopr) {
+      var games = ['THERMONUCLEAR WAR', 'CHESS', "FALKEN'S MAZE"];
+      var sel = 0;
+
+      function renderMenu(t) {
+        t.clear();
+        t.addOutputHTML('<span style="color:var(--accent)">GREETINGS, PROFESSOR FALKEN.</span>');
+        t.addOutputHTML('');
+        t.addOutputHTML('SHALL WE PLAY A GAME?');
+        t.addOutputHTML('');
+        games.forEach(function(g, i) {
+          var arrow = i === sel ? '▶ ' : '  ';
+          var style = i === sel ? 'color:var(--accent);font-weight:bold' : 'color:var(--muted)';
+          t.addOutputHTML('<span style="' + style + '">' + arrow + g + '</span>');
+        });
+        t.addOutputHTML('');
+        t.addOutputHTML('<span style="color:var(--muted);font-size:11px">↑↓ seleccionar · Enter confirmar · Esc salir</span>');
+      }
+
+      async function thermonuclearWar(t) {
+        var lines = [
+          ['', null],
+          ['INICIANDO SIMULACIÓN TERMONUCLEAR...', '#f45452'],
+          ['', null],
+          ['OBJETIVOS PRIMARIOS: 1.072', null],
+          ['OBJETIVOS SECUNDARIOS: 976', null],
+          ['', null],
+          ['TIEMPO ESTIMADO: 27 MINUTOS', null],
+          ['', null],
+          ['...', 'var(--muted)'],
+          ['...', 'var(--muted)'],
+          ['...', 'var(--muted)'],
+          ['', null],
+          ['¿EXTRAÑO, VERDAD?', 'var(--accent)'],
+          ['', null],
+          ['LA ÚNICA JUGADA GANADORA', 'var(--accent)'],
+          ['ES NO JUGAR.', 'var(--accent)'],
+          ['', null],
+          ['¿UNA PARTIDA DE AJEDREZ?', 'var(--muted)'],
+        ];
+        for (var i = 0; i < lines.length; i++) {
+          await sleep(700);
+          var text = lines[i][0], color = lines[i][1];
+          t.addOutputHTML(color ? '<span style="color:' + color + '">' + text + '</span>' : (text || ''));
+        }
+      }
+
+      tWopr.setCommands({
+        'wopr': function(args, t) {
+          sel = 0;
+          renderMenu(t);
+          t.enterMode({
+            onKey: function(key, e, term) {
+              if (key === 'ArrowUp') {
+                sel = (sel - 1 + games.length) % games.length;
+                renderMenu(term);
+              } else if (key === 'ArrowDown') {
+                sel = (sel + 1) % games.length;
+                renderMenu(term);
+              } else if (key === 'Enter') {
+                term.exitMode();
+                if (sel === 0) {
+                  thermonuclearWar(term);
+                } else if (sel === 1) {
+                  term.clear();
+                  term.addOutputHTML('<span style="color:var(--muted)">Fine. Let\'s play chess.</span>');
+                } else {
+                  term.clear();
+                  term.addOutputHTML('<span style="color:var(--muted)">Falken\'s Maze... a subtle puzzle.</span>');
+                }
+              }
+            },
+            onCtrlC: function(term) { term.exitMode(); }
+          });
+        },
+        'help': 'wopr · clear'
+      });
+    }
+
+  });
+  </script>
 </body>
 </html>
