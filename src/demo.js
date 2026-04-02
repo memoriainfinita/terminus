@@ -39,7 +39,6 @@ class TerminusDemo {
       newCommandResponse: document.getElementById('newCommandResponse'),
       addCommandBtn: document.getElementById('addCommandBtn'),
       commandsList: document.getElementById('commandsList'),
-      updatePreviewBtn: document.getElementById('updatePreviewBtn'),
       generateSnippetBtn: document.getElementById('generateSnippetBtn'),
       resetConfigBtn: document.getElementById('resetConfigBtn'),
       
@@ -190,7 +189,7 @@ class TerminusDemo {
 
     this.setupConfiguratorEvents();
     this.loadConfiguration();
-    this.updatePreview(true);
+    this.updatePreview();
   }
 
   /**
@@ -201,7 +200,7 @@ class TerminusDemo {
     if (this.elements.themeSelector) {
       this.elements.themeSelector.addEventListener('change', (e) => {
         this.config.theme = e.target.value;
-        this.updatePreview(true);
+        this.updatePreview();
         this.generateSnippet();
       });
     }
@@ -210,7 +209,7 @@ class TerminusDemo {
     if (this.elements.promptInput) {
       this.elements.promptInput.addEventListener('input', (e) => {
         this.config.prompt = e.target.value || 'gnu$';
-        this.updatePreview(true);
+        this.updatePreview();
         this.generateSnippet();
       });
     }
@@ -219,7 +218,7 @@ class TerminusDemo {
     if (this.elements.welcomeInput) {
       this.elements.welcomeInput.addEventListener('input', (e) => {
         this.config.welcome = e.target.value;
-        this.updatePreview(true);
+        this.updatePreview();
         this.generateSnippet();
       });
     }
@@ -244,12 +243,6 @@ class TerminusDemo {
     }
 
     // Action buttons
-    if (this.elements.updatePreviewBtn) {
-      this.elements.updatePreviewBtn.addEventListener('click', () => {
-        this.updatePreview();
-      });
-    }
-
     if (this.elements.generateSnippetBtn) {
       this.elements.generateSnippetBtn.addEventListener('click', () => {
         this.generateSnippet();
@@ -311,7 +304,7 @@ class TerminusDemo {
 
     // Actualizar UI
     this.renderCommandsList();
-    this.updatePreview(true);
+    this.updatePreview();
     this.generateSnippet();
     this.showToast(`Comando "${name}" agregado`);
   }
@@ -322,7 +315,7 @@ class TerminusDemo {
   removeCommand(commandName) {
     delete this.config.commands[commandName];
     this.renderCommandsList();
-    this.updatePreview(true);
+    this.updatePreview();
     this.generateSnippet();
     this.showToast(`Comando "${commandName}" eliminado`);
   }
@@ -342,7 +335,7 @@ class TerminusDemo {
     // Eliminar el comando actual para evitar duplicados
     delete this.config.commands[commandName];
     this.renderCommandsList();
-    this.updatePreview(true);
+    this.updatePreview();
     this.generateSnippet();
 
     // Mensaje informativo
@@ -376,7 +369,7 @@ class TerminusDemo {
   /**
    * Actualiza el preview del terminal
    */
-  updatePreview(silent = false) {
+  updatePreview() {
     if (!this.elements.terminal) return;
 
     // Remover tema anterior forzando re-render
@@ -425,8 +418,6 @@ class TerminusDemo {
       this.elements.terminal.offsetHeight;
       
     }, 10);
-
-    if (!silent) this.showToast('Preview actualizado');
   }
 
   /**
@@ -537,7 +528,7 @@ class TerminusDemo {
 
     this.loadConfiguration();
     this.renderCommandsList();
-    this.updatePreview(true);
+    this.updatePreview();
     this.generateSnippet();
     this.showToast('Configuración reseteada');
   }
