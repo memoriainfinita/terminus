@@ -352,8 +352,7 @@ class TerminalComponent {
       switch (step.type) {
         case 'cmd':
           await this._typeInput(step.text || '');
-          this.processCommand(step.text || '');
-          this.inputElement.value = '';
+          await this._execSilent(step.text || '');
           break;
         case 'output':
           this.addToOutput(step.text || '');
@@ -361,6 +360,24 @@ class TerminalComponent {
         case 'outputHTML':
           this.addOutputHTML(step.html || step.text || '');
           break;
+        case 'progress': {
+          const total    = step.steps    || 20;
+          const ch       = step.char     || '=';
+          const label    = step.text     || '';
+          const stepMs   = step.stepDelay || 80;
+          const line = document.createElement('div');
+          line.className = 'output-line';
+          this.outputElement.appendChild(line);
+          for (let i = 0; i <= total; i++) {
+            const filled = ch.repeat(i);
+            const empty  = ' '.repeat(total - i);
+            const head   = i < total ? '>' : '';
+            line.textContent = label + ' [' + filled + head + empty + '] ' + Math.round((i / total) * 100) + '%';
+            this.viewportElement.scrollTop = this.viewportElement.scrollHeight;
+            if (i < total) await new Promise(r => setTimeout(r, stepMs));
+          }
+          break;
+        }
         case 'clear':
           this.clear();
           break;
@@ -372,15 +389,49 @@ class TerminalComponent {
   }
 
   /**
-   * Anima la escritura de texto en el input (uso interno de play).
+   * Anima la escritura del comando en el output (no en el input real).
+   * Oculta el input-line durante la animación para evitar duplicados.
    */
   async _typeInput(text) {
-    this.inputElement.value = '';
-    for (let i = 0; i < text.length; i++) {
-      await new Promise(r => setTimeout(r, 35 + Math.random() * 45));
-      this.inputElement.value = text.slice(0, i + 1);
+    const inputLine = this.element.querySelector('.input-line');
+    if (inputLine) inputLine.style.visibility = 'hidden';
+
+    const line = document.createElement('div');
+    line.className = 'output-line';
+    this.outputElement.appendChild(line);
+
+    const prefix = this.options.prompt + ' ';
+    for (let i = 0; i <= text.length; i++) {
+      line.textContent = prefix + text.slice(0, i);
+      this.viewportElement.scrollTop = this.viewportElement.scrollHeight;
+      if (i < text.length) await new Promise(r => setTimeout(r, 35 + Math.random() * 45));
     }
     await new Promise(r => setTimeout(r, 180));
+
+    if (inputLine) inputLine.style.visibility = '';
+  }
+
+  /**
+   * Ejecuta un comando sin imprimir el echo prompt+cmd (uso interno de play).
+   */
+  _execSilent(cmd) {
+    if (!cmd) return;
+    this.addToHistory(cmd);
+    if (cmd === 'clear') { this.clear(); return; }
+    const parts   = cmd.trim().split(/\s+/);
+    const verb    = parts[0];
+    const args    = parts.slice(1);
+    const handler = this.options.commands[verb] !== undefined
+      ? this.options.commands[verb]
+      : this.options.commands[cmd];
+    if (handler !== undefined) {
+      if (typeof handler === 'function') {
+        const result = handler(args, this);
+        if (typeof result === 'string') this.addToOutput(result);
+      } else {
+        this.addToOutput(handler);
+      }
+    }
   }
 
   // ─────────────────────────────────────────────────────────────────
