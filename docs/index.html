@@ -57,12 +57,15 @@
 
         <div class="grid grid-2 mb-6">
 
-          <!-- 1: Elliot Alderson — data-commands -->
+          <!-- 1: Elliot Alderson — data-commands + setPrompt + readline + onTab -->
           <div>
             <div class="card" style="margin-bottom:8px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;">
               <strong>Elliot Alderson</strong>
               <div style="display:flex;gap:6px;">
                 <span class="tag">data-commands</span>
+                <span class="tag">setPrompt()</span>
+                <span class="tag">readline()</span>
+                <span class="tag">onTab</span>
                 <span class="tag">amber</span>
               </div>
             </div>
@@ -75,7 +78,6 @@
                    "cat README.md":    "full-stack dev. ciberseguridad. encuentro lo que la gente esconde. actualmente: 5/9.",
                    "skills":           "python · c · ruby · bash · network forensics · social engineering",
                    "nmap localhost":   "22/tcp open ssh  80/tcp open http  443/tcp open https  — no eres tan seguro como crees.",
-                   "cd fsociety/":     "install.sh  members.txt  plan_5-9.md  darkweb/  exploit/",
                    "cd e-corp/":       "finance/  servers/  employees.csv  backup_keys.asc  [RESTRICTED]",
                    "cd kontrol/":      "[ACCESO DENEGADO] directorio encriptado. clave: ?",
                    "cd .secrets/":     "nmap_results/  passwords.gpg  .diary  [no deberias estar aqui]",
@@ -90,6 +92,7 @@
               <strong>Instalar Terminus</strong>
               <div style="display:flex;gap:6px;align-items:center;">
                 <span class="tag">play()</span>
+                <span class="tag">clear</span>
                 <span class="tag">matrix</span>
                 <button class="btn ghost" id="btnDeploy" style="padding:4px 10px;font-size:12px;">&#9654; Instalar</button>
               </div>
@@ -120,6 +123,8 @@
               <strong>htop · linux-7.0-rc1</strong>
               <div style="display:flex;gap:6px;">
                 <span class="tag">enterMode()</span>
+                <span class="tag">onClick</span>
+                <span class="tag">rows</span>
                 <span class="tag">dark</span>
               </div>
             </div>
@@ -365,6 +370,55 @@ t.setCommands({
     function sleep(ms) { return new Promise(function(r) { setTimeout(r, ms); }); }
     function getT(id) { var el = document.getElementById(id); return el && el.terminalComponent; }
 
+    // ── 1. Elliot Alderson — setPrompt() + readline() + onTab ────────
+    var tPortfolio = getT('ex-portfolio');
+    if (tPortfolio) {
+      var elliotDir = '~';
+      var elliotFs = {
+        '~':         ['fsociety/', 'e-corp/', 'kontrol/', '.secrets/', 'README.md'],
+        'fsociety':  ['install.sh', 'members.txt', 'plan_5-9.md', 'darkweb/', 'exploit/'],
+      };
+
+      // onTab contextual: completa archivos del directorio actual
+      tPortfolio.options.onTab = function(val, term) {
+        var files = elliotFs[elliotDir] || [];
+        var matches = files.filter(function(f) { return f.startsWith(val.split(' ').pop()); });
+        if (matches.length === 1) {
+          var parts = val.split(' ');
+          parts[parts.length - 1] = matches[0];
+          term.inputElement.value = parts.join(' ');
+        } else if (matches.length > 1) {
+          term.addToOutput(matches.join('  '));
+        }
+      };
+
+      // cd fsociety/ — ejecuta install.sh con readline + setPrompt
+      tPortfolio.setCommands({
+        'cd fsociety/': async function(args, term) {
+          elliotDir = 'fsociety';
+          term.addToOutput('install.sh  members.txt  plan_5-9.md  darkweb/  exploit/');
+          term.addToOutput('');
+          term.addToOutput('[!] se detecta install.sh — ejecutando...');
+          await sleep(700);
+          term.addOutputHTML('<span style="color:var(--accent)">./install.sh</span>');
+          await sleep(500);
+          term.addToOutput('fsociety secure shell v1.0 — autenticacion requerida');
+          term.addToOutput('');
+          var pass = await term.readline('password: ');
+          await sleep(600);
+          if (pass.toLowerCase() === 'mrrobot') {
+            term.addOutputHTML('<span style="color:var(--accent)">[+] acceso concedido. bienvenido de nuevo.</span>');
+            await sleep(400);
+            term.addToOutput('');
+            term.setPrompt('elliot@fsociety:~/fsociety$');
+          } else {
+            term.addOutputHTML('<span style="color:#f45452">[-] acceso denegado.</span>');
+            elliotDir = '~';
+          }
+        },
+      });
+    }
+
     // ── 2. Terminus install — play() ─────────────────────────────────
     var tCicd = getT('ex-cicd');
     if (tCicd) {
@@ -386,7 +440,7 @@ t.setCommands({
         { type: 'cmd',      text: 'curl -sO https://cdn.jsdelivr.net/gh/memoriainfinita/terminus@main/docs/dist/terminal.min.js',  delay: 600 },
         { type: 'progress', text: 'terminal.min.js ', steps: 18, stepDelay: 65,       delay: 200 },
         { type: 'outputHTML', html: '<span style="color:var(--accent)">&#10003; 7.2 KB</span>', delay: 200 },
-        { type: 'output',   text: '',                                                  delay: 300 },
+        { type: 'clear',                                                               delay: 300 },
         { type: 'outputHTML', html: '<span style="color:var(--accent)">listo. copia dos lineas y funciona.</span>', delay: 400 },
       ];
 
@@ -483,6 +537,8 @@ t.setCommands({
       function htopRender(t) {
         var procs = htopProcs.filter(function(p){ return htopDead.indexOf(p.pid) === -1; });
         if (htopSel >= procs.length) htopSel = Math.max(0, procs.length - 1);
+        var maxProcs = Math.max(1, t.rows - 6); // header(3) + blank + cols + footer
+        procs = procs.slice(0, maxProcs);
         var w = 20;
         var html = '<div style="white-space:pre;line-height:1.5;font-family:inherit;">';
         html += ' <span style="color:var(--accent)">CPU</span>' + hBar(87.3,w) + ' 87.3%  Tasks: 90, 2 running\n';
@@ -544,6 +600,15 @@ t.setCommands({
               } else if (key === 'q') {
                 term.exitMode();
                 term.addOutputHTML('<span style="color:var(--muted)">htop cerrado. Escribe htop para volver.</span>');
+              }
+            },
+            onClick: function(x, y, row, col, term) {
+              // fila 0=header CPU, 1=Mem, 2=Swp, 3=blank, 4=cols — procesos desde fila 5
+              var procIdx = row - 5;
+              var procs = htopProcs.filter(function(p){ return htopDead.indexOf(p.pid) === -1; });
+              if (procIdx >= 0 && procIdx < procs.length) {
+                htopSel = procIdx;
+                htopRender(term);
               }
             },
             onCtrlC: function(term) {
