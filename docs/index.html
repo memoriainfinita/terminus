@@ -81,7 +81,7 @@
                    "cd .secrets/":     "nmap_results/  passwords.gpg  .diary  [no deberias estar aqui]",
                    "cd ..":            "fsociety/  e-corp/  kontrol/  .secrets/  README.md"
                  }'
-                 style="height:300px;"></div>
+                 style="height:380px;"></div>
           </div>
 
           <!-- 2: Terminus install — play() -->
@@ -96,7 +96,7 @@
             </div>
             <div class="gnu-terminal" id="ex-cicd" data-theme="matrix" data-prompt="user@dev:~$"
                  data-welcome="-- TERMINUS INSTALLER --&#10;&#10;Pulsa &#9654; Instalar para comenzar."
-                 style="height:300px;"></div>
+                 style="height:380px;"></div>
           </div>
 
           <!-- 3: MU/TH/UR 6000 — readline() -->
@@ -111,7 +111,7 @@
             <div class="gnu-terminal" id="ex-vk" data-theme="ocean" data-prompt="muthur>"
                  data-welcome="USCSS NOSTROMO — NCC-1701&#10;MU/TH/UR 6000 / INTERFACE v4.7&#10;WEYLAND-YUTANI CORPORATION&#10;&#10;Escribe connect para iniciar sesión."
                  data-commands='{"help":"connect · clear"}'
-                 style="height:300px;"></div>
+                 style="height:380px;"></div>
           </div>
 
           <!-- 4: htop — enterMode() -->
@@ -126,7 +126,7 @@
             <div class="gnu-terminal" id="ex-wopr" data-theme="dark" data-prompt="linus@kernel.org:~$"
                  data-welcome="Linux 7.0-rc1 (x86_64)&#10;linus@kernel.org | 4 CPUs | 16G RAM&#10;&#10;Escribe htop para monitorear procesos."
                  data-commands='{"help":"htop · clear"}'
-                 style="height:300px;"></div>
+                 style="height:380px;"></div>
           </div>
 
         </div>
@@ -468,13 +468,9 @@ t.setCommands({
       var htopProcs = [
         { pid:   1, user: 'root',  cpu:  0.0, mem:  0.1, cmd: '/sbin/init' },
         { pid:   2, user: 'root',  cpu:  0.0, mem:  0.0, cmd: 'kthreadd' },
-        { pid:  89, user: 'root',  cpu:  0.3, mem:  0.2, cmd: 'udevd' },
-        { pid: 142, user: 'root',  cpu:  0.0, mem:  0.4, cmd: 'syslogd' },
         { pid: 389, user: 'linus', cpu:  0.7, mem:  1.2, cmd: 'make -j16 bzImage' },
         { pid: 412, user: 'linus', cpu: 87.3, mem:  6.1, cmd: 'cc1 linux-7.0-rc1/kernel/sched/core.c', easter: true },
         { pid: 421, user: 'linus', cpu:  0.4, mem:  0.5, cmd: 'cc1 linux-7.0-rc1/fs/ext4/inode.c' },
-        { pid: 495, user: 'linus', cpu:  0.1, mem:  0.2, cmd: 'vim MAINTAINERS' },
-        { pid: 552, user: 'linus', cpu:  0.0, mem:  0.1, cmd: 'bash' },
         { pid: 601, user: 'root',  cpu:  0.0, mem:  0.3, cmd: 'htop' },
       ];
       var htopSel = 0;
@@ -508,7 +504,7 @@ t.setCommands({
           }
         });
         html += '\n';
-        html += '<span style="color:var(--muted)"> F9Kill  F10Quit   &uarr;&darr; navegar   k matar proceso   q salir</span>';
+        html += '<span style="color:var(--muted)"> &uarr;&darr; navegar   k matar proceso   q salir</span>';
         html += '</div>';
         t.clear();
         t.addOutputHTML(html);
@@ -528,7 +524,7 @@ t.setCommands({
               } else if (key === 'ArrowDown') {
                 htopSel = Math.min(procs.length - 1, htopSel + 1);
                 htopRender(term);
-              } else if (key === 'k' || key === 'F9') {
+              } else if (key === 'k') {
                 var proc = procs[htopSel];
                 if (!proc) return;
                 htopDead.push(proc.pid);
@@ -545,7 +541,7 @@ t.setCommands({
                 } else {
                   term.addOutputHTML('<span style="color:var(--muted)">[ SIGKILL &rarr; ' + hEsc(proc.cmd.split(' ')[0]) + ' (PID ' + proc.pid + ') ]</span>');
                 }
-              } else if (key === 'q' || key === 'F10') {
+              } else if (key === 'q') {
                 term.exitMode();
                 term.addOutputHTML('<span style="color:var(--muted)">htop cerrado. Escribe htop para volver.</span>');
               }
