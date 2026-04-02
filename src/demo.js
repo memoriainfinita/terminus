@@ -233,10 +233,10 @@ class TerminusDemo {
     this.config = {
       theme: 'matrix',
       prompt: 'user@terminus:~$',
-      welcome: '🐧 Bienvenido a mi terminal personalizada!\n\nComandos disponibles:\n• help - Ver ayuda\n• about - Información del proyecto',
+      welcome: 'Bienvenido a mi terminal personalizada!\n\nComandos disponibles:\n\u2022 help - Ver ayuda\n\u2022 about - Información del proyecto',
       commands: {
         'help': 'Ver comandos disponibles',
-        'about': 'Terminal GNU embebible v1.0'
+        'about': 'Terminal GNU embebible v2.0'
       }
     };
 
@@ -579,10 +579,10 @@ class TerminusDemo {
     this.config = {
       theme: 'matrix',
       prompt: 'user@terminus:~$',
-      welcome: '🐧 Bienvenido a mi terminal personalizada!\n\nComandos disponibles:\n• help - Ver ayuda\n• about - Información del proyecto',
+      welcome: 'Bienvenido a mi terminal personalizada!\n\nComandos disponibles:\n\u2022 help - Ver ayuda\n\u2022 about - Información del proyecto',
       commands: {
         'help': 'Ver comandos disponibles',
-        'about': 'Terminal GNU embebible v1.0'
+        'about': 'Terminal GNU embebible v2.0'
       }
     };
 
