@@ -1,14 +1,14 @@
 {
-  "version": "1.0.0",
-  "buildDate": "2025-10-13T06:14:20.861Z",
+  "version": "2.0.0",
+  "buildDate": "2026-04-02T07:34:46.076Z",
   "files": {
     "terminal.min.css": {
       "bytes": 5026,
       "formatted": "4.9 KB"
     },
     "terminal.min.js": {
-      "bytes": 3437,
-      "formatted": "3.4 KB"
+      "bytes": 7256,
+      "formatted": "7.1 KB"
     },
     "demo.min.css": {
       "bytes": 3213,
@@ -19,8 +19,8 @@
       "formatted": "11.8 KB"
     },
     "terminal.bundle.min.js": {
-      "bytes": 8859,
-      "formatted": "8.7 KB"
+      "bytes": 12678,
+      "formatted": "12.4 KB"
     }
   },
   "cdn": {
