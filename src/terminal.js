@@ -60,10 +60,12 @@ class TerminalComponent {
     this.setupEventListeners();
     this.applyTheme();
     this.showWelcomeMessage();
-    // Auto-enfoque después de un pequeño delay
-    setTimeout(() => {
-      this.inputElement.focus();
-    }, 100);
+    // Auto-enfoque solo si el atributo data-autofocus está presente
+    if (this.element.hasAttribute('data-autofocus')) {
+      setTimeout(() => {
+        this.inputElement.focus();
+      }, 100);
+    }
   }
 
   /**
