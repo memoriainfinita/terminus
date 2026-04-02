@@ -170,7 +170,7 @@ terminus/
 ### Core Terminal (Listo para producción)
 - `terminal.min.css` — 4.9 KB (estilos optimizados -40.8%)
 - `terminal.min.js` — 7.1 KB (v2.0 con 7 primitivos)
-- `terminal.bundle.min.js` — 12.4 KB (CSS + JS todo-en-uno)
+- `terminal.bundle.min.js` — 12.3 KB (CSS + JS todo-en-uno)
 
 ### Demo Interactivo
 - `demo.min.css` — 4.2 KB
@@ -200,23 +200,13 @@ Inspirado en la sencillez del software libre: **código claro, integrable y acce
 4. Envía un pull request
 
 ## Desarrollo Asistido por IA
-Este proyecto ha sido desarrollado por un **humano** con asistencia de **Claude Sonnet 4.6** (Anthropic). La arquitectura, decisiones de diseño y implementación fueron dirigidas por el desarrollador humano, mientras que Claude proporcionó asistencia en:
-- Generación de código base y estructura modular
-- **Optimización masiva del CSS** (eliminación de 22% del código)
-- **Implementación del configurador interactivo**
-- **Debugging y corrección de funcionalidades**
-- Sistema de build avanzado
-- Documentación técnica completa
-- Mejores prácticas de desarrollo web
-
-El resultado es un código **100% funcional**, **altamente optimizado** y **listo para producción**, combinando la creatividad humana con la eficiencia de la asistencia de IA para lograr un componente terminal profesional con configurador en tiempo real.
+Proyecto desarrollado por [@memoriainfinita](https://github.com/memoriainfinita) con asistencia de **Claude Sonnet 4.6** (Anthropic).
 
 ## Estadísticas del Build (v2.0.0)
 - **Reducción CSS**: 40.8% (8.3 KB → 4.9 KB)
 - **JS v2.0**: 16.4 KB fuente → 7.1 KB minificado (-56.9%)
-- **Bundle total**: 12.4 KB (CSS + JS)
-- **Tiempo de build**: ~7.6 segundos
-- **Funcionalidad añadida**: 7 primitivos de simulación de terminal
+- **Bundle total**: 12.3 KB (CSS + JS)
+- **Tiempo de build**: ~10 segundos
 
 ## Licencia
 Publicado bajo **Licencia GNU** — libre, abierta y comunitaria.
