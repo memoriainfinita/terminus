@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>🧪 TERMINUS — Terminal Component</title>
+  <title>TERMINUS — Terminal Component</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
@@ -28,7 +28,7 @@
         <div class="nav-actions">
           <button class="btn ghost" id="btnTheme" aria-label="Cambiar tema">Claro/Oscuro</button>
           <a class="btn" href="#demo" aria-label="Ir a la Demo">Demo</a>
-          <a class="btn accent" href="#configurator" aria-label="Ir al Configurador">Configurador</a>
+          <a class="btn accent" href="#demo" aria-label="Ir al Configurador">Configurador</a>
         </div>
       </div>
     </div>
@@ -60,8 +60,7 @@
       <section class="section-bg">
         <div class="container">
           <div class="text-center mb-4">
-            <h2 class="section-title">Por qué elegir <span class="text-accent">TERMINUS</span></h2>
-            <p class="text-muted section-subtitle">Terminal component profesional para desarrolladores modernos</p>
+            <h2 class="section-title">Características</h2>
           </div>
           
           <div class="grid cols-2 gap-4 mb-6">
@@ -175,9 +174,9 @@ Comandos disponibles:
 
               <!-- BOTONES DE ACCIÓN -->
               <div class="flex gap-2 flex-wrap">
-                <button id="updatePreviewBtn" class="btn accent flex-1">🔄 Actualizar Preview</button>
+                <button id="updatePreviewBtn" class="btn accent flex-1">Actualizar Preview</button>
                 <button id="generateSnippetBtn" class="btn flex-1">Generar Snippet</button>
-                <button id="resetConfigBtn" class="btn ghost">♻️ Reset</button>
+                <button id="resetConfigBtn" class="btn ghost">Reset</button>
               </div>
             </div>
           </div>
@@ -254,7 +253,6 @@ Comandos disponibles:
                     <th>Valor</th>
                     <th>Descripción</th>
                     <th>Colores</th>
-                    <th>Uso Recomendado</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -262,25 +260,21 @@ Comandos disponibles:
                     <td><code>"dark"</code> <span class="text-muted">(default)</span></td>
                     <td>Tema oscuro profesional</td>
                     <td>Gris/Verde</td>
-                    <td>General, producción</td>
                   </tr>
                   <tr>
                     <td><code>"matrix"</code></td>
                     <td>Verde clásico estilo Matrix</td>
                     <td>Negro/Verde</td>
-                    <td>Demos, cyberpunk</td>
                   </tr>
                   <tr>
                     <td><code>"ocean"</code></td>
                     <td>Azul profundo elegante</td>
                     <td>Azul/Cyan</td>
-                    <td>Corporativo, tech</td>
                   </tr>
                   <tr>
                     <td><code>"amber"</code></td>
                     <td>Dorado retro terminal</td>
                     <td>Negro/Amber</td>
-                    <td>Vintage, sistemas legacy</td>
                   </tr>
                 </tbody>
               </table>
@@ -371,15 +365,7 @@ Comandos disponibles:
 
             <div>
               <h4 class="subsection-header">Consideraciones de Seguridad</h4>
-              <div class="info-box">
-                <p class="m-0"><strong>🛡️ Importante:</strong></p>
-                <ul class="m-0 mt-2">
-                  <li>Sanitiza el contenido JSON antes de usar en producción</li>
-                  <li>Evita incluir información sensible en data-commands</li>
-                  <li>Valida comandos del lado servidor si conectas a APIs</li>
-                  <li>Usa HTTPS siempre para evitar inyección de código</li>
-                </ul>
-              </div>
+              <p class="text-muted text-sm">No incluyas información sensible en <code>data-commands</code>. Si conectas comandos a una API, valida los inputs del lado servidor.</p>
             </div>
           </div>
         </div>
@@ -388,9 +374,8 @@ Comandos disponibles:
       <section id="examples" class="section-padding">
         <div class="container">
           <div class="card">
-            <div class="card-h"><strong>Casos de Uso Reales</strong><span class="tag">Ejemplos Prácticos</span></div>
+            <div class="card-h"><strong>Ejemplos de uso</strong></div>
             <div class="card-b">
-              <p class="text-muted text-base m-0 mb-4">Ejemplos prácticos listos para usar</p>
           
           <div class="grid cols-2 gap-4">
             <div class="card use-case-card">
@@ -434,37 +419,6 @@ Comandos disponibles:
 &lt;/div&gt;
               </div>
             </div>
-            
-            <div class="card use-case-card">
-              <div class="use-case-header">
-                <strong class="use-case-title">Terminal Seguridad</strong>
-                <span class="tag use-case-tag">Monitoreo</span>
-              </div>
-              <div class="code-block">
-<span class="text-muted"># Terminal para operaciones de seguridad</span><br>
-&lt;div class="gnu-terminal" data-theme="dark"<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;data-prompt="security@monitor:~#"<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;data-commands='{"scan":"Scanning...","report":"Report ready"}'&gt;<br>
-&lt;/div&gt;
-              </div>
-            </div>
-          </div>
-          
-          <!-- TIPS COMPACTOS -->
-          <div class="tips-box">
-            <div class="tips-header">
-              <strong class="tips-title">Tips de Implementación</strong>
-            </div>
-            <div class="tips-grid">
-              <div>
-                <strong class="tips-label">Comandos Efectivos:</strong>
-                <span class="text-muted"> help, status, info, clear</span>
-              </div>
-              <div>
-                <strong class="tips-label">Mejores Prácticas:</strong>
-                <span class="text-muted"> temas apropiados, prompts descriptivos</span>
-              </div>
-            </div>
           </div>
             </div>
           </div>
@@ -475,7 +429,6 @@ Comandos disponibles:
         <div class="card">
           <div class="card-h"><strong>Preguntas Frecuentes</strong><span class="tag">FAQ</span></div>
           <div class="card-b">
-            <p class="text-muted mb-4">Respuestas a las consultas más comunes sobre TERMINUS</p>
         
         <div class="faq-grid">
           <div class="faq-item">
@@ -524,7 +477,7 @@ Comandos disponibles:
               <span class="faq-toggle">+</span>
             </div>
             <div class="faq-answer">
-              <p>Cero dependencias. Vanilla HTML/CSS/JS puros. Total: 5.1 KB minificado. No requiere jQuery, React ni ninguna librería externa.</p>
+              <p>Cero dependencias. Vanilla HTML/CSS/JS puros. Bundle: 12.4 KB minificado. No requiere jQuery, React ni ninguna librería externa.</p>
             </div>
           </div>
 
@@ -534,17 +487,7 @@ Comandos disponibles:
               <span class="faq-toggle">+</span>
             </div>
             <div class="faq-answer">
-              <p>CDN jsDelivr, GitHub Pages, descarga directa o npm. Archivos minificados incluidos. Compatible con bundlers como Webpack y Vite.</p>
-            </div>
-          </div>
-
-          <div class="faq-item">
-            <div class="faq-question">
-              <h4>¿Está probado y es confiable?</h4>
-              <span class="faq-toggle">+</span>
-            </div>
-            <div class="faq-answer">
-              <p>Completamente verificado y estable. Todas las funcionalidades probadas en múltiples navegadores y dispositivos. Usado en producción.</p>
+              <p>CDN jsDelivr, GitHub Pages o descarga directa. Archivos minificados incluidos en el repositorio.</p>
             </div>
           </div>
 
@@ -554,7 +497,7 @@ Comandos disponibles:
               <span class="faq-toggle">+</span>
             </div>
             <div class="faq-answer">
-              <p>Sí, vanilla JavaScript se integra con cualquier framework. Solo asegurar DOM cargado. Incluye ejemplos para todos los frameworks populares.</p>
+              <p>Sí, vanilla JavaScript se integra con cualquier framework. Solo asegura que el DOM esté cargado antes de inicializar.</p>
             </div>
           </div>
 
@@ -564,7 +507,7 @@ Comandos disponibles:
               <span class="faq-toggle">+</span>
             </div>
             <div class="faq-answer">
-              <p>GNU GPL v3 - libre para uso personal y comercial. Open source en GitHub. Código fuente completo disponible para auditoría y contribuciones.</p>
+              <p>GNU GPL v3. Libre para uso personal y comercial. Código fuente en GitHub.</p>
             </div>
           </div>
             </div>
@@ -577,9 +520,8 @@ Comandos disponibles:
           <div class="card">
             <div class="card-h"><strong>Licencia Open Source</strong><span class="tag">GNU GPL v3</span></div>
             <div class="card-b">
-              <p class="text-muted section-subtitle mb-4">Libertad total para desarrolladores y empresas</p>
             <p class="mb-4">
-              TERMINUS está licenciado bajo <strong>GNU GPL v3</strong>, una de las licencias de código abierto más respetadas del mundo. Esto garantiza que el software permanezca libre y abierto para siempre.
+              TERMINUS está licenciado bajo <strong>GNU GPL v3</strong>. El código fuente es libre y permanece libre.
             </p>
             <div class="license-callout">
               <strong>¿Qué significa esto?</strong>
@@ -596,13 +538,13 @@ Comandos disponibles:
           <div class="footer-content">
             <div class="footer-section">
               <h4>TERMINUS</h4>
-              <p>Terminal component profesional para desarrolladores. Vanilla JavaScript, sin dependencias, completamente funcional.</p>
+              <p>Componente terminal embebible. Vanilla JavaScript, sin dependencias.</p>
             </div>
             
             <div class="footer-section">
               <h4>Enlaces</h4>
               <div class="footer-links">
-                <a href="#configurator">Configurador Interactivo</a>
+                <a href="#demo">Configurador Interactivo</a>
                 <a href="#examples">Casos de Uso</a>
                 <a href="#faq">FAQ</a>
                 <a href="#license">Licencia</a>
