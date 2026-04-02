@@ -89,6 +89,7 @@ class TerminalComponent {
     `;
 
     this.outputElement = this.element.querySelector('.output');
+    this.viewportElement = this.element.querySelector('.viewport');
     this.inputElement = this.element.querySelector('.terminal-input');
     this.promptElement = this.element.querySelector('.prompt');
   }
@@ -215,7 +216,7 @@ class TerminalComponent {
     line.className = 'output-line';
     line.textContent = content;
     this.outputElement.appendChild(line);
-    this.outputElement.scrollTop = this.outputElement.scrollHeight;
+    this.viewportElement.scrollTop = this.viewportElement.scrollHeight;
   }
 
   /**
@@ -227,7 +228,7 @@ class TerminalComponent {
     line.className = 'output-line';
     line.innerHTML = html;
     this.outputElement.appendChild(line);
-    this.outputElement.scrollTop = this.outputElement.scrollHeight;
+    this.viewportElement.scrollTop = this.viewportElement.scrollHeight;
   }
 
   /**
@@ -412,14 +413,15 @@ class TerminalComponent {
    */
   readline(promptText) {
     return new Promise(resolve => {
-      this.promptElement.textContent = promptText;
+      this.addToOutput(promptText);
+      this.promptElement.textContent = '>';
       this.inputElement.value = '';
       this.inputElement.focus();
       const onEnter = (e) => {
         if (e.key === 'Enter') {
           e.stopImmediatePropagation();
           const val = this.inputElement.value;
-          this.addToOutput(promptText + val);
+          this.addToOutput('> ' + val);
           this.inputElement.value = '';
           this.promptElement.textContent = this.options.prompt;
           this.inputElement.removeEventListener('keydown', onEnter, true);
