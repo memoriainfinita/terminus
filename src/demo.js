@@ -190,7 +190,7 @@ class TerminusDemo {
 
     this.setupConfiguratorEvents();
     this.loadConfiguration();
-    this.updatePreview();
+    this.updatePreview(true);
   }
 
   /**
@@ -201,7 +201,7 @@ class TerminusDemo {
     if (this.elements.themeSelector) {
       this.elements.themeSelector.addEventListener('change', (e) => {
         this.config.theme = e.target.value;
-        this.updatePreview();
+        this.updatePreview(true);
         this.generateSnippet();
       });
     }
@@ -210,7 +210,7 @@ class TerminusDemo {
     if (this.elements.promptInput) {
       this.elements.promptInput.addEventListener('input', (e) => {
         this.config.prompt = e.target.value || 'gnu$';
-        this.updatePreview();
+        this.updatePreview(true);
         this.generateSnippet();
       });
     }
@@ -219,7 +219,7 @@ class TerminusDemo {
     if (this.elements.welcomeInput) {
       this.elements.welcomeInput.addEventListener('input', (e) => {
         this.config.welcome = e.target.value;
-        this.updatePreview();
+        this.updatePreview(true);
         this.generateSnippet();
       });
     }
@@ -311,7 +311,7 @@ class TerminusDemo {
 
     // Actualizar UI
     this.renderCommandsList();
-    this.updatePreview();
+    this.updatePreview(true);
     this.generateSnippet();
     this.showToast(`Comando "${name}" agregado`);
   }
@@ -322,7 +322,7 @@ class TerminusDemo {
   removeCommand(commandName) {
     delete this.config.commands[commandName];
     this.renderCommandsList();
-    this.updatePreview();
+    this.updatePreview(true);
     this.generateSnippet();
     this.showToast(`Comando "${commandName}" eliminado`);
   }
@@ -342,7 +342,7 @@ class TerminusDemo {
     // Eliminar el comando actual para evitar duplicados
     delete this.config.commands[commandName];
     this.renderCommandsList();
-    this.updatePreview();
+    this.updatePreview(true);
     this.generateSnippet();
 
     // Mensaje informativo
@@ -376,7 +376,7 @@ class TerminusDemo {
   /**
    * Actualiza el preview del terminal
    */
-  updatePreview() {
+  updatePreview(silent = false) {
     if (!this.elements.terminal) return;
 
     // Remover tema anterior forzando re-render
@@ -426,7 +426,7 @@ class TerminusDemo {
       
     }, 10);
 
-    this.showToast('Preview actualizado');
+    if (!silent) this.showToast('Preview actualizado');
   }
 
   /**
@@ -537,7 +537,7 @@ class TerminusDemo {
 
     this.loadConfiguration();
     this.renderCommandsList();
-    this.updatePreview();
+    this.updatePreview(true);
     this.generateSnippet();
     this.showToast('Configuración reseteada');
   }
