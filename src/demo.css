@@ -5,6 +5,17 @@
  */
 
 /* ================================================
+   RESET BASE
+   ================================================ */
+*, *::before, *::after { 
+  box-sizing: border-box; 
+}
+
+body { 
+  overflow-x: hidden; 
+}
+
+/* ================================================
    LAYOUT Y CONTENEDORES
    ================================================ */
 .container { 
@@ -195,6 +206,11 @@ header.navbar {
   gap: var(--gap); 
 }
 
+/* Prevenir que los hijos del grid se salgan de su columna */
+.grid > * { 
+  min-width: 0; 
+}
+
 .grid.cols-2 { 
   grid-template-columns: 1fr; 
 }
@@ -330,6 +346,38 @@ footer {
 
 .spacer { 
   flex: 1; 
+}
+
+.flex { 
+  display: flex; 
+}
+
+.flex-2 { 
+  flex: 2; 
+  min-width: 0; 
+}
+
+/* ================================================
+   CODE BLOCKS
+   ================================================ */
+.code {
+  font-family: 'IBM Plex Mono', 'Courier New', Consolas, monospace;
+  font-size: 13px;
+  line-height: 1.55;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  overflow-x: auto;
+  white-space: pre;
+  word-break: normal;
+  tab-size: 2;
+  margin: 0;
+}
+
+.code.code-sm {
+  font-size: 12px;
+  padding: 12px 14px;
 }
 
 .tag { 
