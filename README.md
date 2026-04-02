@@ -16,9 +16,20 @@
 - **Diseño profesional optimizado** con tipografía *Inter* + *IBM Plex Mono*
 - **Microinteracciones técnicas** (cursor parpadeante, escritura gradual, animaciones suaves)
 - **Responsive** y compatible con modo claro/oscuro
-- **Arquitectura modular limpia** — código optimizado con 22% menos CSS
+- **API programable completa** — 7 primitivos v2.0 para simulaciones avanzadas
 - **Extensible** — pensado para crecer hacia mini-docs o componentes adicionales
-- **Súper ligero** — Solo 4.9 KB CSS + 3.4 KB JS minificados para funcionalidad completa
+- **Súper ligero** — Solo 4.9 KB CSS + 7.1 KB JS minificados para funcionalidad completa
+
+### Primitivos v2.0 (nuevas capacidades)
+| Primitivo | Método | Descripción |
+|-----------|--------|-------------|
+| P1 | `addOutputHTML(html)` | Output con HTML y colores inline |
+| P2 | Comandos como función | `(args, terminal) => {}` — lógica, flags, async |
+| P3 | `enterMode(handler)` / `exitMode()` | Modo TUI — captura teclado y clicks |
+| P4 | `play(script)` | Demo automática con animación de escritura |
+| P5 | Tab autocomplete + Ctrl+C | Integrado, configurable con `onTab` |
+| P6 | `readline(promptText)` | Input inline async, devuelve Promise |
+| P7 | `get rows` / `get cols` | Dimensiones del viewport calculadas en tiempo real |
 
 ## Instalación rápida
 
@@ -61,6 +72,45 @@
 - **Ocean** — Azul profesional
 - **Amber** — Ámbar retro terminal
 - **Dark** — Oscuro minimalista
+
+### API JavaScript
+```js
+const t = document.getElementById('mi-terminal').terminalComponent;
+
+// Output con HTML
+t.addOutputHTML('<span style="color:#00ff88">OK</span>');
+
+// Comando como función con argumentos
+t.setCommands({
+  'ping': (args, term) => {
+    const host = args[0] || 'localhost';
+    term.addOutputHTML(`Haciendo ping a <b>${host}</b>`);
+  },
+  'login': async (args, term) => {
+    const user = await term.readline('Usuario: ');
+    const pass = await term.readline('Contraseña: ');
+    term.addOutputHTML(`<span style="color:#0f0">✓ Bienvenido, ${user}</span>`);
+  }
+});
+
+// Demo automática con animación de escritura
+await t.play([
+  { type: 'output', text: 'Iniciando...', delay: 300 },
+  { type: 'cmd',    text: 'whoami',       delay: 800 },
+  { type: 'cmd',    text: 'ls',           delay: 700 },
+  { type: 'pause',  delay: 400 },
+]);
+
+// Modo TUI — captura teclado y clicks
+t.enterMode({
+  onKey:   (key, e, term) => { /* navegar */ },
+  onClick: (x, y, row, col, term) => { /* seleccionar */ },
+  onCtrlC: (term) => term.exitMode()
+});
+
+// Dimensiones del viewport
+console.log(t.rows, t.cols);
+```
 
 ### Configuración por data-attributes
 | Atributo | Descripción | Valores | Ejemplo |
@@ -128,8 +178,8 @@ TERMINUS/
 
 ### Core Terminal (Listo para producción)
 - `terminal.min.css` — 4.9 KB (estilos optimizados -40.8%)
-- `terminal.min.js` — 3.4 KB (JavaScript optimizado -46.3%)
-- `terminal.bundle.min.js` — 8.7 KB (CSS + JS todo-en-uno)
+- `terminal.min.js` — 7.1 KB (v2.0 con 7 primitivos)
+- `terminal.bundle.min.js` — 12.4 KB (CSS + JS todo-en-uno)
 
 ### Demo Interactivo
 - `demo.min.css` — 3.1 KB (configurador -46.2%)
@@ -142,7 +192,7 @@ TERMINUS/
 https://cdn.jsdelivr.net/gh/memoriainfinita/TERMINUS@latest/docs/dist/
 
 Versión específica:
-https://cdn.jsdelivr.net/gh/memoriainfinita/TERMINUS@v1.0.0/docs/dist/
+https://cdn.jsdelivr.net/gh/memoriainfinita/TERMINUS@v2.0.0/docs/dist/
 ```
 
 ## Filosofía
@@ -161,7 +211,7 @@ Inspirado en la sencillez del software libre: **código claro, integrable y acce
 4. Envía un pull request
 
 ## Desarrollo Asistido por IA
-Este proyecto ha sido desarrollado por un **humano** con asistencia de **Claude Sonnet 3.5** (Anthropic). La arquitectura, decisiones de diseño y implementación fueron dirigidas por el desarrollador humano, mientras que Claude proporcionó asistencia en:
+Este proyecto ha sido desarrollado por un **humano** con asistencia de **Claude Sonnet 4.6** (Anthropic). La arquitectura, decisiones de diseño y implementación fueron dirigidas por el desarrollador humano, mientras que Claude proporcionó asistencia en:
 - Generación de código base y estructura modular
 - **Optimización masiva del CSS** (eliminación de 22% del código)
 - **Implementación del configurador interactivo**
@@ -172,21 +222,19 @@ Este proyecto ha sido desarrollado por un **humano** con asistencia de **Claude 
 
 El resultado es un código **100% funcional**, **altamente optimizado** y **listo para producción**, combinando la creatividad humana con la eficiencia de la asistencia de IA para lograr un componente terminal profesional con configurador en tiempo real.
 
-## Estadísticas del Build (Última Optimización)
+## Estadísticas del Build (v2.0.0)
 - **Reducción CSS**: 40.8% (8.3 KB → 4.9 KB)
-- **Reducción JS**: 46.3% (6.3 KB → 3.4 KB)  
-- **Optimización Demo**: 22% menos código CSS general
-- **Total Core**: 8.3 KB para terminal completo
-- **Tiempo de build**: ~6.7 segundos
-- **Elementos eliminados**: Sidebar, estadísticas redundantes, botones duplicados
-- **Funcionalidad añadida**: Configurador interactivo en tiempo real
+- **JS v2.0**: 16.4 KB fuente → 7.1 KB minificado (-56.9%)
+- **Bundle total**: 12.4 KB (CSS + JS)
+- **Tiempo de build**: ~7.6 segundos
+- **Funcionalidad añadida**: 7 primitivos de simulación de terminal
 
 ## Licencia
 Publicado bajo **Licencia GNU** — libre, abierta y comunitaria.
 
 ---
-**Terminus** © 2025 — Un proyecto GNU minimalista para terminales embebibles.
+**Terminus** © 2026 — Un proyecto GNU minimalista para terminales embebibles.
 
-**Última actualización**: Octubre 2025 — Configurador interactivo, optimización de código y UI profesional
+**Última actualización**: Abril 2026 — v2.0.0: 7 primitivos de simulación (addOutputHTML, comandos función, enterMode TUI, play, readline, Tab, rows/cols)
 
 Desarrollado por [@memoriainfinita](https://github.com/memoriainfinita)

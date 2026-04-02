@@ -1,7 +1,7 @@
 /**
  * TERMINUS - Terminal Component
  * Componente principal del terminal embebible GNU
- * Versión: 1.0.0
+ * Versión: 2.0.0
  */
 
 class TerminalComponent {
@@ -11,14 +11,17 @@ class TerminalComponent {
       theme: 'dark',
       prompt: 'gnu$',
       commands: {},
+      onTab: null,
       ...this.parseDataAttributes(),
       ...options
     };
-    
+
     this.history = [];
     this.historyIndex = 0;
     this.isTyping = false;
-    
+    this._modeHandler = null;
+    this._modeKeyHandler = null;
+
     this.init();
   }
 
@@ -67,6 +70,7 @@ class TerminalComponent {
    * Renderiza la estructura del terminal
    */
   render() {
+    this.element.setAttribute('tabindex', '0');
     this.element.innerHTML = `
       <div class="titlebar">
         <span class="dot"></span>
@@ -92,6 +96,22 @@ class TerminalComponent {
    */
   setupEventListeners() {
     this.inputElement.addEventListener('keydown', (e) => {
+      // Prevent bubbling to document — avoids triggering _modeKeyHandler
+      // with the same event that caused enterMode() to be called
+      e.stopPropagation();
+      // Ctrl+C — cancela input en modo normal
+      if (e.ctrlKey && e.key === 'c') {
+        e.preventDefault();
+        this.addToOutput(`${this.options.prompt} ${this.inputElement.value}^C`);
+        this.inputElement.value = '';
+        return;
+      }
+      // Tab — autocomplete
+      if (e.key === 'Tab') {
+        e.preventDefault();
+        this._handleTab();
+        return;
+      }
       if (e.key === 'Enter') {
         this.processCommand(this.inputElement.value.trim());
         this.inputElement.value = '';
@@ -104,14 +124,32 @@ class TerminalComponent {
       }
     });
 
-    // Auto focus en el input
-    this.element.addEventListener('click', () => {
+    this.element.addEventListener('click', (e) => {
+      if (this._modeHandler && this._modeHandler.onClick) {
+        // Find the row by matching the clicked element to an output-line index
+        const lines = Array.from(this.outputElement.querySelectorAll('.output-line'));
+        let row = lines.findIndex(l => l.contains(e.target) || l === e.target);
+        if (row === -1) {
+          // Fallback: calculate from pixel position relative to output element
+          const outRect = this.outputElement.getBoundingClientRect();
+          const lh = this._lineHeight();
+          row = Math.floor((e.clientY - outRect.top) / lh);
+        }
+        const outRect = this.outputElement.getBoundingClientRect();
+        const cw = this._charWidth();
+        const x = e.clientX - outRect.left;
+        const y = e.clientY - outRect.top;
+        this._modeHandler.onClick(x, y, row, Math.floor(x / cw), this);
+        return;
+      }
       this.inputElement.focus();
     });
   }
 
   /**
-   * Procesa un comando
+   * Procesa un comando.
+   * Soporta handlers como string (comportamiento original) o
+   * como función (args, terminal) => string|void  [NUEVO v2.0]
    */
   processCommand(command) {
     if (!command) return;
@@ -125,11 +163,25 @@ class TerminalComponent {
       return;
     }
 
-    // Comandos definidos por el usuario
-    if (this.options.commands[command]) {
-      this.addToOutput(this.options.commands[command]);
+    // Parsear verbo + argumentos
+    const parts = command.trim().split(/\s+/);
+    const verb  = parts[0];
+    const args  = parts.slice(1);
+
+    // Buscar por verbo primero; si no existe, buscar clave completa (backward compat)
+    const handler = this.options.commands[verb] !== undefined
+      ? this.options.commands[verb]
+      : this.options.commands[command];
+
+    if (handler !== undefined) {
+      if (typeof handler === 'function') {
+        const result = handler(args, this);
+        if (typeof result === 'string') this.addToOutput(result);
+      } else {
+        this.addToOutput(handler);
+      }
     } else {
-      this.addToOutput(`Comando no encontrado: ${command}. Escribe 'help' para ver comandos disponibles.`);
+      this.addToOutput(`Comando no encontrado: ${verb}. Escribe 'help' para ver comandos disponibles.`);
     }
   }
 
@@ -154,15 +206,25 @@ class TerminalComponent {
   }
 
   /**
-   * Añade salida al terminal
+   * Añade salida al terminal (texto plano, seguro)
    */
   addToOutput(content) {
     const line = document.createElement('div');
     line.className = 'output-line';
     line.textContent = content;
     this.outputElement.appendChild(line);
-    
-    // Scroll al final
+    this.outputElement.scrollTop = this.outputElement.scrollHeight;
+  }
+
+  /**
+   * Añade salida HTML al terminal [NUEVO v2.0]
+   * El desarrollador es responsable de sanear contenido procedente del usuario.
+   */
+  addOutputHTML(html) {
+    const line = document.createElement('div');
+    line.className = 'output-line';
+    line.innerHTML = html;
+    this.outputElement.appendChild(line);
     this.outputElement.scrollTop = this.outputElement.scrollHeight;
   }
 
@@ -222,6 +284,192 @@ class TerminalComponent {
    */
   setCommands(commands) {
     this.options.commands = { ...this.options.commands, ...commands };
+  }
+
+  // ─────────────────────────────────────────────────────────────────
+  // PRIMITIVO 3: enterMode / exitMode  [NUEVO v2.0]
+  // ─────────────────────────────────────────────────────────────────
+
+  /**
+   * Activa modo TUI. Oculta el input y redirige teclado + click al handler.
+   * handler: { onKey(key, event, terminal), onClick(x, y, row, col, terminal), onCtrlC(terminal) }
+   */
+  enterMode(handler) {
+    this._modeHandler = handler;
+    const inputLine = this.element.querySelector('.input-line');
+    if (inputLine) inputLine.style.display = 'none';
+
+    this._modeKeyHandler = (e) => {
+      if (!this._modeHandler) return;
+      // Solo procesar si este terminal está activo (tiene o es el foco)
+      if (!this.element.contains(document.activeElement) && document.activeElement !== this.element) return;
+      // Prevent page scroll for navigation keys
+      const navKeys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'PageUp', 'PageDown', ' '];
+      if (navKeys.includes(e.key)) e.preventDefault();
+      if (e.ctrlKey && e.key === 'c') {
+        e.preventDefault();
+        if (this._modeHandler.onCtrlC) this._modeHandler.onCtrlC(this);
+        else this.exitMode();
+        return;
+      }
+      if (this._modeHandler.onKey) {
+        this._modeHandler.onKey(e.key, e, this);
+      }
+    };
+    document.addEventListener('keydown', this._modeKeyHandler);
+    this.element.focus();
+  }
+
+  /**
+   * Sale del modo TUI y restaura el terminal normal.
+   */
+  exitMode() {
+    if (this._modeKeyHandler) {
+      document.removeEventListener('keydown', this._modeKeyHandler);
+      this._modeKeyHandler = null;
+    }
+    this._modeHandler = null;
+    const inputLine = this.element.querySelector('.input-line');
+    if (inputLine) inputLine.style.display = '';
+    this.inputElement.focus();
+  }
+
+  // ─────────────────────────────────────────────────────────────────
+  // PRIMITIVO 4: play(script)  [NUEVO v2.0]
+  // ─────────────────────────────────────────────────────────────────
+
+  /**
+   * Ejecuta un script de demo con animación de escritura.
+   * Tipos de paso: 'cmd' | 'output' | 'outputHTML' | 'clear' | 'pause'
+   * Cada paso acepta { type, text, html, delay }
+   */
+  async play(script) {
+    for (const step of script) {
+      if (step.delay) await new Promise(r => setTimeout(r, step.delay));
+      switch (step.type) {
+        case 'cmd':
+          await this._typeInput(step.text || '');
+          this.processCommand(step.text || '');
+          this.inputElement.value = '';
+          break;
+        case 'output':
+          this.addToOutput(step.text || '');
+          break;
+        case 'outputHTML':
+          this.addOutputHTML(step.html || step.text || '');
+          break;
+        case 'clear':
+          this.clear();
+          break;
+        case 'pause':
+          // delay ya aplicado arriba
+          break;
+      }
+    }
+  }
+
+  /**
+   * Anima la escritura de texto en el input (uso interno de play).
+   */
+  async _typeInput(text) {
+    this.inputElement.value = '';
+    for (let i = 0; i < text.length; i++) {
+      await new Promise(r => setTimeout(r, 35 + Math.random() * 45));
+      this.inputElement.value = text.slice(0, i + 1);
+    }
+    await new Promise(r => setTimeout(r, 180));
+  }
+
+  // ─────────────────────────────────────────────────────────────────
+  // PRIMITIVO 5: Tab autocomplete  [NUEVO v2.0]
+  // ─────────────────────────────────────────────────────────────────
+
+  /**
+   * Autocomplete por Tab. Usa options.onTab si está definido;
+   * si no, completa desde los nombres de comandos registrados.
+   */
+  _handleTab() {
+    const val = this.inputElement.value;
+    if (!val) return;
+    if (this.options.onTab) {
+      this.options.onTab(val, this);
+      return;
+    }
+    const candidates = ['clear', ...Object.keys(this.options.commands)];
+    const match = candidates.find(k => k.startsWith(val) && k !== val);
+    if (match) this.inputElement.value = match;
+  }
+
+  // ─────────────────────────────────────────────────────────────────
+  // PRIMITIVO 6: readline(promptText)  [NUEVO v2.0]
+  // ─────────────────────────────────────────────────────────────────
+
+  /**
+   * Pide un dato inline al usuario. Devuelve una Promise con el valor.
+   * Ejemplo: const name = await t.readline('Nombre: ');
+   */
+  readline(promptText) {
+    return new Promise(resolve => {
+      this.promptElement.textContent = promptText;
+      this.inputElement.value = '';
+      this.inputElement.focus();
+      const onEnter = (e) => {
+        if (e.key === 'Enter') {
+          e.stopImmediatePropagation();
+          const val = this.inputElement.value;
+          this.addToOutput(promptText + val);
+          this.inputElement.value = '';
+          this.promptElement.textContent = this.options.prompt;
+          this.inputElement.removeEventListener('keydown', onEnter, true);
+          resolve(val);
+        }
+      };
+      // Fase de captura: intercepta antes que el listener normal de Enter
+      this.inputElement.addEventListener('keydown', onEnter, true);
+    });
+  }
+
+  // ─────────────────────────────────────────────────────────────────
+  // PRIMITIVO 7: rows / cols  [NUEVO v2.0]
+  // ─────────────────────────────────────────────────────────────────
+
+  /**
+   * Número aproximado de filas visibles en el viewport.
+   */
+  get rows() {
+    const vp = this.element.querySelector('.viewport');
+    if (!vp) return 24;
+    return Math.max(1, Math.floor((vp.clientHeight - 32) / this._lineHeight()));
+  }
+
+  /**
+   * Número aproximado de columnas de caracteres en el viewport.
+   */
+  get cols() {
+    const vp = this.element.querySelector('.viewport');
+    if (!vp) return 80;
+    return Math.max(1, Math.floor((vp.clientWidth - 32) / this._charWidth()));
+  }
+
+  /**
+   * Altura de línea en px (uso interno).
+   */
+  _lineHeight() {
+    const vp = this.element.querySelector('.viewport');
+    return parseFloat(vp ? getComputedStyle(vp).lineHeight : '22') || 22;
+  }
+
+  /**
+   * Ancho de un carácter monospace en px (uso interno).
+   */
+  _charWidth() {
+    const span = document.createElement('span');
+    span.style.cssText = 'visibility:hidden;position:absolute;white-space:pre;font-family:inherit;font-size:inherit';
+    span.textContent = 'M';
+    this.outputElement.appendChild(span);
+    const w = span.offsetWidth || 8;
+    this.outputElement.removeChild(span);
+    return w;
   }
 }
 

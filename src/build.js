@@ -21,7 +21,8 @@ const PATHS = {
 const FILES = {
   css: {
     terminal: 'terminal.css',
-    demo: 'demo.css'
+    demo: 'demo.css',
+    pageStyles: 'page-styles.css'
   },
   js: {
     terminal: 'terminal.js',
@@ -146,7 +147,7 @@ ${jsContent}`;
     console.log('📋 Generando snippet de integración...');
     
     // URLs para GitHub Pages + jsDelivr (placeholder)
-    const cdnBase = 'https://cdn.jsdelivr.net/gh/TU-USUARIO/TERMINUS@latest/docs/dist';
+    const cdnBase = 'https://cdn.jsdelivr.net/gh/memoriainfinita/TERMINUS@latest/docs/dist';
     
     const snippets = {
       separado: `<!-- CSS + JS separados -->
@@ -247,6 +248,7 @@ ${jsContent}`;
       console.log('\n🎨 MINIFICANDO CSS...');
       this.minifyCSS(FILES.css.terminal, 'terminal.min.css');
       this.minifyCSS(FILES.css.demo, 'demo.min.css');
+      this.minifyCSS(FILES.css.pageStyles, 'page-styles.min.css');
       
       // 3. Minificar archivos JavaScript
       console.log('\n⚡ MINIFICANDO JAVASCRIPT...');

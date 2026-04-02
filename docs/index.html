@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="dist/demo.min.css">
   
   <!-- Page Styles (Design System) -->
-  <link rel="stylesheet" href="page-styles.min.css">
+  <link rel="stylesheet" href="dist/page-styles.min.css">
 </head>
 <body class="demo-page">
   <!-- HEADER -->
@@ -199,17 +199,7 @@ Comandos disponibles:
             </div>
 
             <div class="subsection-mb">
-              <h4 class="subsection-header">Método 2: NPM</h4>
-<pre class="code code-sm">npm install @memoriainfinita/terminus
-# o
-yarn add @memoriainfinita/terminus</pre>
-<pre class="code code-sm">import '@memoriainfinita/terminus/dist/terminal.min.css';
-import TerminalJS from '@memoriainfinita/terminus/dist/terminal.min.js';</pre>
-              <p class="text-muted text-sm"><strong>Ventajas:</strong> Control de versiones, bundling optimizado</p>
-            </div>
-
-            <div class="subsection-mb">
-              <h4 class="subsection-header">Método 3: Descarga Local</h4>
+              <h4 class="subsection-header">Método 2: Descarga Local</h4>
 <pre class="code code-sm">&lt;link rel="stylesheet" href="./css/terminal.min.css"&gt;
 &lt;script src="./js/terminal.min.js" defer&gt;&lt;/script&gt;</pre>
               <p class="text-muted text-sm"><strong>Ventajas:</strong> Sin dependencias externas, máximo control</p>
@@ -219,15 +209,15 @@ import TerminalJS from '@memoriainfinita/terminus/dist/terminal.min.js';</pre>
               <h4 class="subsection-header">Compatibilidad y Requisitos</h4>
               <div class="stats-container">
                 <div class="stat-item">
-                  <div class="stat-value">ES6+</div>
+                  <div class="stat-value">ES2015+</div>
                   <div class="stat-label">JavaScript</div>
                 </div>
                 <div class="stat-item">
-                  <div class="stat-value">IE11+</div>
+                  <div class="stat-value">Chrome/FF/Safari</div>
                   <div class="stat-label">Browsers</div>
                 </div>
                 <div class="stat-item">
-                  <div class="stat-value">8KB</div>
+                  <div class="stat-value">12.4KB</div>
                   <div class="stat-label">Bundle Size</div>
                 </div>
                 <div class="stat-item">
@@ -315,43 +305,22 @@ import TerminalJS from '@memoriainfinita/terminus/dist/terminal.min.js';</pre>
                     <td><code>data-commands</code></td>
                     <td>JSON</td>
                     <td><code>{}</code></td>
-                    <td>Comandos personalizados</td>
+                    <td>Comandos personalizados (string o función JS)</td>
                     <td><code>{"help":"Lista comandos"}</code></td>
-                  </tr>
-                  <tr>
-                    <td><code>data-typing-speed</code></td>
-                    <td>Number</td>
-                    <td><code>50</code></td>
-                    <td>Velocidad escritura (ms)</td>
-                    <td><code>30</code> (más rápido)</td>
-                  </tr>
-                  <tr>
-                    <td><code>data-auto-focus</code></td>
-                    <td>Boolean</td>
-                    <td><code>true</code></td>
-                    <td>Auto-focus al cargar</td>
-                    <td><code>"false"</code></td>
                   </tr>
                 </tbody>
               </table>
             </div>
 
             <div class="subsection-mb">
-              <h4 class="subsection-header">Comandos JSON: Estructura Avanzada</h4>
+              <h4 class="subsection-header">Comandos JSON: valores string</h4>
 <pre class="code code-sm">{
-  "help": "Lista todos los comandos disponibles",
-  "about": "Información sobre este terminal",
-  "clear": "Limpia la pantalla",
-  "status": {
-    "description": "Estado del sistema",
-    "response": "Sistema operativo: Online\nCPU: 45%\nRAM: 2.1GB/8GB"
-  },
-  "contact": {
-    "description": "Información de contacto",
-    "response": "Email: admin@example.com\nWeb: https://example.com"
-  }
+  "help":    "Lista todos los comandos disponibles",
+  "about":   "Información sobre este terminal",
+  "status":  "Sistema: Online\nCPU: 45%\nRAM: 2.1GB/8GB",
+  "contact": "Email: admin@example.com\nWeb: https://example.com"
 }</pre>
-              <p class="text-muted text-sm"><strong>Tip:</strong> Los comandos pueden ser strings simples o objetos con description + response para mayor control</p>
+              <p class="text-muted text-sm"><strong>Nota:</strong> Los valores deben ser strings. Para lógica avanzada usa la API JS: <code>t.setCommands({ 'cmd': (args, term) =&gt; { ... } })</code></p>
             </div>
 
             <div class="subsection-mb">
@@ -372,8 +341,7 @@ import TerminalJS from '@memoriainfinita/terminus/dist/terminal.min.js';</pre>
 <pre class="code code-sm">&lt;div class="gnu-terminal"
      data-theme="matrix"
      data-prompt="visitor@portfolio:~$"
-     data-welcome="� ¡Hola! Escribe 'help' para comenzar"
-     data-typing-speed="30"
+     data-welcome="¡Hola! Escribe 'help' para comenzar"
      data-commands='{"about":"Desarrollador Full Stack","projects":"Ver mis proyectos","contact":"mi@email.com"}'&gt;
 &lt;/div&gt;</pre>
               </div>
@@ -383,8 +351,7 @@ import TerminalJS from '@memoriainfinita/terminus/dist/terminal.min.js';</pre>
 <pre class="code code-sm">&lt;div class="gnu-terminal"
      data-theme="amber"
      data-prompt="docs@api:~$"
-     data-welcome="📚 API Documentation Terminal"
-     data-auto-focus="false"
+     data-welcome="API Documentation Terminal"
      data-commands='{"endpoints":"GET /api/users","auth":"Token requerido","rate-limit":"1000 req/hour"}'&gt;
 &lt;/div&gt;</pre>
               </div>
@@ -633,7 +600,7 @@ import TerminalJS from '@memoriainfinita/terminus/dist/terminal.min.js';</pre>
             <div class="footer-section">
               <h4>Estadísticas</h4>
               <div class="footer-stats">
-                <div>Tamaño: <strong>5.1 KB</strong></div>
+                <div>Tamaño: <strong>12.4 KB</strong></div>
                 <div>Temas: <strong>4 disponibles</strong></div>
                 <div>Estado: <strong class="success">Estable</strong></div>
                 <div>Compatible: <strong>Todos los dispositivos</strong></div>
@@ -660,7 +627,7 @@ import TerminalJS from '@memoriainfinita/terminus/dist/terminal.min.js';</pre>
               <span>•</span>
               <span>Open Source</span>
             </div>
-            <div class="footer-year">© 2025</div>
+            <div class="footer-year">© 2026</div>
           </div>
         </div>
       </footer>
