@@ -199,10 +199,23 @@ header.navbar {
   grid-template-columns: 1fr; 
 }
 
+.grid.grid-4 { 
+  grid-template-columns: 1fr; 
+}
+
 @media (min-width: 960px) { 
   .grid.cols-2 { 
     grid-template-columns: 1.1fr .9fr; 
   } 
+  .grid.grid-4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (min-width: 640px) and (max-width: 959px) {
+  .grid.grid-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 /* ================================================
