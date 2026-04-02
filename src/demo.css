@@ -34,7 +34,7 @@ main {
 }
 
 section { 
-  padding-block: 80px; 
+  padding-block: 48px; 
   border-bottom: 1px solid var(--border); 
 }
 
