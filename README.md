@@ -88,11 +88,14 @@ t.setCommands({
 
 // Demo automática con animación de escritura
 await t.play([
-  { type: 'output', text: 'Iniciando...', delay: 300 },
-  { type: 'cmd',    text: 'whoami',       delay: 800 },
-  { type: 'cmd',    text: 'ls',           delay: 700 },
-  { type: 'pause',  delay: 400 },
+  { type: 'output',   text: 'Iniciando...',  delay: 300 },
+  { type: 'cmd',      text: 'whoami',        delay: 800 },
+  { type: 'cmd',      text: 'ls',            delay: 700 },
+  { type: 'progress', text: 'descargando',  steps: 20, stepDelay: 60, delay: 400 },
+  { type: 'pause',    delay: 400 },
 ]);
+// Tipos de paso: 'cmd' | 'output' | 'outputHTML' | 'progress' | 'clear' | 'pause'
+// progress acepta: text (prefijo), steps (ancho barra), stepDelay (ms por tick), delay (espera inicial)
 
 // Modo TUI — captura teclado y clicks
 t.enterMode({

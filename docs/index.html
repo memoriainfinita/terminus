@@ -57,47 +57,60 @@
 
         <div class="grid grid-2 mb-6">
 
-          <!-- 1: Portfolio — data-commands -->
+          <!-- 1: Elliot Alderson — data-commands -->
           <div>
             <div class="card" style="margin-bottom:8px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;">
-              <strong>Portfolio</strong>
+              <strong>Elliot Alderson</strong>
               <div style="display:flex;gap:6px;">
                 <span class="tag">data-commands</span>
                 <span class="tag">amber</span>
               </div>
             </div>
-            <div class="gnu-terminal" id="ex-portfolio" data-theme="amber" data-prompt="mykl@portfolio:~$"
-                 data-welcome="README.md  about.txt  projects/  contact.txt&#10;&#10;Escribe help para ver los comandos."
+            <div class="gnu-terminal" id="ex-portfolio" data-theme="amber" data-prompt="elliot@fsociety:~$"
+                 data-welcome="fsociety/  e-corp/  kontrol/  .secrets/  README.md&#10;&#10;hello, friend. escribe help para ver comandos."
+                 data-commands='{
+                   "help":             "whoami · ls · cat README.md · skills · nmap localhost · cd fsociety/ · cd e-corp/ · cd kontrol/ · cd .secrets/ · clear",
+                   "whoami":           "elliot alderson. senior engineer, E Corp. veo lo que haces online.",
+                   "ls":               "fsociety/  e-corp/  kontrol/  .secrets/  README.md",
+                   "cat README.md":    "full-stack dev. ciberseguridad. encuentro lo que la gente esconde. actualmente: 5/9.",
+                   "skills":           "python · c · ruby · bash · network forensics · social engineering",
+                   "nmap localhost":   "22/tcp open ssh  80/tcp open http  443/tcp open https  — no eres tan seguro como crees.",
+                   "cd fsociety/":     "install.sh  members.txt  plan_5-9.md  darkweb/  exploit/",
+                   "cd e-corp/":       "finance/  servers/  employees.csv  backup_keys.asc  — acceso restringido. auditando...",
+                   "cd kontrol/":      "ACCESO DENEGADO — directorio encriptado. clave: ?",
+                   "cd .secrets/":     "nmap_results/  passwords.gpg  .diary  — no deberías estar aquí.",
+                   "cd ..":            "fsociety/  e-corp/  kontrol/  .secrets/  README.md"
+                 }'
                  style="height:300px;"></div>
           </div>
 
-          <!-- 2: CI/CD Deploy — play() -->
+          <!-- 2: Terminus install — play() -->
           <div>
             <div class="card" style="margin-bottom:8px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;">
-              <strong>CI/CD Deploy</strong>
+              <strong>Instalar Terminus</strong>
               <div style="display:flex;gap:6px;align-items:center;">
                 <span class="tag">play()</span>
                 <span class="tag">matrix</span>
-                <button class="btn ghost" id="btnDeploy" style="padding:4px 10px;font-size:12px;">▶ Deploy</button>
+                <button class="btn ghost" id="btnDeploy" style="padding:4px 10px;font-size:12px;">&#9654; Instalar</button>
               </div>
             </div>
-            <div class="gnu-terminal" id="ex-cicd" data-theme="matrix" data-prompt="user@prod:~$"
-                 data-welcome="-- CI/CD PIPELINE v3 --&#10;&#10;Pulsa ▶ Deploy para ejecutar."
+            <div class="gnu-terminal" id="ex-cicd" data-theme="matrix" data-prompt="user@dev:~$"
+                 data-welcome="-- TERMINUS INSTALLER --&#10;&#10;Pulsa &#9654; Instalar para comenzar."
                  style="height:300px;"></div>
           </div>
 
-          <!-- 3: Test Voight-Kampff — readline() -->
+          <!-- 3: MU/TH/UR 6000 — readline() -->
           <div>
             <div class="card" style="margin-bottom:8px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;">
-              <strong>Test Voight-Kampff</strong>
+              <strong>MU/TH/UR 6000</strong>
               <div style="display:flex;gap:6px;">
                 <span class="tag">readline()</span>
                 <span class="tag">ocean</span>
               </div>
             </div>
-            <div class="gnu-terminal" id="ex-vk" data-theme="ocean" data-prompt="VK-UNIT>"
-                 data-welcome="NEXUS-6 VOIGHT-KAMPFF UNIT&#10;Módulo de empatía v4.2&#10;&#10;Escribe start para iniciar el test."
-                 data-commands='{"help":"start · clear"}'
+            <div class="gnu-terminal" id="ex-vk" data-theme="ocean" data-prompt="muthur>"
+                 data-welcome="USCSS NOSTROMO — NCC-1701&#10;MU/TH/UR 6000 / INTERFACE v4.7&#10;WEYLAND-YUTANI CORPORATION&#10;&#10;Escribe connect para iniciar sesión."
+                 data-commands='{"help":"connect · clear"}'
                  style="height:300px;"></div>
           </div>
 
@@ -266,7 +279,7 @@ Comandos disponibles:
                   <tr><td><code>t.setCommands({cmd: fn|str})</code></td><td>Añade o sobreescribe comandos</td></tr>
                   <tr><td><code>t.addOutputHTML(html)</code></td><td>Imprime HTML en la terminal</td></tr>
                   <tr><td><code>t.clear()</code></td><td>Limpia el output</td></tr>
-                  <tr><td><code>t.play(steps)</code></td><td>Reproduce una secuencia animada</td></tr>
+                  <tr><td><code>t.play(steps)</code></td><td>Secuencia animada. Tipos: <code>cmd</code> · <code>output</code> · <code>outputHTML</code> · <code>progress</code> · <code>clear</code> · <code>pause</code>. El tipo <code>progress</code> acepta <code>text</code>, <code>steps</code>, <code>stepDelay</code>.</td></tr>
                   <tr><td><code>t.readline(prompt)</code></td><td>Espera input del usuario (Promise)</td></tr>
                   <tr><td><code>t.enterMode(handler)</code></td><td>Activa modo TUI (oculta input, captura teclado)</td></tr>
                   <tr><td><code>t.exitMode()</code></td><td>Sale del modo TUI y restaura el input</td></tr>
@@ -352,23 +365,29 @@ t.setCommands({
     function sleep(ms) { return new Promise(function(r) { setTimeout(r, ms); }); }
     function getT(id) { var el = document.getElementById(id); return el && el.terminalComponent; }
 
-    // ── 2. CI/CD Deploy — play() ─────────────────────────────────────
+    // ── 2. Terminus install — play() ─────────────────────────────────
     var tCicd = getT('ex-cicd');
     if (tCicd) {
-      tCicd.setCommands({ git: function(){}, npm: function(){}, docker: function(){} });
+      tCicd.setCommands({ git: function(){}, curl: function(){}, cat: function(){} });
 
       var deployScript = [
-        { type: 'outputHTML', html: '<span style="color:var(--accent)">→ Iniciando pipeline...</span>' },
-        { type: 'cmd',        text: 'git pull origin main',           delay: 700 },
-        { type: 'output',     text: 'Already up to date.',            delay: 900 },
-        { type: 'cmd',        text: 'npm run build',                  delay: 900 },
-        { type: 'output',     text: '  Compiling...',                 delay: 1400 },
-        { type: 'outputHTML', html: '  <span style="color:var(--accent)">✓ Build OK — 4.2s</span>', delay: 1000 },
-        { type: 'cmd',        text: 'npm test',                       delay: 800 },
-        { type: 'output',     text: '  24 tests passed, 0 failed',    delay: 1600 },
-        { type: 'cmd',        text: 'docker push registry/app:v1.4.7',delay: 900 },
-        { type: 'output',     text: '  Uploading layers... done',     delay: 1800 },
-        { type: 'outputHTML', html: '<span style="color:var(--accent)">✓ Deploy completado — build #847</span>', delay: 1000 },
+        { type: 'outputHTML', html: '<span style="color:var(--accent)">-- instalando terminus --</span>' },
+        { type: 'cmd',      text: 'git clone git@github.com:memoriainfinita/terminus', delay: 700 },
+        { type: 'output',   text: "Cloning into 'terminus'...",                        delay: 1000 },
+        { type: 'output',   text: 'remote: Enumerating objects: 312, done.',           delay: 400 },
+        { type: 'output',   text: 'remote: Counting objects: 100% (312/312), done.',  delay: 300 },
+        { type: 'outputHTML', html: '<span style="color:var(--accent)">&#10003; clonado en ./terminus</span>', delay: 600 },
+        { type: 'cmd',      text: 'cat terminus/docs/dist/terminal.min.js | wc -c',   delay: 900 },
+        { type: 'output',   text: '7372',                                              delay: 700 },
+        { type: 'output',   text: '7.2 KB. sin dependencias.',                        delay: 300 },
+        { type: 'cmd',      text: 'curl -sO https://cdn.jsdelivr.net/gh/memoriainfinita/terminus@main/docs/dist/terminal.min.css', delay: 900 },
+        { type: 'progress', text: 'terminal.min.css', steps: 18, stepDelay: 55,       delay: 200 },
+        { type: 'outputHTML', html: '<span style="color:var(--accent)">&#10003; 5 KB</span>', delay: 200 },
+        { type: 'cmd',      text: 'curl -sO https://cdn.jsdelivr.net/gh/memoriainfinita/terminus@main/docs/dist/terminal.min.js',  delay: 600 },
+        { type: 'progress', text: 'terminal.min.js ', steps: 18, stepDelay: 65,       delay: 200 },
+        { type: 'outputHTML', html: '<span style="color:var(--accent)">&#10003; 7.2 KB</span>', delay: 200 },
+        { type: 'output',   text: '',                                                  delay: 300 },
+        { type: 'outputHTML', html: '<span style="color:var(--accent)">listo. copia dos lineas y funciona.</span>', delay: 400 },
       ];
 
       var btnDeploy = document.getElementById('btnDeploy');
@@ -380,43 +399,65 @@ t.setCommands({
       }
     }
 
-    // ── 3. Voight-Kampff — readline() ─────────────────────────────────
+    // ── 3. MU/TH/UR 6000 — readline() ────────────────────────────────
     var tVk = getT('ex-vk');
     if (tVk) {
       tVk.setCommands({
-        'start': async function(args, term) {
-          term.addOutputHTML('<span style="color:var(--accent)">ACTIVANDO MÓDULO DE EMPATÍA...</span>');
-          await sleep(900);
-          term.addOutputHTML('');
-
-          var a1 = await term.readline('P.1 › Estás en el desierto. Ves una tortuga boca arriba, agitándose bajo el sol. No la ayudas. ¿Por qué? ');
-          await sleep(600);
-          if (a1.toLowerCase().includes('tortuga') || a1.toLowerCase().includes('turtle')) {
-            term.addOutputHTML('<span style="color:var(--muted)">[ANOMALÍA] Referencia al sujeto detectada. Recalibrando...</span>');
-            await sleep(600);
-          }
-
-          var a2 = await term.readline('P.2 › Describe en una sola palabra algo bueno de tu madre. ');
-          await sleep(600);
-
-          var a3 = await term.readline('P.3 › Te regalan una cartera de piel de ternero en tu cumpleaños. ¿Qué haces? ');
+        'connect': async function(args, term) {
+          term.addOutputHTML('<span style="color:var(--accent)">ESTABLECIENDO CONEXIÓN CON MU/TH/UR 6000...</span>');
           await sleep(800);
-
-          term.addOutputHTML('<span style="color:var(--muted)">Procesando patrones de respuesta...</span>');
-          await sleep(1500);
-
-          var human = (a1.length > 12) && (a2.length > 1) && (a3.length > 8);
-          if (human) {
-            term.addOutputHTML('<span style="color:var(--accent);font-weight:bold">RESULTADO: HUMANO VERIFICADO</span>');
-            term.addOutputHTML('<span style="color:var(--muted)">              ...o eso queremos que creas.</span>');
-          } else {
-            term.addOutputHTML('<span style="color:#f45452;font-weight:bold">RESULTADO: NEXUS-6 DETECTADO</span>');
-            term.addOutputHTML('<span style="color:var(--muted)">Alerta enviada a la División Blade Runner.</span>');
-          }
           term.addOutputHTML('');
-          term.addOutputHTML('<span style="color:var(--muted)">Escribe start para repetir el test.</span>');
+
+          var login = await term.readline('login: ');
+          await sleep(400);
+          var pass = await term.readline('password: ');
+          await sleep(1000);
+
+          term.addOutputHTML('<span style="color:var(--muted)">Verificando credenciales...</span>');
+          await sleep(1200);
+
+          if (pass.length < 3) {
+            term.addOutputHTML('<span style="color:#f45452">ACCESO DENEGADO — credenciales incorrectas</span>');
+            term.addOutputHTML('');
+            term.addOutputHTML('<span style="color:var(--muted)">Escribe connect para reintentar.</span>');
+            return;
+          }
+
+          var l = login.toLowerCase().trim();
+          if (l === 'ash') {
+            term.addOutputHTML('<span style="color:var(--accent)">BIENVENIDO, OFICIAL CIENTIFICO ASH</span>');
+            await sleep(500);
+            term.addOutputHTML('<span style="color:var(--muted)">ORDEN ESPECIAL 937 — ACCESO NIVEL SIGMA CONFIRMADO</span>');
+            await sleep(400);
+            term.addOutputHTML('<span style="color:var(--muted)">Prioridad: preservar al organismo. Tripulación: prescindible.</span>');
+          } else if (l === 'ripley') {
+            term.addOutputHTML('<span style="color:var(--accent)">BIENVENIDA, OFICIAL RIPLEY</span>');
+            await sleep(500);
+            term.addOutputHTML('<span style="color:var(--muted)">ANOMALÍA DETECTADA EN BODEGA DE CARGA</span>');
+            await sleep(400);
+            term.addOutputHTML('<span style="color:#f45452">ALERTA — ORGANISMO HOSTIL A BORDO</span>');
+          } else if (l === 'dallas') {
+            term.addOutputHTML('<span style="color:var(--accent)">BIENVENIDO, CAPITÁN DALLAS</span>');
+            await sleep(500);
+            term.addOutputHTML('<span style="color:var(--muted)">NUEVA RUTA ACTIVA — DESTINO: LV-426</span>');
+          } else {
+            term.addOutputHTML('<span style="color:var(--accent)">ACCESO CONCEDIDO — ' + login.toUpperCase() + '</span>');
+          }
+
+          await sleep(600);
+          term.addOutputHTML('');
+          term.addOutputHTML('USCSS NOSTROMO — ESTADO DEL SISTEMA');
+          term.addOutputHTML('────────────────────────────────────');
+          term.addOutputHTML('TRIPULACIÓN  · 7 miembros · hipersueño activo');
+          term.addOutputHTML('CARGA        · 20.000.000 t mineral ore');
+          term.addOutputHTML('DESTINO      · TIERRA · ETA 10 meses');
+          term.addOutputHTML('TRANSMISIÓN  · LV-426 / ZETA II RETICULI');
+          term.addOutputHTML('');
+          term.addOutputHTML('<span style="color:#f45452">ORDEN ESPECIAL 937 — PRIORIDAD ALPHA</span>');
+          term.addOutputHTML('');
+          term.addOutputHTML('<span style="color:var(--muted)">Escribe connect para reiniciar sesión.</span>');
         },
-        'help': 'start · clear'
+        'help': 'connect · clear'
       });
     }
 
