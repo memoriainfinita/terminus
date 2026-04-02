@@ -1,7 +1,7 @@
 /**
- * TERMINUS - Demo Page Interactions
- * Funcionalidades específicas para la página de demostración
- * Versión: 1.0.0
+ * TERMINUS — demo.js
+ * Lógica de la página de demostración: configurador, snippets, toasts.
+ * v2.0.0
  */
 
 class TerminusDemo {

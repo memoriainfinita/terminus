@@ -1,7 +1,7 @@
 /**
- * TERMINUS - Terminal Component
- * Componente principal del terminal embebible GNU
- * Versión: 2.0.0
+ * TERMINUS — terminal.js
+ * Componente terminal embebible. Vanilla JS, sin dependencias.
+ * v2.0.0
  */
 
 class TerminalComponent {
