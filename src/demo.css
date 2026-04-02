@@ -215,8 +215,18 @@ header.navbar {
   grid-template-columns: 1fr; 
 }
 
+.grid.grid-2 { 
+  grid-template-columns: 1fr; 
+}
+
 .grid.grid-4 { 
   grid-template-columns: 1fr; 
+}
+
+@media (min-width: 640px) { 
+  .grid.grid-2 { 
+    grid-template-columns: repeat(2, 1fr); 
+  } 
 }
 
 @media (min-width: 960px) { 

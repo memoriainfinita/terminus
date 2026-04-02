@@ -98,6 +98,7 @@ a {
   padding: 16px; 
   min-height: 260px; 
   line-height: 1.6; 
+  overflow-x: hidden; 
 }
 
 /* Dots del titlebar */
@@ -159,6 +160,8 @@ a {
 
 .gnu-terminal .output-line {
   margin-bottom: 4px;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 /* Animación de escritura */

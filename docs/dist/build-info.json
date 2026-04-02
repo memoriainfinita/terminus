@@ -2,24 +2,24 @@
   "version": "2.0.0",
   "files": {
     "terminal.min.css": {
-      "bytes": 5026,
-      "formatted": "4.9 KB"
+      "bytes": 5091,
+      "formatted": "5 KB"
     },
     "terminal.min.js": {
       "bytes": 7256,
       "formatted": "7.1 KB"
     },
     "demo.min.css": {
-      "bytes": 4367,
-      "formatted": "4.3 KB"
+      "bytes": 4481,
+      "formatted": "4.4 KB"
     },
     "demo.min.js": {
       "bytes": 10483,
       "formatted": "10.2 KB"
     },
     "terminal.bundle.min.js": {
-      "bytes": 12633,
-      "formatted": "12.3 KB"
+      "bytes": 12698,
+      "formatted": "12.4 KB"
     }
   },
   "cdn": {
