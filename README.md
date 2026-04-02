@@ -2,7 +2,7 @@
 
 [![jsDelivr](https://img.shields.io/badge/CDN-jsDelivr-orange)](https://cdn.jsdelivr.net/gh/memoriainfinita/terminus@main/docs/dist/)
 [![License](https://img.shields.io/badge/license-GNU-blue)](LICENSE)
-[![Build](https://img.shields.io/badge/build-passing-success)]()
+[![Version](https://img.shields.io/badge/version-2.0.0-informational)]()
 
 ## Descripción
 **Terminus** es una terminal embebible para la web, creada bajo el espíritu del software libre (GNU). Su objetivo es ofrecer una interfaz ligera, modular y sin dependencias que pueda integrarse en cualquier página HTML con un simple snippet.
