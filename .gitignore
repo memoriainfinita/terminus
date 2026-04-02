@@ -28,4 +28,9 @@ Desktop.ini
 # Personal/testing files
 test-*
 demo-*
+_archive/
+
+# Editor / AI config
+.copilot-instructions
+SKILL.md
 *.backup
