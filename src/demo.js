@@ -24,11 +24,8 @@ class TerminusDemo {
   cacheElements() {
     this.elements = {
       // Elementos de navegación
-      codeBlock: document.getElementById('codeBlock'),
-      btnCopy: document.getElementById('btnCopy'),
       toast: document.getElementById('toast'),
       backdrop: document.getElementById('backdrop'),
-      btnModal: document.getElementById('btnModal'),
       btnCloseModal: document.getElementById('btnCloseModal'),
       
       // Elementos del configurador
@@ -57,27 +54,8 @@ class TerminusDemo {
    * Configura todos los event listeners
    */
   setupEventListeners() {
-    this.setupClipboard();
     this.setupModal();
     this.setupConfigurator();
-  }
-
-  /**
-   * Configura la funcionalidad de copiar al portapapeles
-   */
-  setupClipboard() {
-    if (!this.elements.btnCopy) return;
-
-    this.elements.btnCopy.addEventListener('click', async () => {
-      try {
-        const textToCopy = this.elements.codeBlock ? this.elements.codeBlock.innerText : '';
-        await navigator.clipboard.writeText(textToCopy);
-        this.showToast('Copiado al portapapeles');
-      } catch (error) {
-        console.error('Error al copiar:', error);
-        this.showToast('Error al copiar al portapapeles');
-      }
-    });
   }
 
   /**
@@ -98,12 +76,7 @@ class TerminusDemo {
    * Configura la funcionalidad del modal
    */
   setupModal() {
-    if (!this.elements.btnModal || !this.elements.backdrop) return;
-
-    // Abrir modal
-    this.elements.btnModal.addEventListener('click', () => {
-      this.openModal();
-    });
+    if (!this.elements.backdrop) return;
 
     // Cerrar modal con botón
     if (this.elements.btnCloseModal) {
