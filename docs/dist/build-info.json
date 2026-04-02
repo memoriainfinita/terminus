@@ -1,6 +1,5 @@
 {
   "version": "2.0.0",
-  "buildDate": "2026-04-02T17:52:24.927Z",
   "files": {
     "terminal.min.css": {
       "bytes": 5026,
@@ -19,14 +18,14 @@
       "formatted": "11.8 KB"
     },
     "terminal.bundle.min.js": {
-      "bytes": 12678,
-      "formatted": "12.4 KB"
+      "bytes": 12633,
+      "formatted": "12.3 KB"
     }
   },
   "cdn": {
-    "base": "https://cdn.jsdelivr.net/gh/TU-USUARIO/TERMINUS@latest/docs/dist",
-    "terminal_css": "https://cdn.jsdelivr.net/gh/TU-USUARIO/TERMINUS@latest/docs/dist/terminal.min.css",
-    "terminal_js": "https://cdn.jsdelivr.net/gh/TU-USUARIO/TERMINUS@latest/docs/dist/terminal.min.js",
-    "terminal_bundle": "https://cdn.jsdelivr.net/gh/TU-USUARIO/TERMINUS@latest/docs/dist/terminal.bundle.min.js"
+    "base": "https://cdn.jsdelivr.net/gh/memoriainfinita/terminus@main/docs/dist",
+    "terminal_css": "https://cdn.jsdelivr.net/gh/memoriainfinita/terminus@main/docs/dist/terminal.min.css",
+    "terminal_js": "https://cdn.jsdelivr.net/gh/memoriainfinita/terminus@main/docs/dist/terminal.min.js",
+    "terminal_bundle": "https://cdn.jsdelivr.net/gh/memoriainfinita/terminus@main/docs/dist/terminal.bundle.min.js"
   }
 }
