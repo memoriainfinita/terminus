@@ -137,8 +137,8 @@ Comandos disponibles:
 
 ### Clonar repositorio
 ```bash
-git clone https://github.com/memoriainfinita/TERMINUS.git
-cd TERMINUS
+git clone https://github.com/memoriainfinita/terminus.git
+cd terminus
 npm install
 ```
 
@@ -151,17 +151,17 @@ npm run serve    # Servidor docs (puerto 8080)
 
 ### Estructura del proyecto
 ```
-TERMINUS/
+terminus/
 ├── docs/                    # GitHub Pages
-│   ├── index.html          # Demo page con configurador interactivo
-│   ├── page-styles.css     # Sistema de diseño optimizado
-│   └── dist/               # Archivos distribuibles
-├── src/                    # Código fuente
-│   ├── terminal.css        # Estilos del terminal (optimizados)
-│   ├── terminal.js         # Lógica del terminal
-│   ├── demo.css           # Estilos de la demo (22% menos código)
-│   ├── demo.js            # Configurador interactivo
-│   └── build.js           # Sistema de build
+│   ├── index.html           # Página de demo con configurador
+│   └── dist/                # Archivos distribuibles (CDN)
+├── src/                     # Código fuente
+│   ├── terminal.css         # Estilos del componente
+│   ├── terminal.js          # Lógica del componente
+│   ├── demo.css             # Estilos de la página demo
+│   ├── demo.js              # Configurador interactivo
+│   ├── page-styles.css      # Design system de la página
+│   └── build.js             # Sistema de build
 └── package.json
 ```
 
@@ -173,8 +173,8 @@ TERMINUS/
 - `terminal.bundle.min.js` — 12.4 KB (CSS + JS todo-en-uno)
 
 ### Demo Interactivo
-- `demo.min.css` — 3.1 KB (configurador -46.2%)
-- `demo.min.js` — 11.8 KB (funcionalidad completa -40.1%)
+- `demo.min.css` — 4.2 KB
+- `demo.min.js` — 11.8 KB
 - `page-styles.min.css` — Sistema de diseño unificado
 
 ### URLs de CDN (jsDelivr)
