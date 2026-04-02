@@ -18,6 +18,9 @@ Thumbs.db
 ehthumbs.db
 Desktop.ini
 
+# Local session state (never push)
+state.md
+
 # Temporary files
 *.tmp
 *.temp
