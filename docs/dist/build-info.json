@@ -6,7 +6,7 @@
       "formatted": "5 KB"
     },
     "terminal.min.js": {
-      "bytes": 8374,
+      "bytes": 8429,
       "formatted": "8.2 KB"
     },
     "demo.min.css": {
@@ -18,8 +18,8 @@
       "formatted": "10.2 KB"
     },
     "terminal.bundle.min.js": {
-      "bytes": 13870,
-      "formatted": "13.5 KB"
+      "bytes": 13925,
+      "formatted": "13.6 KB"
     }
   },
   "cdn": {

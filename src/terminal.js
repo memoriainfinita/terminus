@@ -449,7 +449,8 @@ class TerminalComponent {
       this.options.onTab(val, this);
       return;
     }
-    const candidates = ['clear', ...Object.keys(this.options.commands)];
+    // Default: complete single-word command names only (skip multi-word keys like "cd foo/")
+    const candidates = ['clear', ...Object.keys(this.options.commands).filter(k => !/\s/.test(k))];
     const match = candidates.find(k => k.startsWith(val) && k !== val);
     if (match) this.inputElement.value = match;
   }
@@ -474,8 +475,11 @@ class TerminalComponent {
           const val = this.inputElement.value;
           this.addToOutput('> ' + val);
           this.inputElement.value = '';
-          this.promptElement.textContent = this.options.prompt;
           this.inputElement.removeEventListener('keydown', onEnter, true);
+          // Restore prompt after the awaiting code has had a chance to run
+          Promise.resolve().then(() => {
+            this.promptElement.textContent = this.options.prompt;
+          });
           resolve(val);
         }
       };
