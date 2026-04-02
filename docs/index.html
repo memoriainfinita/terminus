@@ -21,16 +21,14 @@
   <!-- HEADER -->
   <header class="navbar" role="navigation" aria-label="Principal">
     <div class="container">
-      <div class="card">
-        <div class="card-h">
-          <div class="brand" aria-label="Marca">
-            <strong>TERMINUS</strong>
-          </div>
-          <div class="nav-actions">
-            <button class="btn ghost" id="btnTheme" aria-label="Cambiar tema">Claro/Oscuro</button>
-            <a class="btn accent" href="#configurator" aria-label="Ir al Configurador">Configurador</a>
-            <a class="btn" href="#demo" aria-label="Ir a la Demo">Demo</a>
-          </div>
+      <div class="nav-inner">
+        <div class="brand" aria-label="Marca">
+          <strong>TERMINUS</strong>
+        </div>
+        <div class="nav-actions">
+          <button class="btn ghost" id="btnTheme" aria-label="Cambiar tema">Claro/Oscuro</button>
+          <a class="btn" href="#demo" aria-label="Ir a la Demo">Demo</a>
+          <a class="btn accent" href="#configurator" aria-label="Ir al Configurador">Configurador</a>
         </div>
       </div>
     </div>
@@ -39,9 +37,23 @@
   <div class="layout">
     <!-- MAIN -->
     <main>
-      <section id="hero" class="hero container">
-        <h1>TERMINUS <span class="text-accent">Terminal Component</span></h1>
-        <p class="text-lg">Componente terminal profesional y confiable. Sistema de temas avanzado, comandos personalizables, historial interactivo, y configurador en tiempo real. <strong>Vanilla HTML/CSS/JS</strong> - sin dependencias.</p>
+      <section id="hero" class="hero-split container">
+        <div class="hero-copy">
+          <p class="hero-label">Terminal Component</p>
+          <h1>TERMINUS</h1>
+          <p class="hero-desc">Componente terminal embebible para la web. Sin frameworks, sin dependencias. <strong>Vanilla HTML/CSS/JS</strong> — copia dos l&iacute;neas y funciona.</p>
+          <div class="hero-actions">
+            <a class="btn accent" href="#snippet">Instalar</a>
+            <a class="btn ghost" href="#options">Documentaci&oacute;n</a>
+          </div>
+        </div>
+        <div class="hero-terminal">
+          <div class="gnu-terminal"
+               id="heroTerminal"
+               data-theme="dark"
+               data-prompt="terminus$">
+          </div>
+        </div>
       </section>
 
       <!-- CARACTERÍSTICAS PRINCIPALES -->
@@ -54,23 +66,23 @@
           
           <div class="grid cols-2 gap-4 mb-6">
             <div class="card feature-card">
-              <h3 class="feature-title">Ultra Rápido & Ligero</h3>
-              <p class="feature-desc">Solo 5.1KB minificado. Zero dependencias. Vanilla JS puro con carga instantánea.</p>
+              <h3 class="feature-title">Ligero y sin dependencias</h3>
+              <p class="feature-desc">4.9 KB CSS + 7.1 KB JS minificado. Cero dependencias externas. Carga instantánea.</p>
             </div>
 
             <div class="card feature-card">
-              <h3 class="feature-title">Plug & Play</h3>
-              <p class="feature-desc">Auto-inicialización inteligente. Funciona inmediatamente sin configuración adicional.</p>
+              <h3 class="feature-title">Auto-init</h3>
+              <p class="feature-desc">Un elemento con clase <code>gnu-terminal</code> es suficiente. Sin configuración adicional.</p>
             </div>
 
             <div class="card feature-card">
-              <h3 class="feature-title">4 Temas + Personalizable</h3>
-              <p class="feature-desc">Matrix, Ocean, Amber y Dark. Totalmente customizable con CSS variables y configurador visual.</p>
+              <h3 class="feature-title">4 temas &mdash; API programable</h3>
+              <p class="feature-desc">Matrix, Ocean, Amber y Dark. Comandos como funciones, TUI, play(), readline() y más.</p>
             </div>
 
             <div class="card feature-card">
-              <h3 class="feature-title">Responsive & Mobile</h3>
-              <p class="feature-desc">Diseño responsive completo. Optimizado para desktop, tablet y móvil con teclado virtual.</p>
+              <h3 class="feature-title">Embebible en cualquier contexto</h3>
+              <p class="feature-desc">Portfolio, documentación, demo de producto. Compatible con cualquier framework o página estática.</p>
             </div>
           </div>
         </div>
@@ -687,5 +699,32 @@ Comandos disponibles:
   
   <!-- Demo Page JS (minified) -->
   <script src="dist/demo.min.js" defer></script>
+
+  <!-- Hero animated terminal -->
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      const el = document.getElementById('heroTerminal');
+      if (!el || !el.terminalComponent) return;
+      const t = el.terminalComponent;
+      t.setCommands({
+        'whoami':  'memoriainfinita',
+        'ls':      'terminal.js   terminal.css   README.md   docs/',
+        'version': 'Terminus v2.0.0',
+        'help':    'Comandos: whoami · ls · version · clear',
+      });
+      setTimeout(async () => {
+        await t.play([
+          { type: 'pause', delay: 600 },
+          { type: 'cmd',   text: 'whoami',  delay: 0 },
+          { type: 'pause', delay: 500 },
+          { type: 'cmd',   text: 'ls',      delay: 0 },
+          { type: 'pause', delay: 600 },
+          { type: 'cmd',   text: 'version', delay: 0 },
+          { type: 'pause', delay: 800 },
+          { type: 'outputHTML', html: '<span style="color:var(--terminal-success,#00ff88)">listo. escribe help para empezar.</span>', delay: 0 },
+        ]);
+      }, 800);
+    });
+  </script>
 </body>
 </html>
