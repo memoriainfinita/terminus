@@ -70,14 +70,15 @@
               </div>
             </div>
             <div class="gnu-terminal" id="ex-portfolio" data-theme="amber" data-prompt="elliot@fsociety:~$"
-                 data-welcome="fsociety/  e-corp/  kontrol/  .secrets/  README.md&#10;&#10;hello, friend. escribe help para ver comandos."
+                 data-welcome="elliot@fsociety:~$ — acceso restringido&#10;&#10;hello, friend. escribe login para autenticarte."
                  data-commands='{
-                   "help":             "whoami · ls · cat README.md · skills · nmap localhost · clear",
+                   "help":             "login · whoami · ls · cat README.md · skills · nmap localhost · clear",
                    "whoami":           "elliot alderson. senior engineer, E Corp. veo lo que haces online.",
                    "ls":               "fsociety/  e-corp/  kontrol/  .secrets/  README.md  — usa cd <carpeta>/ para explorar",
                    "cat README.md":    "full-stack dev. ciberseguridad. encuentro lo que la gente esconde. actualmente: 5/9.",
                    "skills":           "python · c · ruby · bash · network forensics · social engineering",
                    "nmap localhost":   "22/tcp open ssh  80/tcp open http  443/tcp open https  — no eres tan seguro como crees.",
+                   "cd fsociety/":     "install.sh  members.txt  plan_5-9.md  darkweb/  exploit/",
                    "cd e-corp/":       "finance/  servers/  employees.csv  backup_keys.asc  [RESTRICTED]",
                    "cd kontrol/":      "[ACCESO DENEGADO] directorio encriptado. clave: ?",
                    "cd .secrets/":     "nmap_results/  passwords.gpg  .diary  [no deberias estar aqui]",
@@ -373,16 +374,15 @@ t.setCommands({
     // ── 1. Elliot Alderson — setPrompt() + readline() + onTab ────────
     var tPortfolio = getT('ex-portfolio');
     if (tPortfolio) {
-      var elliotDir = '~';
-      var elliotFs = {
-        '~':         ['fsociety/', 'e-corp/', 'kontrol/', '.secrets/', 'README.md'],
-        'fsociety':  ['install.sh', 'members.txt', 'plan_5-9.md', 'darkweb/', 'exploit/'],
-      };
+      var elliotLoggedIn = false;
 
-      // onTab contextual: completa archivos del directorio actual
+      // onTab contextual: antes del login completa comandos, después archivos de fsociety
       tPortfolio.options.onTab = function(val, term) {
-        var files = elliotFs[elliotDir] || [];
-        var matches = files.filter(function(f) { return f.startsWith(val.split(' ').pop()); });
+        var files = elliotLoggedIn
+          ? ['install.sh', 'members.txt', 'plan_5-9.md', 'darkweb/', 'exploit/']
+          : ['login', 'whoami', 'ls', 'nmap ', 'cat ', 'skills', 'clear'];
+        var typed = val.split(' ').pop();
+        var matches = files.filter(function(f) { return f.startsWith(typed); });
         if (matches.length === 1) {
           var parts = val.split(' ');
           parts[parts.length - 1] = matches[0];
@@ -392,28 +392,20 @@ t.setCommands({
         }
       };
 
-      // cd fsociety/ — ejecuta install.sh con readline + setPrompt
       tPortfolio.setCommands({
-        'cd fsociety/': async function(args, term) {
-          elliotDir = 'fsociety';
-          term.addToOutput('install.sh  members.txt  plan_5-9.md  darkweb/  exploit/');
-          term.addToOutput('');
-          term.addToOutput('[!] se detecta install.sh — ejecutando...');
-          await sleep(700);
-          term.addOutputHTML('<span style="color:var(--accent)">./install.sh</span>');
-          await sleep(500);
-          term.addToOutput('fsociety secure shell v1.0 — autenticacion requerida');
+        'login': async function(args, term) {
+          term.addToOutput('fsociety secure shell v1.0');
           term.addToOutput('');
           var pass = await term.readline('password: ');
           await sleep(600);
           if (pass.toLowerCase() === 'mrrobot') {
             term.addOutputHTML('<span style="color:var(--accent)">[+] acceso concedido. bienvenido de nuevo.</span>');
-            await sleep(400);
+            await sleep(300);
             term.addToOutput('');
+            elliotLoggedIn = true;
             term.setPrompt('elliot@fsociety:~/fsociety$');
           } else {
             term.addOutputHTML('<span style="color:#f45452">[-] acceso denegado.</span>');
-            elliotDir = '~';
           }
         },
       });
