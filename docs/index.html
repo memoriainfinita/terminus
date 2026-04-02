@@ -114,18 +114,18 @@
                  style="height:300px;"></div>
           </div>
 
-          <!-- 4: WOPR / WarGames — enterMode() -->
+          <!-- 4: GNU Midnight Commander — enterMode() -->
           <div>
             <div class="card" style="margin-bottom:8px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;">
-              <strong>WOPR · WarGames</strong>
+              <strong>GNU Midnight Commander</strong>
               <div style="display:flex;gap:6px;">
                 <span class="tag">enterMode()</span>
                 <span class="tag">dark</span>
               </div>
             </div>
-            <div class="gnu-terminal" id="ex-wopr" data-theme="dark" data-prompt="WOPR>"
-                 data-welcome="GREETINGS, PROFESSOR FALKEN.&#10;&#10;Escribe wopr para comenzar."
-                 data-commands='{"help":"wopr · clear"}'
+            <div class="gnu-terminal" id="ex-wopr" data-theme="dark" data-prompt="root@linux-0.01:/#"
+                 data-welcome="Linux version 0.01 (Linus Torvalds, 1991)&#10;GNU Midnight Commander 4.1&#10;&#10;Escribe mc para explorar el sistema."
+                 data-commands='{"help":"mc · clear"}'
                  style="height:300px;"></div>
           </div>
 
@@ -461,84 +461,135 @@ t.setCommands({
       });
     }
 
-    // ── 4. WOPR / WarGames — enterMode() ──────────────────────────────
+    // ── 4. GNU Midnight Commander — enterMode() ───────────────────────
     var tWopr = getT('ex-wopr');
     if (tWopr) {
-      var games = ['THERMONUCLEAR WAR', 'CHESS', "FALKEN'S MAZE"];
-      var sel = 0;
+      var mcFs = {
+        '/':                      ['bin/', 'dev/', 'etc/', 'home/', 'lib/', 'proc/', 'root/', 'usr/', 'var/'],
+        '/bin/':                  ['bash', 'cat', 'cp', 'date', 'echo', 'grep', 'kill', 'ls', 'mkdir', 'mv', 'rm'],
+        '/dev/':                  ['null', 'random', 'sda', 'sda1', 'tty', 'urandom', 'zero'],
+        '/etc/':                  ['fstab', 'hostname', 'hosts', 'motd', 'passwd', 'resolv.conf'],
+        '/home/':                 ['linus/'],
+        '/home/linus/':           ['.bash_history', '.profile', 'COPYING', 'just-for-fun.txt', 'linux-0.01/'],
+        '/home/linus/linux-0.01/':['Makefile', 'README', 'fs/', 'include/', 'init/', 'kernel/', 'mm/'],
+        '/lib/':                  ['libc.so.6', 'libm.so.6', 'modules/'],
+        '/proc/':                 ['1/', 'cpuinfo', 'meminfo', 'uptime', 'version'],
+        '/root/':                 ['.bash_history', '.bashrc', '.ssh/'],
+        '/usr/':                  ['bin/', 'include/', 'lib/', 'local/', 'share/'],
+        '/var/':                  ['log/', 'mail/', 'run/', 'spool/', 'tmp/'],
+      };
+      var mcPath = '/';
+      var mcSel = 0;
+      var mcViewStart = 0;
+      var MC_ROWS = 8;
+      var MC_IW = 22;
 
-      function renderMenu(t) {
-        t.clear();
-        t.addOutputHTML('<span style="color:var(--accent)">GREETINGS, PROFESSOR FALKEN.</span>');
-        t.addOutputHTML('');
-        t.addOutputHTML('SHALL WE PLAY A GAME?');
-        t.addOutputHTML('');
-        games.forEach(function(g, i) {
-          var arrow = i === sel ? '▶ ' : '  ';
-          var style = i === sel ? 'color:var(--accent);font-weight:bold' : 'color:var(--muted)';
-          t.addOutputHTML('<span style="' + style + '">' + arrow + g + '</span>');
-        });
-        t.addOutputHTML('');
-        t.addOutputHTML('<span style="color:var(--muted);font-size:11px">↑↓ seleccionar · Enter confirmar · Esc salir</span>');
+      function mcPad(s, n) {
+        s = s || '';
+        return s.length >= n ? s.slice(0, n) : s + ' '.repeat(n - s.length);
       }
+      function mcEsc(s) {
+        return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+      }
+      function mcTitleSep(path) {
+        var maxText = MC_IW - 4;
+        var text = path.length > maxText ? '\u2026' + path.slice(-(maxText - 1)) : path;
+        var tp = ' ' + text + ' ';
+        var rem = MC_IW - tp.length;
+        var ld = Math.floor(rem / 2);
+        return '\u2500'.repeat(ld) + tp + '\u2500'.repeat(rem - ld);
+      }
+      function mcRender(t) {
+        var items = mcFs[mcPath] || [];
+        if (mcSel < mcViewStart) mcViewStart = mcSel;
+        if (mcSel >= mcViewStart + MC_ROWS) mcViewStart = mcSel - MC_ROWS + 1;
+        var visible = items.slice(mcViewStart, mcViewStart + MC_ROWS);
+        var selItem = items[mcSel] || '';
+        var rightPath = selItem.endsWith('/')
+          ? (mcPath === '/' ? '/' + selItem : mcPath + selItem)
+          : mcPath;
+        var rightItems = (mcFs[rightPath] || []).slice(0, MC_ROWS);
 
-      async function thermonuclearWar(t) {
-        var lines = [
-          ['', null],
-          ['INICIANDO SIMULACIÓN TERMONUCLEAR...', '#f45452'],
-          ['', null],
-          ['OBJETIVOS PRIMARIOS: 1.072', null],
-          ['OBJETIVOS SECUNDARIOS: 976', null],
-          ['', null],
-          ['TIEMPO ESTIMADO: 27 MINUTOS', null],
-          ['', null],
-          ['...', 'var(--muted)'],
-          ['...', 'var(--muted)'],
-          ['...', 'var(--muted)'],
-          ['', null],
-          ['¿EXTRAÑO, VERDAD?', 'var(--accent)'],
-          ['', null],
-          ['LA ÚNICA JUGADA GANADORA', 'var(--accent)'],
-          ['ES NO JUGAR.', 'var(--accent)'],
-          ['', null],
-          ['¿UNA PARTIDA DE AJEDREZ?', 'var(--muted)'],
-        ];
-        for (var i = 0; i < lines.length; i++) {
-          await sleep(700);
-          var text = lines[i][0], color = lines[i][1];
-          t.addOutputHTML(color ? '<span style="color:' + color + '">' + text + '</span>' : (text || ''));
+        var hdr = '\u250c' + mcTitleSep(mcPath) + '\u252c' + mcTitleSep(rightPath) + '\u2510';
+        var ftr = '\u2514' + '\u2500'.repeat(MC_IW) + '\u2534' + '\u2500'.repeat(MC_IW) + '\u2518';
+
+        var html = '<div style="white-space:pre;line-height:1.5;font-family:inherit;">';
+        html += '<span style="color:var(--accent);">' + mcEsc(hdr) + '\n</span>';
+        for (var i = 0; i < MC_ROWS; i++) {
+          var lItem = visible[i] || '';
+          var rItem = rightItems[i] || '';
+          var absIdx = i + mcViewStart;
+          var lSel = absIdx === mcSel;
+          var lStr = ' ' + (lSel ? '\u25b6 ' : '  ') + mcPad(lItem, MC_IW - 4) + ' ';
+          var rStr = '   ' + mcPad(rItem, MC_IW - 4) + ' ';
+          var line = '\u2502' + lStr + '\u2502' + rStr + '\u2502';
+          if (lSel) {
+            html += '<span style="background:var(--accent);color:#000;">' + mcEsc(line) + '</span>\n';
+          } else {
+            html += mcEsc(line) + '\n';
+          }
         }
+        html += '<span style="color:var(--accent);">' + mcEsc(ftr) + '\n</span>';
+        html += '<span style="color:var(--muted);"> F1Help  F3View  F5Copy  F7Mkdir  F10Quit\n';
+        html += ' \u2191\u2193 navegar   Enter abrir   Esc subir   q salir</span>';
+        html += '</div>';
+
+        t.clear();
+        t.addOutputHTML(html);
       }
 
       tWopr.setCommands({
-        'wopr': function(args, t) {
-          sel = 0;
-          renderMenu(t);
+        'mc': function(args, t) {
+          mcPath = '/';
+          mcSel = 0;
+          mcViewStart = 0;
+          mcRender(t);
           t.enterMode({
             onKey: function(key, e, term) {
+              var items = mcFs[mcPath] || [];
               if (key === 'ArrowUp') {
-                sel = (sel - 1 + games.length) % games.length;
-                renderMenu(term);
+                mcSel = Math.max(0, mcSel - 1);
+                mcRender(term);
               } else if (key === 'ArrowDown') {
-                sel = (sel + 1) % games.length;
-                renderMenu(term);
+                mcSel = Math.min(items.length - 1, mcSel + 1);
+                mcRender(term);
               } else if (key === 'Enter') {
-                term.exitMode();
-                if (sel === 0) {
-                  thermonuclearWar(term);
-                } else if (sel === 1) {
-                  term.clear();
-                  term.addOutputHTML('<span style="color:var(--muted)">Fine. Let\'s play chess.</span>');
-                } else {
-                  term.clear();
-                  term.addOutputHTML('<span style="color:var(--muted)">Falken\'s Maze... a subtle puzzle.</span>');
+                var sel = items[mcSel];
+                if (sel && sel.endsWith('/')) {
+                  var newPath = mcPath === '/' ? '/' + sel : mcPath + sel;
+                  if (mcFs[newPath]) {
+                    mcPath = newPath;
+                    mcSel = 0;
+                    mcViewStart = 0;
+                    mcRender(term);
+                  }
                 }
+              } else if (key === 'Escape') {
+                e.preventDefault();
+                if (mcPath !== '/') {
+                  var parts = mcPath.replace(/\/$/, '').split('/');
+                  parts.pop();
+                  mcPath = (parts.length > 1 ? parts.join('/') : '') + '/';
+                  if (mcPath === '//' || mcPath === '') mcPath = '/';
+                  mcSel = 0;
+                  mcViewStart = 0;
+                  mcRender(term);
+                } else {
+                  term.exitMode();
+                  term.addOutputHTML('<span style="color:var(--muted)">mc cerrado. Escribe mc para volver.</span>');
+                }
+              } else if (key === 'q' || key === 'F10') {
+                term.exitMode();
+                term.addOutputHTML('<span style="color:var(--muted)">mc cerrado. Escribe mc para volver.</span>');
               }
             },
-            onCtrlC: function(term) { term.exitMode(); }
+            onCtrlC: function(term) {
+              term.exitMode();
+              term.addOutputHTML('<span style="color:var(--muted)">mc cerrado.</span>');
+            }
           });
         },
-        'help': 'wopr · clear'
+        'help': 'mc \u00b7 clear'
       });
     }
 
