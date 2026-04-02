@@ -114,18 +114,18 @@
                  style="height:300px;"></div>
           </div>
 
-          <!-- 4: GNU Midnight Commander — enterMode() -->
+          <!-- 4: htop — enterMode() -->
           <div>
             <div class="card" style="margin-bottom:8px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;">
-              <strong>GNU Midnight Commander</strong>
+              <strong>htop · linux-7.0-rc1</strong>
               <div style="display:flex;gap:6px;">
                 <span class="tag">enterMode()</span>
                 <span class="tag">dark</span>
               </div>
             </div>
-            <div class="gnu-terminal" id="ex-wopr" data-theme="dark" data-prompt="root@linux-0.01:/#"
-                 data-welcome="Linux version 0.01 (Linus Torvalds, 1991)&#10;GNU Midnight Commander 4.1&#10;&#10;Escribe mc para explorar el sistema."
-                 data-commands='{"help":"mc · clear"}'
+            <div class="gnu-terminal" id="ex-wopr" data-theme="dark" data-prompt="linus@kernel.org:~$"
+                 data-welcome="Linux 7.0-rc1 (x86_64)&#10;linus@kernel.org | 4 CPUs | 16G RAM&#10;&#10;Escribe htop para monitorear procesos."
+                 data-commands='{"help":"htop · clear"}'
                  style="height:300px;"></div>
           </div>
 
@@ -461,135 +461,102 @@ t.setCommands({
       });
     }
 
-    // ── 4. GNU Midnight Commander — enterMode() ───────────────────────
+    // ── 4. htop — enterMode() ──────────────────────────────────────────
     var tWopr = getT('ex-wopr');
     if (tWopr) {
-      var mcFs = {
-        '/':                      ['bin/', 'dev/', 'etc/', 'home/', 'lib/', 'proc/', 'root/', 'usr/', 'var/'],
-        '/bin/':                  ['bash', 'cat', 'cp', 'date', 'echo', 'grep', 'kill', 'ls', 'mkdir', 'mv', 'rm'],
-        '/dev/':                  ['null', 'random', 'sda', 'sda1', 'tty', 'urandom', 'zero'],
-        '/etc/':                  ['fstab', 'hostname', 'hosts', 'motd', 'passwd', 'resolv.conf'],
-        '/home/':                 ['linus/'],
-        '/home/linus/':           ['.bash_history', '.profile', 'COPYING', 'just-for-fun.txt', 'linux-0.01/'],
-        '/home/linus/linux-0.01/':['Makefile', 'README', 'fs/', 'include/', 'init/', 'kernel/', 'mm/'],
-        '/lib/':                  ['libc.so.6', 'libm.so.6', 'modules/'],
-        '/proc/':                 ['1/', 'cpuinfo', 'meminfo', 'uptime', 'version'],
-        '/root/':                 ['.bash_history', '.bashrc', '.ssh/'],
-        '/usr/':                  ['bin/', 'include/', 'lib/', 'local/', 'share/'],
-        '/var/':                  ['log/', 'mail/', 'run/', 'spool/', 'tmp/'],
-      };
-      var mcPath = '/';
-      var mcSel = 0;
-      var mcViewStart = 0;
-      var MC_ROWS = 8;
-      var MC_IW = 22;
+      var kver = 'linux-7.0-rc1';
+      var htopProcs = [
+        { pid:   1, user: 'root',  cpu:  0.0, mem:  0.1, cmd: '/sbin/init' },
+        { pid:   2, user: 'root',  cpu:  0.0, mem:  0.0, cmd: 'kthreadd' },
+        { pid:  89, user: 'root',  cpu:  0.3, mem:  0.2, cmd: 'udevd' },
+        { pid: 142, user: 'root',  cpu:  0.0, mem:  0.4, cmd: 'syslogd' },
+        { pid: 389, user: 'linus', cpu:  0.7, mem:  1.2, cmd: 'make -j16 bzImage' },
+        { pid: 412, user: 'linus', cpu: 87.3, mem:  6.1, cmd: 'cc1 linux-7.0-rc1/kernel/sched/core.c', easter: true },
+        { pid: 421, user: 'linus', cpu:  0.4, mem:  0.5, cmd: 'cc1 linux-7.0-rc1/fs/ext4/inode.c' },
+        { pid: 495, user: 'linus', cpu:  0.1, mem:  0.2, cmd: 'vim MAINTAINERS' },
+        { pid: 552, user: 'linus', cpu:  0.0, mem:  0.1, cmd: 'bash' },
+        { pid: 601, user: 'root',  cpu:  0.0, mem:  0.3, cmd: 'htop' },
+      ];
+      var htopSel = 0;
+      var htopDead = [];
 
-      function mcPad(s, n) {
-        s = s || '';
-        return s.length >= n ? s.slice(0, n) : s + ' '.repeat(n - s.length);
-      }
-      function mcEsc(s) {
-        return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-      }
-      function mcTitleSep(path) {
-        var maxText = MC_IW - 4;
-        var text = path.length > maxText ? '\u2026' + path.slice(-(maxText - 1)) : path;
-        var tp = ' ' + text + ' ';
-        var rem = MC_IW - tp.length;
-        var ld = Math.floor(rem / 2);
-        return '\u2500'.repeat(ld) + tp + '\u2500'.repeat(rem - ld);
-      }
-      function mcRender(t) {
-        var items = mcFs[mcPath] || [];
-        if (mcSel < mcViewStart) mcViewStart = mcSel;
-        if (mcSel >= mcViewStart + MC_ROWS) mcViewStart = mcSel - MC_ROWS + 1;
-        var visible = items.slice(mcViewStart, mcViewStart + MC_ROWS);
-        var selItem = items[mcSel] || '';
-        var rightPath = selItem.endsWith('/')
-          ? (mcPath === '/' ? '/' + selItem : mcPath + selItem)
-          : mcPath;
-        var rightItems = (mcFs[rightPath] || []).slice(0, MC_ROWS);
+      function hEsc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+      function hPad(s, n, r) { s = String(s); return s.length >= n ? s.slice(0,n) : r ? ' '.repeat(n-s.length)+s : s+' '.repeat(n-s.length); }
+      function hBar(pct, w) { var f = Math.round(pct/100*w); return '[' + '|'.repeat(f) + ' '.repeat(w-f) + ']'; }
 
-        var hdr = '\u250c' + mcTitleSep(mcPath) + '\u252c' + mcTitleSep(rightPath) + '\u2510';
-        var ftr = '\u2514' + '\u2500'.repeat(MC_IW) + '\u2534' + '\u2500'.repeat(MC_IW) + '\u2518';
-
+      function htopRender(t) {
+        var procs = htopProcs.filter(function(p){ return htopDead.indexOf(p.pid) === -1; });
+        if (htopSel >= procs.length) htopSel = Math.max(0, procs.length - 1);
+        var w = 20;
         var html = '<div style="white-space:pre;line-height:1.5;font-family:inherit;">';
-        html += '<span style="color:var(--accent);">' + mcEsc(hdr) + '\n</span>';
-        for (var i = 0; i < MC_ROWS; i++) {
-          var lItem = visible[i] || '';
-          var rItem = rightItems[i] || '';
-          var absIdx = i + mcViewStart;
-          var lSel = absIdx === mcSel;
-          var lStr = ' ' + (lSel ? '\u25b6 ' : '  ') + mcPad(lItem, MC_IW - 4) + ' ';
-          var rStr = '   ' + mcPad(rItem, MC_IW - 4) + ' ';
-          var line = '\u2502' + lStr + '\u2502' + rStr + '\u2502';
-          if (lSel) {
-            html += '<span style="background:var(--accent);color:#000;">' + mcEsc(line) + '</span>\n';
+        html += ' <span style="color:var(--accent)">CPU</span>' + hBar(87.3,w) + ' 87.3%  Tasks: 90, 2 running\n';
+        html += ' <span style="color:var(--accent)">Mem</span>[' + '|'.repeat(12) + ' '.repeat(w-12) + '] 5.2G/16G  Load: 3.42\n';
+        html += ' <span style="color:var(--accent)">Swp</span>[' + ' '.repeat(w) + '] 0K/2G     Uptime: 2d 14:07\n';
+        html += '\n';
+        html += '<span style="color:var(--accent)">  PID USER       CPU%  MEM%   Command</span>\n';
+        procs.forEach(function(p, i) {
+          var sel = i === htopSel;
+          var row = hPad(p.pid,5,true)+' '+hPad(p.user,9)+' '+hPad(p.cpu.toFixed(1),5,true)+' '+hPad(p.mem.toFixed(1),5,true)+'   '+hEsc(p.cmd);
+          if (sel) {
+            html += '<span style="background:var(--accent);color:#000;">'+row+'</span>\n';
+          } else if (p.cpu > 50) {
+            html += '<span style="color:#f45452;">'+row+'</span>\n';
+          } else if (p.user === 'linus') {
+            html += '<span style="color:var(--accent);">'+row+'</span>\n';
           } else {
-            html += mcEsc(line) + '\n';
+            html += row+'\n';
           }
-        }
-        html += '<span style="color:var(--accent);">' + mcEsc(ftr) + '\n</span>';
-        html += '<span style="color:var(--muted);"> F1Help  F3View  F5Copy  F7Mkdir  F10Quit\n';
-        html += ' \u2191\u2193 navegar   Enter abrir   Esc subir   q salir</span>';
+        });
+        html += '\n';
+        html += '<span style="color:var(--muted)"> F9Kill  F10Quit   &uarr;&darr; navegar   k matar proceso   q salir</span>';
         html += '</div>';
-
         t.clear();
         t.addOutputHTML(html);
       }
 
       tWopr.setCommands({
-        'mc': function(args, t) {
-          mcPath = '/';
-          mcSel = 0;
-          mcViewStart = 0;
-          mcRender(t);
+        'htop': function(args, t) {
+          htopSel = 0;
+          htopDead = [];
+          htopRender(t);
           t.enterMode({
             onKey: function(key, e, term) {
-              var items = mcFs[mcPath] || [];
+              var procs = htopProcs.filter(function(p){ return htopDead.indexOf(p.pid) === -1; });
               if (key === 'ArrowUp') {
-                mcSel = Math.max(0, mcSel - 1);
-                mcRender(term);
+                htopSel = Math.max(0, htopSel - 1);
+                htopRender(term);
               } else if (key === 'ArrowDown') {
-                mcSel = Math.min(items.length - 1, mcSel + 1);
-                mcRender(term);
-              } else if (key === 'Enter') {
-                var sel = items[mcSel];
-                if (sel && sel.endsWith('/')) {
-                  var newPath = mcPath === '/' ? '/' + sel : mcPath + sel;
-                  if (mcFs[newPath]) {
-                    mcPath = newPath;
-                    mcSel = 0;
-                    mcViewStart = 0;
-                    mcRender(term);
-                  }
-                }
-              } else if (key === 'Escape') {
-                e.preventDefault();
-                if (mcPath !== '/') {
-                  var parts = mcPath.replace(/\/$/, '').split('/');
-                  parts.pop();
-                  mcPath = (parts.length > 1 ? parts.join('/') : '') + '/';
-                  if (mcPath === '//' || mcPath === '') mcPath = '/';
-                  mcSel = 0;
-                  mcViewStart = 0;
-                  mcRender(term);
+                htopSel = Math.min(procs.length - 1, htopSel + 1);
+                htopRender(term);
+              } else if (key === 'k' || key === 'F9') {
+                var proc = procs[htopSel];
+                if (!proc) return;
+                htopDead.push(proc.pid);
+                term.exitMode();
+                if (proc.easter) {
+                  term.addOutputHTML('<span style="color:#f45452">[ SIGKILL &rarr; cc1 (PID ' + proc.pid + '): ' + kver + '/kernel/sched/core.c ]</span>');
+                  term.addOutputHTML('<span style="color:#f45452">[ Build de ' + kver + ' interrumpido. ]</span>');
+                  term.addOutputHTML('');
+                  term.addOutputHTML('<span style="color:var(--muted)">From: torvalds@linux-foundation.org</span>');
+                  term.addOutputHTML('<span style="color:var(--muted)">Subject: ??????????????????</span>');
+                  term.addOutputHTML('');
+                  term.addOutputHTML('<span style="color:var(--accent)">  WHO THE F*** KILLED MY cc1?</span>');
+                  term.addOutputHTML('<span style="color:var(--muted)">  ' + kver + ' no va a compilarse solo.</span>');
                 } else {
-                  term.exitMode();
-                  term.addOutputHTML('<span style="color:var(--muted)">mc cerrado. Escribe mc para volver.</span>');
+                  term.addOutputHTML('<span style="color:var(--muted)">[ SIGKILL &rarr; ' + hEsc(proc.cmd.split(' ')[0]) + ' (PID ' + proc.pid + ') ]</span>');
                 }
               } else if (key === 'q' || key === 'F10') {
                 term.exitMode();
-                term.addOutputHTML('<span style="color:var(--muted)">mc cerrado. Escribe mc para volver.</span>');
+                term.addOutputHTML('<span style="color:var(--muted)">htop cerrado. Escribe htop para volver.</span>');
               }
             },
             onCtrlC: function(term) {
               term.exitMode();
-              term.addOutputHTML('<span style="color:var(--muted)">mc cerrado.</span>');
+              term.addOutputHTML('<span style="color:var(--muted)">htop cerrado.</span>');
             }
           });
         },
-        'help': 'mc \u00b7 clear'
+        'help': 'htop &middot; clear'
       });
     }
 
