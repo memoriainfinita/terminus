@@ -267,7 +267,8 @@ Comandos disponibles:
                   <tr><td><code>t.clear()</code></td><td>Limpia el output</td></tr>
                   <tr><td><code>t.play(steps)</code></td><td>Reproduce una secuencia animada</td></tr>
                   <tr><td><code>t.readline(prompt)</code></td><td>Espera input del usuario (Promise)</td></tr>
-                  <tr><td><code>t.lock() / t.unlock()</code></td><td>Bloquea/desbloquea el input</td></tr>
+                  <tr><td><code>t.enterMode(handler)</code></td><td>Activa modo TUI (oculta input, captura teclado)</td></tr>
+                  <tr><td><code>t.exitMode()</code></td><td>Sale del modo TUI y restaura el input</td></tr>
                 </tbody>
               </table>
             </div>

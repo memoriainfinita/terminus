@@ -440,24 +440,24 @@ class TerminusDemo {
 
     switch (cdnProvider) {
       case 'jsdelivr':
-        cssUrl = 'https://cdn.jsdelivr.net/gh/memoriainfinita/terminus@latest/docs/dist/terminal.min.css';
-        jsUrl = 'https://cdn.jsdelivr.net/gh/memoriainfinita/terminus@latest/docs/dist/terminal.min.js';
+        cssUrl = 'https://cdn.jsdelivr.net/gh/memoriainfinita/terminus@main/docs/dist/terminal.min.css';
+        jsUrl = 'https://cdn.jsdelivr.net/gh/memoriainfinita/terminus@main/docs/dist/terminal.min.js';
         break;
       case 'github':
         cssUrl = 'https://memoriainfinita.github.io/terminus/dist/terminal.min.css';
         jsUrl = 'https://memoriainfinita.github.io/terminus/dist/terminal.min.js';
         break;
       case 'bundle':
-        cssUrl = 'https://cdn.jsdelivr.net/gh/memoriainfinita/terminus@latest/docs/dist/bundle.min.css';
-        jsUrl = 'https://cdn.jsdelivr.net/gh/memoriainfinita/terminus@latest/docs/dist/bundle.min.js';
+        cssUrl = null;
+        jsUrl = 'https://cdn.jsdelivr.net/gh/memoriainfinita/terminus@main/docs/dist/terminal.bundle.min.js';
         break;
     }
 
     const welcomeAttr = this.config.welcome ? `\n     data-welcome="${this.escapeHtml(this.config.welcome)}"` : '';
     const commandsAttr = Object.keys(this.config.commands).length > 0 ? `\n     data-commands='${JSON.stringify(this.config.commands)}'` : '';
 
-    const snippet = `&lt;link rel="stylesheet" href="${cssUrl}"&gt;
-&lt;script src="${jsUrl}" defer&gt;&lt;/script&gt;
+    const linkTag = cssUrl ? `&lt;link rel="stylesheet" href="${cssUrl}"&gt;\n` : '';
+    const snippet = `${linkTag}&lt;script src="${jsUrl}" defer&gt;&lt;/script&gt;
 
 &lt;div class="gnu-terminal"
      data-theme="${this.config.theme}"
