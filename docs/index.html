@@ -244,8 +244,15 @@ Comandos disponibles:
                     <td><code>{}</code></td>
                     <td>Comandos como strings. Para lógica usa la API JS.</td>
                   </tr>
+                  <tr>
+                    <td><code>data-autofocus</code></td>
+                    <td>Flag</td>
+                    <td><code>ausente</code></td>
+                    <td>Enfoca el input al cargar. Sin el atributo, no hace scroll ni focus.</td>
+                  </tr>
                 </tbody>
               </table>
+              <p class="text-sm text-muted" style="margin-top:10px;">El componente requiere <code>height</code> fijo en el elemento (no <code>min-height</code>) para que el scroll sea interno. Sin él, el terminal crece y la página scrollea en lugar del contenido. Ejemplo: <code>style="height:400px;"</code></p>
             </div>
 
             <div class="subsection-mb">

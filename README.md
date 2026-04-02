@@ -38,6 +38,7 @@
 <script src="https://cdn.jsdelivr.net/gh/memoriainfinita/terminus@main/docs/dist/terminal.min.js" defer></script>
 
 <div class="gnu-terminal"
+     style="height:400px;"
      data-theme="dark"
      data-prompt="gnu$"
      data-commands='{"help":"Lista comandos","about":"Proyecto GNU"}'></div>
@@ -48,6 +49,7 @@
 <script src="https://cdn.jsdelivr.net/gh/memoriainfinita/terminus@main/docs/dist/terminal.bundle.min.js" defer></script>
 
 <div class="gnu-terminal"
+     style="height:400px;"
      data-theme="dark"
      data-prompt="gnu$"
      data-commands='{"help":"Lista comandos","about":"Proyecto GNU"}'></div>
@@ -110,6 +112,9 @@ console.log(t.rows, t.cols);
 | `data-prompt` | Texto del prompt | Cualquier string | `data-prompt="user@terminus:~$"` |
 | `data-welcome` | Mensaje de bienvenida | Texto multilínea | `data-welcome="¡Bienvenido!"` |
 | `data-commands` | Comandos simulados (JSON) | Objeto JSON | `data-commands='{"help":"Ayuda"}'` |
+| `data-autofocus` | Enfocar el input al cargar | Sin valor (flag) | `data-autofocus` |
+
+> **Altura obligatoria:** el componente requiere `height` fijo (no `min-height`) para que el scroll interno funcione. Sin él, el terminal crece indefinidamente y la página scrollea en lugar del contenido del terminal. Usa `style="height:400px;"` o una clase CSS equivalente.
 
 ### Ejemplo avanzado con configurador:
 ```html
