@@ -73,10 +73,10 @@ class TerminusDemo {
       try {
         const textToCopy = this.elements.codeBlock ? this.elements.codeBlock.innerText : '';
         await navigator.clipboard.writeText(textToCopy);
-        this.showToast('Copiado al portapapeles ✅');
+        this.showToast('Copiado al portapapeles');
       } catch (error) {
         console.error('Error al copiar:', error);
-        this.showToast('Error al copiar al portapapeles ❌');
+        this.showToast('Error al copiar al portapapeles');
       }
     });
   }
@@ -293,12 +293,12 @@ class TerminusDemo {
     const response = this.elements.newCommandResponse?.value.trim();
 
     if (!name || !response) {
-      this.showToast('⚠️ Completa ambos campos para agregar el comando');
+      this.showToast('Completa ambos campos para agregar el comando');
       return;
     }
 
     if (this.config.commands[name]) {
-      this.showToast('⚠️ El comando ya existe. Usa otro nombre.');
+      this.showToast('El comando ya existe. Usa otro nombre.');
       return;
     }
 
@@ -313,7 +313,7 @@ class TerminusDemo {
     this.renderCommandsList();
     this.updatePreview();
     this.generateSnippet();
-    this.showToast(`✅ Comando "${name}" agregado`);
+    this.showToast(`Comando "${name}" agregado`);
   }
 
   /**
@@ -324,7 +324,7 @@ class TerminusDemo {
     this.renderCommandsList();
     this.updatePreview();
     this.generateSnippet();
-    this.showToast(`🗑️ Comando "${commandName}" eliminado`);
+    this.showToast(`Comando "${commandName}" eliminado`);
   }
 
   /**
@@ -346,7 +346,7 @@ class TerminusDemo {
     this.generateSnippet();
 
     // Mensaje informativo
-    this.showToast(`✏️ Editando "${commandName}" - Modifica y presiona Agregar`);
+    this.showToast(`Editando "${commandName}" - Modifica y presiona Agregar`);
   }
 
   /**
@@ -426,7 +426,7 @@ class TerminusDemo {
       
     }, 10);
 
-    this.showToast('🔄 Preview actualizado');
+    this.showToast('Preview actualizado');
   }
 
   /**
@@ -486,7 +486,7 @@ class TerminusDemo {
     
     try {
       await navigator.clipboard.writeText(snippet);
-      this.showToast('📋 Snippet copiado al portapapeles');
+      this.showToast('Snippet copiado al portapapeles');
     } catch (err) {
       // Fallback para navegadores antiguos
       const textarea = document.createElement('textarea');
@@ -495,7 +495,7 @@ class TerminusDemo {
       textarea.select();
       document.execCommand('copy');
       document.body.removeChild(textarea);
-      this.showToast('📋 Snippet copiado');
+      this.showToast('Snippet copiado');
     }
   }
 
@@ -515,7 +515,7 @@ class TerminusDemo {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
     
-    this.showToast('💾 Configuración descargada');
+    this.showToast('Configuración descargada');
   }
 
   /**
@@ -539,7 +539,7 @@ class TerminusDemo {
     this.renderCommandsList();
     this.updatePreview();
     this.generateSnippet();
-    this.showToast('♻️ Configuración reseteada');
+    this.showToast('Configuración reseteada');
   }
 
   /**
