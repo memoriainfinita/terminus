@@ -1,7 +1,6 @@
 # Terminus — Terminal Embebida GNU
 
-[![GitHub Pages](https://img.shields.io/badge/demo-live-brightgreen)](https://memoriainfinita.github.io/TERMINUS/)
-[![jsDelivr](https://img.shields.io/badge/CDN-jsDelivr-orange)](https://cdn.jsdelivr.net/gh/memoriainfinita/TERMINUS@latest/docs/dist/)
+[![jsDelivr](https://img.shields.io/badge/CDN-jsDelivr-orange)](https://cdn.jsdelivr.net/gh/memoriainfinita/terminus@main/docs/dist/)
 [![License](https://img.shields.io/badge/license-GNU-blue)](LICENSE)
 [![Build](https://img.shields.io/badge/build-passing-success)]()
 
@@ -35,8 +34,8 @@
 
 ### Opción 1: CSS + JS separados
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/memoriainfinita/TERMINUS@latest/docs/dist/terminal.min.css">
-<script src="https://cdn.jsdelivr.net/gh/memoriainfinita/TERMINUS@latest/docs/dist/terminal.min.js" defer></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/memoriainfinita/terminus@main/docs/dist/terminal.min.css">
+<script src="https://cdn.jsdelivr.net/gh/memoriainfinita/terminus@main/docs/dist/terminal.min.js" defer></script>
 
 <div class="gnu-terminal"
      data-theme="dark"
@@ -46,7 +45,7 @@
 
 ### Opción 2: Bundle todo-en-uno
 ```html
-<script src="https://cdn.jsdelivr.net/gh/memoriainfinita/TERMINUS@latest/docs/dist/terminal.bundle.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/gh/memoriainfinita/terminus@main/docs/dist/terminal.bundle.min.js" defer></script>
 
 <div class="gnu-terminal"
      data-theme="dark"
@@ -54,16 +53,8 @@
      data-commands='{"help":"Lista comandos","about":"Proyecto GNU"}'></div>
 ```
 
-## Demo en Vivo
-**[Ver Demo Completa](https://memoriainfinita.github.io/TERMINUS/)**
-
-### Nuevas Características del Demo
-- **Configurador Interactivo** — Cambia temas, prompts y comandos en tiempo real
-- **4 Temas Visuales** — Matrix, Ocean, Amber y Dark
-- **Editor de Comandos** — Agrega, edita y elimina comandos personalizados
-- **Generador de Snippet** — Obtén el código HTML listo para usar
-- **Preview en Vivo** — Ve los cambios aplicados instantáneamente
-- **UI Optimizada** — Diseño limpio y profesional sin elementos redundantes
+## Demo
+Abre `docs/index.html` directamente en el navegador o sirve la carpeta `docs/` con cualquier servidor estático.
 
 ## Configuración avanzada
 
@@ -188,12 +179,10 @@ TERMINUS/
 
 ### URLs de CDN (jsDelivr)
 ```
-Última versión:
-https://cdn.jsdelivr.net/gh/memoriainfinita/TERMINUS@latest/docs/dist/
-
-Versión específica:
-https://cdn.jsdelivr.net/gh/memoriainfinita/TERMINUS@v2.0.0/docs/dist/
+https://cdn.jsdelivr.net/gh/memoriainfinita/terminus@main/docs/dist/
 ```
+
+Una vez que existan git tags, se podrá anclar a una versión específica (`@v2.0.0`).
 
 ## Filosofía
 Inspirado en la sencillez del software libre: **código claro, integrable y accesible para todos los niveles técnicos**.
@@ -201,7 +190,7 @@ Inspirado en la sencillez del software libre: **código claro, integrable y acce
 ## Tecnologías
 - HTML5 + CSS3 (sin frameworks)
 - Vanilla JavaScript
-- GitHub Pages + jsDelivr para distribución
+- jsDelivr para distribución via CDN
 - Build system con clean-css y uglify-js
 
 ## Contribuir
