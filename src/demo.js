@@ -16,7 +16,6 @@ class TerminusDemo {
   init() {
     this.cacheElements();
     this.setupEventListeners();
-    this.initTheme();
   }
 
   /**
@@ -25,7 +24,6 @@ class TerminusDemo {
   cacheElements() {
     this.elements = {
       // Elementos de navegación
-      btnTheme: document.getElementById('btnTheme'),
       codeBlock: document.getElementById('codeBlock'),
       btnCopy: document.getElementById('btnCopy'),
       toast: document.getElementById('toast'),
@@ -60,59 +58,9 @@ class TerminusDemo {
    * Configura todos los event listeners
    */
   setupEventListeners() {
-    this.setupThemeToggle();
     this.setupClipboard();
     this.setupModal();
     this.setupConfigurator();
-  }
-
-  /**
-   * Configura el toggle de temas
-   */
-  setupThemeToggle() {
-    if (!this.elements.btnTheme) return;
-
-    this.elements.btnTheme.addEventListener('click', () => {
-      this.cycleTheme();
-    });
-  }
-
-  /**
-   * Cicla entre temas (dark/light/auto)
-   */
-  cycleTheme() {
-    const html = document.documentElement;
-    const current = html.getAttribute('data-theme') || 'dark';
-    const next = current === 'dark' ? 'light' : current === 'light' ? 'auto' : 'dark';
-    
-    html.setAttribute('data-theme', next);
-    
-    // Actualiza el texto del botón
-    const buttonTexts = {
-      dark: 'Claro/Oscuro',
-      light: 'Auto',
-      auto: 'Oscuro'
-    };
-    
-    this.elements.btnTheme.textContent = buttonTexts[next];
-  }
-
-  /**
-   * Inicializa el tema basado en la preferencia del sistema
-   */
-  initTheme() {
-    const html = document.documentElement;
-    const currentTheme = html.getAttribute('data-theme') || 'dark';
-    
-    const buttonTexts = {
-      dark: 'Claro/Oscuro',
-      light: 'Auto', 
-      auto: 'Oscuro'
-    };
-    
-    if (this.elements.btnTheme) {
-      this.elements.btnTheme.textContent = buttonTexts[currentTheme];
-    }
   }
 
   /**
