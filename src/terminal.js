@@ -1,6 +1,6 @@
 /**
  * TERMINUS — terminal.js
- * Componente terminal embebible. Vanilla JS, sin dependencias.
+ * Embeddable terminal component. Vanilla JS, no dependencies.
  * v2.0.0
  */
 
@@ -10,6 +10,7 @@ class TerminalComponent {
     this.options = {
       theme: 'dark',
       prompt: 'gnu$',
+      titlebar: 'mac',
       commands: {},
       onTab: null,
       ...this.parseDataAttributes(),
@@ -26,7 +27,7 @@ class TerminalComponent {
   }
 
   /**
-   * Parsea los data-attributes del elemento
+   * Parses data-attributes from the element
    */
   parseDataAttributes() {
     const data = {};
@@ -47,12 +48,16 @@ class TerminalComponent {
         data.commands = {};
       }
     }
+
+    if (this.element.dataset.titlebar) {
+      data.titlebar = this.element.dataset.titlebar;
+    }
     
     return data;
   }
 
   /**
-   * Inicializa el terminal
+   * Initializes the terminal
    */
   init() {
     this.element.classList.add('gnu-terminal');
@@ -60,7 +65,7 @@ class TerminalComponent {
     this.setupEventListeners();
     this.applyTheme();
     this.showWelcomeMessage();
-    // Auto-enfoque solo si el atributo data-autofocus está presente
+    // Auto-focus only if data-autofocus attribute is present
     if (this.element.hasAttribute('data-autofocus')) {
       setTimeout(() => {
         this.inputElement.focus();
@@ -69,16 +74,22 @@ class TerminalComponent {
   }
 
   /**
-   * Renderiza la estructura del terminal
+   * Renders the terminal structure
    */
   render() {
     this.element.setAttribute('tabindex', '0');
-    this.element.innerHTML = `
-      <div class="titlebar">
+    // data-titlebar="custom": preserve existing titlebar HTML written by the user
+    const customTitlebar = this.options.titlebar === 'custom'
+      ? this.element.querySelector('.titlebar')?.outerHTML || ''
+      : '';
+    const titlebarHTML = this.options.titlebar === 'none' || this.options.titlebar === 'custom'
+      ? customTitlebar
+      : `<div class="titlebar">
         <span class="dot"></span>
         <span class="dot yellow"></span>
         <span class="dot green"></span>
-      </div>
+      </div>`;
+    this.element.innerHTML = `${titlebarHTML}
       <div class="viewport">
         <div class="output"></div>
         <div class="input-line">
@@ -95,14 +106,14 @@ class TerminalComponent {
   }
 
   /**
-   * Configura event listeners
+   * Sets up event listeners
    */
   setupEventListeners() {
     this.inputElement.addEventListener('keydown', (e) => {
       // Prevent bubbling to document — avoids triggering _modeKeyHandler
       // with the same event that caused enterMode() to be called
       e.stopPropagation();
-      // Ctrl+C — cancela input en modo normal
+      // Ctrl+C — cancels input in normal mode
       if (e.ctrlKey && e.key === 'c') {
         e.preventDefault();
         this.addToOutput(`${this.options.prompt} ${this.inputElement.value}^C`);
@@ -150,9 +161,9 @@ class TerminalComponent {
   }
 
   /**
-   * Procesa un comando.
-   * Soporta handlers como string (comportamiento original) o
-   * como función (args, terminal) => string|void  [NUEVO v2.0]
+   * Processes a command.
+   * Supports handlers as string (original behavior) or
+   * as function (args, terminal) => string|void  [v2.0]
    */
   processCommand(command) {
     if (!command) return;
@@ -160,18 +171,18 @@ class TerminalComponent {
     this.addToHistory(command);
     this.addToOutput(`${this.options.prompt} ${command}`);
 
-    // Comando integrado: clear
+    // Built-in command: clear
     if (command === 'clear') {
       this.clear();
       return;
     }
 
-    // Parsear verbo + argumentos
+    // Parse verb + arguments
     const parts = command.trim().split(/\s+/);
     const verb  = parts[0];
     const args  = parts.slice(1);
 
-    // Buscar por verbo primero; si no existe, buscar clave completa (backward compat)
+    // Look up by verb first; if not found, try full command key (backward compat)
     const handler = this.options.commands[verb] !== undefined
       ? this.options.commands[verb]
       : this.options.commands[command];
@@ -189,7 +200,7 @@ class TerminalComponent {
   }
 
   /**
-   * Añade comando al historial
+   * Adds a command to history
    */
   addToHistory(command) {
     this.history.push(command);
@@ -197,7 +208,7 @@ class TerminalComponent {
   }
 
   /**
-   * Navega por el historial
+   * Navigates command history
    */
   navigateHistory(direction) {
     const newIndex = this.historyIndex + direction;
@@ -209,7 +220,7 @@ class TerminalComponent {
   }
 
   /**
-   * Añade salida al terminal (texto plano, seguro)
+   * Adds plain text output to the terminal (safe)
    */
   addToOutput(content) {
     const line = document.createElement('div');
@@ -220,8 +231,8 @@ class TerminalComponent {
   }
 
   /**
-   * Añade salida HTML al terminal [NUEVO v2.0]
-   * El desarrollador es responsable de sanear contenido procedente del usuario.
+   * Adds HTML output to the terminal [v2.0]
+   * The developer is responsible for sanitizing user-provided content.
    */
   addOutputHTML(html) {
     const line = document.createElement('div');
@@ -232,25 +243,25 @@ class TerminalComponent {
   }
 
   /**
-   * Limpia el terminal
+   * Clears the terminal
    */
   clear() {
     this.outputElement.innerHTML = '';
   }
 
   /**
-   * Muestra mensaje de bienvenida si está configurado
+   * Shows the welcome message if configured
    */
   showWelcomeMessage() {
     const welcomeMessage = this.element.dataset.welcome;
     if (welcomeMessage) {
-      // Dividir por líneas y agregar cada una
+      // Split by lines and add each one
       const lines = welcomeMessage.split('\n');
       lines.forEach(line => {
         if (line.trim()) {
           this.addToOutput(line);
         } else {
-          // Línea vacía
+          // Empty line
           const emptyLine = document.createElement('div');
           emptyLine.className = 'output-line';
           emptyLine.innerHTML = '&nbsp;';
@@ -261,21 +272,21 @@ class TerminalComponent {
   }
 
   /**
-   * Aplica el tema
+   * Applies the theme
    */
   applyTheme() {
-    // Remover temas existentes
+    // Remove existing theme
     this.element.removeAttribute('data-theme');
     
-    // Aplicar nuevo tema
+    // Apply new theme
     this.element.setAttribute('data-theme', this.options.theme);
     
-    // Forzar re-renderizado
+    // Force repaint
     this.element.offsetHeight;
   }
 
   /**
-   * Actualiza el prompt
+   * Updates the prompt
    */
   setPrompt(prompt) {
     this.options.prompt = prompt;
@@ -283,18 +294,16 @@ class TerminalComponent {
   }
 
   /**
-   * Actualiza los comandos
+   * Updates commands
    */
   setCommands(commands) {
     this.options.commands = { ...this.options.commands, ...commands };
   }
 
-  // ─────────────────────────────────────────────────────────────────
-  // PRIMITIVO 3: enterMode / exitMode  [NUEVO v2.0]
-  // ─────────────────────────────────────────────────────────────────
+  // --- enterMode / exitMode  [v2.0] ---
 
   /**
-   * Activa modo TUI. Oculta el input y redirige teclado + click al handler.
+   * Activates TUI mode. Hides the input and redirects keyboard + click to the handler.
    * handler: { onKey(key, event, terminal), onClick(x, y, row, col, terminal), onCtrlC(terminal) }
    */
   enterMode(handler) {
@@ -304,7 +313,7 @@ class TerminalComponent {
 
     this._modeKeyHandler = (e) => {
       if (!this._modeHandler) return;
-      // Solo procesar si este terminal está activo (tiene o es el foco)
+      // Only process if this terminal is active (has or is the focus)
       if (!this.element.contains(document.activeElement) && document.activeElement !== this.element) return;
       // Prevent page scroll for navigation keys
       const navKeys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'PageUp', 'PageDown', ' '];
@@ -324,7 +333,7 @@ class TerminalComponent {
   }
 
   /**
-   * Sale del modo TUI y restaura el terminal normal.
+   * Exits TUI mode and restores normal terminal.
    */
   exitMode() {
     if (this._modeKeyHandler) {
@@ -337,14 +346,12 @@ class TerminalComponent {
     this.inputElement.focus();
   }
 
-  // ─────────────────────────────────────────────────────────────────
-  // PRIMITIVO 4: play(script)  [NUEVO v2.0]
-  // ─────────────────────────────────────────────────────────────────
+  // --- play(script)  [v2.0] ---
 
   /**
-   * Ejecuta un script de demo con animación de escritura.
-   * Tipos de paso: 'cmd' | 'output' | 'outputHTML' | 'clear' | 'pause'
-   * Cada paso acepta { type, text, html, delay }
+   * Runs an animated demo script.
+   * Step types: 'cmd' | 'output' | 'outputHTML' | 'clear' | 'pause'
+   * Each step accepts { type, text, html, delay }
    */
   async play(script) {
     for (const step of script) {
@@ -382,15 +389,15 @@ class TerminalComponent {
           this.clear();
           break;
         case 'pause':
-          // delay ya aplicado arriba
+          // delay already applied above
           break;
       }
     }
   }
 
   /**
-   * Anima la escritura del comando en el output (no en el input real).
-   * Oculta el input-line durante la animación para evitar duplicados.
+   * Animates command typing in the output (not in the real input).
+   * Hides the input-line during animation to avoid duplicates.
    */
   async _typeInput(text) {
     const inputLine = this.element.querySelector('.input-line');
@@ -412,7 +419,7 @@ class TerminalComponent {
   }
 
   /**
-   * Ejecuta un comando sin imprimir el echo prompt+cmd (uso interno de play).
+   * Executes a command without echoing prompt+cmd (internal use by play).
    */
   _execSilent(cmd) {
     if (!cmd) return;
@@ -434,13 +441,11 @@ class TerminalComponent {
     }
   }
 
-  // ─────────────────────────────────────────────────────────────────
-  // PRIMITIVO 5: Tab autocomplete  [NUEVO v2.0]
-  // ─────────────────────────────────────────────────────────────────
+  // --- Tab autocomplete  [v2.0] ---
 
   /**
-   * Autocomplete por Tab. Usa options.onTab si está definido;
-   * si no, completa desde los nombres de comandos registrados.
+   * Tab autocomplete. Uses options.onTab if defined;
+   * otherwise completes from registered command names.
    */
   _handleTab() {
     const val = this.inputElement.value;
@@ -455,13 +460,11 @@ class TerminalComponent {
     if (match) this.inputElement.value = match;
   }
 
-  // ─────────────────────────────────────────────────────────────────
-  // PRIMITIVO 6: readline(promptText)  [NUEVO v2.0]
-  // ─────────────────────────────────────────────────────────────────
+  // --- readline(promptText)  [v2.0] ---
 
   /**
-   * Pide un dato inline al usuario. Devuelve una Promise con el valor.
-   * Ejemplo: const name = await t.readline('Nombre: ');
+   * Prompts the user for inline input. Returns a Promise with the value.
+   * Example: const name = await t.readline('Name: ');
    */
   readline(promptText) {
     return new Promise(resolve => {
@@ -483,17 +486,15 @@ class TerminalComponent {
           resolve(val);
         }
       };
-      // Fase de captura: intercepta antes que el listener normal de Enter
+      // Capture phase: intercepts before the normal Enter listener
       this.inputElement.addEventListener('keydown', onEnter, true);
     });
   }
 
-  // ─────────────────────────────────────────────────────────────────
-  // PRIMITIVO 7: rows / cols  [NUEVO v2.0]
-  // ─────────────────────────────────────────────────────────────────
+  // --- rows / cols  [v2.0] ---
 
   /**
-   * Número aproximado de filas visibles en el viewport.
+   * Approximate number of visible rows in the viewport.
    */
   get rows() {
     const vp = this.element.querySelector('.viewport');
@@ -502,7 +503,7 @@ class TerminalComponent {
   }
 
   /**
-   * Número aproximado de columnas de caracteres en el viewport.
+   * Approximate number of character columns in the viewport.
    */
   get cols() {
     const vp = this.element.querySelector('.viewport');
@@ -511,7 +512,7 @@ class TerminalComponent {
   }
 
   /**
-   * Altura de línea en px (uso interno).
+   * Line height in px (internal use).
    */
   _lineHeight() {
     const vp = this.element.querySelector('.viewport');
@@ -519,7 +520,7 @@ class TerminalComponent {
   }
 
   /**
-   * Ancho de un carácter monospace en px (uso interno).
+   * Width of a monospace character in px (internal use).
    */
   _charWidth() {
     const span = document.createElement('span');
@@ -533,11 +534,11 @@ class TerminalComponent {
 }
 
 /**
- * Auto-inicialización
- * Busca elementos con clase 'gnu-terminal' y los inicializa automáticamente
+ * Auto-initialization
+ * Finds elements with class 'gnu-terminal' and initializes them automatically
  */
 function initTerminals() {
-  // Inicializar array global de instancias si no existe
+  // Initialize global instances array if it doesn't exist
   if (!window.terminalInstances) {
     window.terminalInstances = [];
   }
@@ -551,7 +552,7 @@ function initTerminals() {
   });
 }
 
-// Auto-init cuando el DOM esté listo
+// Auto-init when DOM is ready
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', initTerminals);
 } else {
