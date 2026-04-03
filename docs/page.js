@@ -1,6 +1,6 @@
 /**
- * TERMINUS — demo.js
- * Lógica de la página de demostración: configurador, snippets, toasts.
+ * TERMINUS — page.js
+ * Documentation site logic: configurator, snippets, toasts.
  * v2.0.0
  */
 
@@ -11,7 +11,7 @@ class TerminusDemo {
   }
 
   /**
-   * Inicializa la demo
+   * Initializes the demo
    */
   init() {
     this.cacheElements();
@@ -19,16 +19,16 @@ class TerminusDemo {
   }
 
   /**
-   * Cachea referencias a elementos del DOM
+   * Caches DOM element references
    */
   cacheElements() {
     this.elements = {
-      // Elementos de navegación
+      // Navigation elements
       toast: document.getElementById('toast'),
       backdrop: document.getElementById('backdrop'),
       btnCloseModal: document.getElementById('btnCloseModal'),
       
-      // Elementos del configurador
+      // Configurator elements
       themeSelector: document.getElementById('themeSelector'),
       promptInput: document.getElementById('promptInput'),
       welcomeInput: document.getElementById('welcomeInput'),
@@ -39,19 +39,19 @@ class TerminusDemo {
       generateSnippetBtn: document.getElementById('generateSnippetBtn'),
       resetConfigBtn: document.getElementById('resetConfigBtn'),
       
-      // Elementos del snippet generado
+      // Generated snippet elements
       copyGeneratedSnippet: document.getElementById('copyGeneratedSnippet'),
       downloadConfig: document.getElementById('downloadConfig'),
       cdnProvider: document.getElementById('cdnProvider'),
       generatedCode: document.getElementById('generatedCode'),
       
-      // Terminal de demo
+      // Demo terminal
       terminal: document.getElementById('terminalDemo')
     };
   }
 
   /**
-   * Configura todos los event listeners
+   * Sets up all event listeners
    */
   setupEventListeners() {
     this.setupModal();
@@ -59,7 +59,7 @@ class TerminusDemo {
   }
 
   /**
-   * Muestra una notificación toast
+   * Shows a toast notification
    */
   showToast(message, duration = 1600) {
     if (!this.elements.toast) return;
@@ -73,26 +73,26 @@ class TerminusDemo {
   }
 
   /**
-   * Configura la funcionalidad del modal
+   * Sets up modal functionality
    */
   setupModal() {
     if (!this.elements.backdrop) return;
 
-    // Cerrar modal con botón
+    // Close modal with button
     if (this.elements.btnCloseModal) {
       this.elements.btnCloseModal.addEventListener('click', () => {
         this.closeModal();
       });
     }
 
-    // Cerrar modal haciendo clic en el backdrop
+    // Close modal on backdrop click
     this.elements.backdrop.addEventListener('click', (e) => {
       if (e.target === this.elements.backdrop) {
         this.closeModal();
       }
     });
 
-    // Cerrar modal con Escape
+    // Close modal with Escape key
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && this.elements.backdrop.classList.contains('open')) {
         this.closeModal();
@@ -101,55 +101,28 @@ class TerminusDemo {
   }
 
   /**
-   * Abre el modal
+   * Opens the modal
    */
   openModal() {
     this.elements.backdrop.classList.add('open');
     this.elements.backdrop.setAttribute('aria-hidden', 'false');
-    document.body.style.overflow = 'hidden'; // Prevenir scroll
+    document.body.style.overflow = 'hidden';
   }
 
   /**
-   * Cierra el modal
+   * Closes the modal
    */
   closeModal() {
     this.elements.backdrop.classList.remove('open');
     this.elements.backdrop.setAttribute('aria-hidden', 'true');
-    document.body.style.overflow = ''; // Restaurar scroll
+    document.body.style.overflow = '';
   }
 
   /**
-   * Configura los controles mock de la demo
-   */
-  setupMockControls() {
-    if (!this.elements.viewport) return;
-
-    // Control del cursor parpadeante
-    if (this.elements.optCursor) {
-      this.elements.optCursor.addEventListener('change', (e) => {
-        const cursors = this.elements.viewport.querySelectorAll('.cursor');
-        cursors.forEach(cursor => {
-          cursor.style.display = e.target.checked ? 'inline-block' : 'none';
-        });
-      });
-    }
-
-    // Control de la animación de escritura
-    if (this.elements.optType) {
-      this.elements.optType.addEventListener('change', (e) => {
-        const typingElements = this.elements.viewport.querySelectorAll('.typing');
-        typingElements.forEach(element => {
-          element.style.animationPlayState = e.target.checked ? 'running' : 'paused';
-        });
-      });
-    }
-  }
-
-  /**
-   * Configura el sistema de configuración completo
+   * Sets up the full configurator
    */
   setupConfigurator() {
-    // Inicializar configuración por defecto
+    // Initialize default configuration
     this.config = {
       theme: 'matrix',
       prompt: 'user@terminus:~$',
@@ -166,7 +139,7 @@ class TerminusDemo {
   }
 
   /**
-   * Configura todos los event listeners del configurador
+   * Sets up all configurator event listeners
    */
   setupConfiguratorEvents() {
     // Theme selector
@@ -252,7 +225,7 @@ class TerminusDemo {
   }
 
   /**
-   * Añade un nuevo comando personalizado
+   * Adds a new custom command
    */
   addCommand() {
     const name = this.elements.newCommandName?.value.trim();
@@ -268,14 +241,14 @@ class TerminusDemo {
       return;
     }
 
-    // Agregar comando
+    // Add command
     this.config.commands[name] = response;
     
-    // Limpiar inputs
+    // Clear inputs
     this.elements.newCommandName.value = '';
     this.elements.newCommandResponse.value = '';
 
-    // Actualizar UI
+    // Update UI
     this.renderCommandsList();
     this.updatePreview();
     this.generateSnippet();
@@ -283,7 +256,7 @@ class TerminusDemo {
   }
 
   /**
-   * Elimina un comando
+   * Removes a command
    */
   removeCommand(commandName) {
     delete this.config.commands[commandName];
@@ -294,10 +267,9 @@ class TerminusDemo {
   }
 
   /**
-   * Edita un comando existente
+   * Edits an existing command
    */
   editCommand(commandName, currentResponse) {
-    // Rellenar los inputs con los valores actuales
     if (this.elements.newCommandName) {
       this.elements.newCommandName.value = commandName;
     }
@@ -305,18 +277,17 @@ class TerminusDemo {
       this.elements.newCommandResponse.value = currentResponse;
     }
 
-    // Eliminar el comando actual para evitar duplicados
+    // Remove current command to avoid duplicates
     delete this.config.commands[commandName];
     this.renderCommandsList();
     this.updatePreview();
     this.generateSnippet();
 
-    // Mensaje informativo
     this.showToast(`Editando "${commandName}" - Modifica y presiona Agregar`);
   }
 
   /**
-   * Renderiza la lista de comandos
+   * Renders the commands list
    */
   renderCommandsList() {
     if (!this.elements.commandsList) return;
@@ -328,10 +299,10 @@ class TerminusDemo {
         <div style="display: flex; gap: 4px;">
           <button class="btn-edit" onclick="window.terminusDemo.editCommand('${name}', \`${response.replace(/`/g, '\\`')}\`)" 
                   style="background: none; border: none; color: var(--accent); cursor: pointer; padding: 2px 6px; font-size: 12px;" 
-                  title="Editar comando">✏️</button>
+                  title="Editar comando">&#9998;</button>
           <button class="btn-remove" onclick="window.terminusDemo.removeCommand('${name}')" 
                   style="background: none; border: none; color: #f45452; cursor: pointer; padding: 2px 6px;" 
-                  title="Eliminar comando">✕</button>
+                  title="Eliminar comando">&#x2715;</button>
         </div>
       </div>
     `).join('');
@@ -340,28 +311,28 @@ class TerminusDemo {
   }
 
   /**
-   * Actualiza el preview del terminal
+   * Updates the terminal preview
    */
   updatePreview() {
     if (!this.elements.terminal) return;
 
-    // Remover tema anterior forzando re-render
+    // Remove previous theme to force re-render
     this.elements.terminal.removeAttribute('data-theme');
     
-    // Aplicar nueva configuración
+    // Apply new configuration
     setTimeout(() => {
       this.elements.terminal.dataset.theme = this.config.theme;
       this.elements.terminal.dataset.prompt = this.config.prompt;
       this.elements.terminal.dataset.welcome = this.config.welcome;
       this.elements.terminal.dataset.commands = JSON.stringify(this.config.commands);
 
-      // Actualizar elementos visuales
+      // Update visual elements
       const promptElement = this.elements.terminal.querySelector('.prompt');
       if (promptElement) {
         promptElement.textContent = this.config.prompt;
       }
 
-      // Actualizar instancia del terminal si existe
+      // Update terminal instance if it exists
       if (window.terminalInstances) {
         const terminalInstance = window.terminalInstances.find(t => t.element === this.elements.terminal);
         if (terminalInstance) {
@@ -369,17 +340,14 @@ class TerminusDemo {
           terminalInstance.options.prompt = this.config.prompt;
           terminalInstance.options.commands = this.config.commands;
           
-          // Aplicar tema
           if (terminalInstance.applyTheme) {
             terminalInstance.applyTheme();
           }
           
-          // Actualizar prompt visual
           if (terminalInstance.setPrompt) {
             terminalInstance.setPrompt(this.config.prompt);
           }
           
-          // Limpiar y mostrar nuevo mensaje de bienvenida
           if (terminalInstance.clear && terminalInstance.showWelcomeMessage) {
             terminalInstance.clear();
             terminalInstance.showWelcomeMessage();
@@ -387,14 +355,14 @@ class TerminusDemo {
         }
       }
       
-      // Forzar re-renderizado
+      // Force repaint
       this.elements.terminal.offsetHeight;
       
     }, 10);
   }
 
   /**
-   * Genera el snippet de código
+   * Generates the code snippet
    */
   generateSnippet() {
     if (!this.elements.generatedCode) return;
@@ -432,7 +400,7 @@ class TerminusDemo {
   }
 
   /**
-   * Escapa HTML para atributos
+   * Escapes HTML for attributes
    */
   escapeHtml(text) {
     const div = document.createElement('div');
@@ -441,7 +409,7 @@ class TerminusDemo {
   }
 
   /**
-   * Copia el snippet generado
+   * Copies the generated snippet
    */
   async copySnippet() {
     if (!this.elements.generatedCode) return;
@@ -452,7 +420,7 @@ class TerminusDemo {
       await navigator.clipboard.writeText(snippet);
       this.showToast('Snippet copiado al portapapeles');
     } catch (err) {
-      // Fallback para navegadores antiguos
+      // Fallback for older browsers
       const textarea = document.createElement('textarea');
       textarea.value = snippet;
       document.body.appendChild(textarea);
@@ -464,7 +432,7 @@ class TerminusDemo {
   }
 
   /**
-   * Descarga la configuración como JSON
+   * Downloads the configuration as JSON
    */
   downloadConfiguration() {
     const configJson = JSON.stringify(this.config, null, 2);
@@ -483,12 +451,11 @@ class TerminusDemo {
   }
 
   /**
-   * Resetea la configuración a los valores por defecto
+   * Resets configuration to defaults
    */
   resetConfiguration() {
     if (!confirm('¿Estás seguro de que quieres resetear toda la configuración?')) return;
 
-    // Resetear configuración
     this.config = {
       theme: 'matrix',
       prompt: 'user@terminus:~$',
@@ -507,7 +474,7 @@ class TerminusDemo {
   }
 
   /**
-   * Carga la configuración en los inputs
+   * Loads configuration into the inputs
    */
   loadConfiguration() {
     if (this.elements.themeSelector) {
@@ -524,31 +491,22 @@ class TerminusDemo {
     this.generateSnippet();
   }
 
-  /**
-   * Destruye la instancia y limpia event listeners
-   */
-  destroy() {
-    // En una implementación más compleja, aquí limpiaríamos todos los event listeners
-    // Para esta demo, no es necesario ya que los elementos se manejan automáticamente
-  }
+  destroy() {}
 }
 
 /**
- * Auto-inicialización de la demo
+ * Auto-initialization
  */
 function initDemo() {
-  // Solo inicializar si estamos en la página de demo
   if (document.querySelector('.demo-page')) {
     window.terminusDemo = new TerminusDemo();
   }
 }
 
-// Inicializar cuando el DOM esté listo
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', initDemo);
 } else {
   initDemo();
 }
 
-// Exportar para uso manual
 window.TerminusDemo = TerminusDemo;

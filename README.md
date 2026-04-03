@@ -1,38 +1,14 @@
-# Terminus — Terminal Embebida GNU
+# Terminus
 
 [![jsDelivr](https://img.shields.io/badge/CDN-jsDelivr-orange)](https://cdn.jsdelivr.net/gh/memoriainfinita/terminus@main/docs/dist/)
-[![License](https://img.shields.io/badge/license-GNU-blue)](LICENSE)
+[![License](https://img.shields.io/badge/license-GPL--3.0-blue)](LICENSE)
 [![Version](https://img.shields.io/badge/version-2.0.0-informational)]()
 
-## Descripción
-**Terminus** es una terminal embebible para la web, creada bajo el espíritu del software libre (GNU). Su objetivo es ofrecer una interfaz ligera, modular y sin dependencias que pueda integrarse en cualquier página HTML con un simple snippet.
+Terminal embebible para la web. Vanilla HTML/CSS/JS — sin dependencias, sin frameworks.
 
-## Características principales
-- **HTML/CSS/JS puro** — sin frameworks ni APIs externas
-- **Modo auto-init** — se activa automáticamente al detectar un elemento con la clase `gnu-terminal`
-- **Sistema de temas avanzado** — Matrix, Ocean, Amber y Dark con CSS variables
-- **Configurador interactivo en tiempo real** — cambia temas, prompts y comandos instantáneamente
-- **Diseño profesional optimizado** con tipografía *Inter* + *IBM Plex Mono*
-- **Microinteracciones técnicas** (cursor parpadeante, escritura gradual, animaciones suaves)
-- **Responsive** y compatible con modo claro/oscuro
-- **API programable completa** — 7 primitivos v2.0 para simulaciones avanzadas
-- **Extensible** — pensado para crecer hacia mini-docs o componentes adicionales
-- **Súper ligero** — Solo 4.9 KB CSS + 7.1 KB JS minificados para funcionalidad completa
+## Instalación
 
-### Primitivos v2.0 (nuevas capacidades)
-| Primitivo | Método | Descripción |
-|-----------|--------|-------------|
-| P1 | `addOutputHTML(html)` | Output con HTML y colores inline |
-| P2 | Comandos como función | `(args, terminal) => {}` — lógica, flags, async |
-| P3 | `enterMode(handler)` / `exitMode()` | Modo TUI — captura teclado y clicks |
-| P4 | `play(script)` | Demo automática con animación de escritura |
-| P5 | Tab autocomplete + Ctrl+C | Integrado, configurable con `onTab` |
-| P6 | `readline(promptText)` | Input inline async, devuelve Promise |
-| P7 | `get rows` / `get cols` | Dimensiones del viewport calculadas en tiempo real |
-
-## Instalación rápida
-
-### Opción 1: CSS + JS separados
+### CSS + JS separados
 ```html
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/memoriainfinita/terminus@main/docs/dist/terminal.min.css">
 <script src="https://cdn.jsdelivr.net/gh/memoriainfinita/terminus@main/docs/dist/terminal.min.js" defer></script>
@@ -41,196 +17,156 @@
      style="height:400px;"
      data-theme="dark"
      data-prompt="gnu$"
-     data-commands='{"help":"Lista comandos","about":"Proyecto GNU"}'></div>
+     data-commands='{"help":"Lista comandos","about":"Terminus v2.0"}'></div>
 ```
 
-### Opción 2: Bundle todo-en-uno
+### Bundle todo-en-uno
 ```html
 <script src="https://cdn.jsdelivr.net/gh/memoriainfinita/terminus@main/docs/dist/terminal.bundle.min.js" defer></script>
 
-<div class="gnu-terminal"
-     style="height:400px;"
-     data-theme="dark"
-     data-prompt="gnu$"
-     data-commands='{"help":"Lista comandos","about":"Proyecto GNU"}'></div>
+<div class="gnu-terminal" style="height:400px;" data-theme="dark" data-prompt="gnu$"></div>
 ```
 
-## Demo
-Abre `docs/index.html` directamente en el navegador o sirve la carpeta `docs/` con cualquier servidor estático.
+## Atributos HTML
 
-## Configuración avanzada
+| Atributo | Tipo | Descripción |
+|----------|------|-------------|
+| `data-theme` | string | `dark` · `matrix` · `ocean` · `amber` |
+| `data-prompt` | string | Texto del prompt. Default: `gnu$` |
+| `data-welcome` | string | Mensaje inicial, soporta `\n` |
+| `data-commands` | JSON | Comandos estáticos como objeto JSON |
+| `data-autofocus` | flag | Enfoca el input al cargar la página |
 
-### Temas disponibles
-- **Matrix** — Verde clásico tipo Matrix
-- **Ocean** — Azul profesional
-- **Amber** — Ámbar retro terminal
-- **Dark** — Oscuro minimalista
+> El componente requiere `height` fijo (no `min-height`) para que el scroll sea interno. Sin él, el terminal crece y la página scrollea en lugar del contenido.
 
-### API JavaScript
+## API JavaScript
+
 ```js
 const t = document.getElementById('mi-terminal').terminalComponent;
+// o: window.terminalInstances[0]
 
-// Output con HTML
-t.addOutputHTML('<span style="color:#00ff88">OK</span>');
+// Output
+t.addToOutput('texto plano');
+t.addOutputHTML('<span style="color:#0f0">OK</span>');
+t.clear();
 
-// Comando como función con argumentos
+// Prompt y comandos
+t.setPrompt('user@host:~$');
 t.setCommands({
   'ping': (args, term) => {
     const host = args[0] || 'localhost';
-    term.addOutputHTML(`Haciendo ping a <b>${host}</b>`);
-  },
-  'login': async (args, term) => {
-    const user = await term.readline('Usuario: ');
-    const pass = await term.readline('Contraseña: ');
-    term.addOutputHTML(`<span style="color:#0f0">✓ Bienvenido, ${user}</span>`);
+    term.addOutputHTML(`Reply from <b>${host}</b>: time=1ms`);
   }
 });
 
-// Demo automática con animación de escritura
+// Demo animada
 await t.play([
-  { type: 'output',   text: 'Iniciando...',  delay: 300 },
-  { type: 'cmd',      text: 'whoami',        delay: 800 },
-  { type: 'cmd',      text: 'ls',            delay: 700 },
-  { type: 'progress', text: 'descargando',  steps: 20, stepDelay: 60, delay: 400 },
-  { type: 'pause',    delay: 400 },
+  { type: 'output',   text: 'Starting...',  delay: 300 },
+  { type: 'cmd',      text: 'whoami',       delay: 800 },
+  { type: 'progress', text: 'Downloading',  steps: 20, stepDelay: 60, delay: 400 },
+  { type: 'clear' },
 ]);
-// Tipos de paso: 'cmd' | 'output' | 'outputHTML' | 'progress' | 'clear' | 'pause'
-// progress acepta: text (prefijo), steps (ancho barra), stepDelay (ms por tick), delay (espera inicial)
+// Tipos: 'cmd' | 'output' | 'outputHTML' | 'progress' | 'clear' | 'pause'
+// progress acepta: text, steps, stepDelay, delay
 
-// Modo TUI — captura teclado y clicks
+// Input inline (devuelve Promise)
+const user = await t.readline('Username: ');
+
+// Modo TUI (captura teclado y clicks, oculta el input)
 t.enterMode({
   onKey:   (key, e, term) => { /* navegar */ },
   onClick: (x, y, row, col, term) => { /* seleccionar */ },
   onCtrlC: (term) => term.exitMode()
 });
+t.exitMode();
 
-// Tab autocomplete — por defecto completa nombres de comando de una sola palabra.
-// Para completado contextual (paths, flags, argumentos) define onTab:
+// Tab autocomplete contextual
 t.options.onTab = (val, term) => {
   const files = ['README.md', 'src/', 'dist/'];
-  const match = files.filter(f => f.startsWith(val.split(' ').pop()));
-  if (match.length === 1) term.inputElement.value = match[0];
-  else if (match.length > 1) term.addToOutput(match.join('  '));
+  const word = val.split(' ').pop();
+  const matches = files.filter(f => f.startsWith(word));
+  if (matches.length === 1) term.inputElement.value = val.slice(0, -word.length) + matches[0];
+  else if (matches.length > 1) term.addToOutput(matches.join('  '));
 };
+// Nota: el autocomplete por defecto solo completa comandos de una sola palabra.
+// Para paths, flags o argumentos, define onTab como arriba.
 
 // Dimensiones del viewport
 console.log(t.rows, t.cols);
 ```
 
-### Configuración por data-attributes
-| Atributo | Descripción | Valores | Ejemplo |
-|-----------|-------------|---------|---------|
-| `data-theme` | Tema visual | `matrix`, `ocean`, `amber`, `dark` | `data-theme="matrix"` |
-| `data-prompt` | Texto del prompt | Cualquier string | `data-prompt="user@terminus:~$"` |
-| `data-welcome` | Mensaje de bienvenida | Texto multilínea | `data-welcome="¡Bienvenido!"` |
-| `data-commands` | Comandos simulados (JSON) | Objeto JSON | `data-commands='{"help":"Ayuda"}'` |
-| `data-autofocus` | Enfocar el input al cargar | Sin valor (flag) | `data-autofocus` |
+## Estructura
 
-> **Altura obligatoria:** el componente requiere `height` fijo (no `min-height`) para que el scroll interno funcione. Sin él, el terminal crece indefinidamente y la página scrollea en lugar del contenido del terminal. Usa `style="height:400px;"` o una clase CSS equivalente.
-
-### Ejemplo avanzado con configurador:
-```html
-<div class="gnu-terminal"
-     data-theme="matrix"
-     data-prompt="user@terminus:~$"
-     data-welcome="Bienvenido a TERMINUS
-
-Comandos disponibles:
-• help - Lista completa de comandos
-• ls - Listar contenido
-• echo 'mensaje' - Mostrar texto
-• theme - Cambiar tema
-• clear - Limpiar pantalla"
-     data-commands='{
-       "help": "Comandos: ls, echo, theme, clear, about",
-       "ls": "directorio1/\ndirectorio2/\narchivo.txt",
-       "about": "TERMINUS v2.0 - Terminal Component",
-       "theme": "Temas: matrix, ocean, amber, dark"
-     }'>
-</div>
+```
+terminust/
+├── src/
+│   ├── terminal.css    # Estilos del componente (distribuido via CDN)
+│   ├── terminal.js     # Lógica del componente (distribuido via CDN)
+│   └── build.js        # Build script
+├── docs/
+│   ├── index.html      # Página de documentación (GitHub Pages)
+│   ├── page.css        # Estilos del site
+│   ├── page.js         # Lógica del configurador
+│   └── dist/           # Output del build
+│       ├── terminal.min.css
+│       ├── terminal.min.js
+│       ├── terminal.bundle.min.js
+│       ├── page.min.css
+│       └── page.min.js
+└── package.json
 ```
 
 ## Desarrollo
 
-### Clonar repositorio
 ```bash
 git clone https://github.com/memoriainfinita/terminus.git
 cd terminus
 npm install
+node ./src/build.js   # genera docs/dist/
+npm run serve         # docs/ en http://localhost:8080
 ```
 
-### Scripts disponibles
-```bash
-npm run build    # Construir archivos minificados
-npm run dev      # Servidor desarrollo (puerto 8000)
-npm run serve    # Servidor docs (puerto 8080)
-```
+## Distribución (CDN)
 
-### Estructura del proyecto
-```
-terminus/
-├── docs/                    # GitHub Pages
-│   ├── index.html           # Página de demo con configurador
-│   └── dist/                # Archivos distribuibles (CDN)
-├── src/                     # Código fuente
-│   ├── terminal.css         # Estilos del componente
-│   ├── terminal.js          # Lógica del componente
-│   ├── demo.css             # Estilos de la página demo
-│   ├── demo.js              # Configurador interactivo
-│   ├── page-styles.css      # Design system de la página
-│   └── build.js             # Sistema de build
-└── package.json
-```
-
-## Archivos de Distribución
-
-### Core Terminal (Listo para producción)
-- `terminal.min.css` — 4.9 KB (estilos optimizados -40.8%)
-- `terminal.min.js` — 7.1 KB (v2.0 con 7 primitivos)
-- `terminal.bundle.min.js` — 12.3 KB (CSS + JS todo-en-uno)
-
-### Demo Interactivo
-- `demo.min.css` — 4.2 KB
-- `demo.min.js` — 11.8 KB
-- `page-styles.min.css` — Sistema de diseño unificado
-
-### URLs de CDN (jsDelivr)
 ```
 https://cdn.jsdelivr.net/gh/memoriainfinita/terminus@main/docs/dist/
 ```
 
-Una vez que existan git tags, se podrá anclar a una versión específica (`@v2.0.0`).
-
-## Filosofía
-Inspirado en la sencillez del software libre: **código claro, integrable y accesible para todos los niveles técnicos**.
-
-## Tecnologías
-- HTML5 + CSS3 (sin frameworks)
-- Vanilla JavaScript
-- jsDelivr para distribución via CDN
-- Build system con clean-css y uglify-js
-
-## Contribuir
-1. Haz un fork del repositorio
-2. Crea una rama para tu feature: `git checkout -b feature/nueva-funcion`
-3. Haz commit de tus cambios: `git commit -m 'Añadir nueva función'`
-4. Envía un pull request
-
-## Desarrollo Asistido por IA
-Proyecto desarrollado por [@memoriainfinita](https://github.com/memoriainfinita) con asistencia de **Claude Sonnet 4.6** (Anthropic).
-
-## Estadísticas del Build (v2.0.0)
-- **Reducción CSS**: 40.8% (8.3 KB → 4.9 KB)
-- **JS v2.0**: 16.4 KB fuente → 7.1 KB minificado (-56.9%)
-- **Bundle total**: 12.3 KB (CSS + JS)
-- **Tiempo de build**: ~10 segundos
+- `terminal.min.css` — 4.5 KB
+- `terminal.min.js` — 8.2 KB
+- `terminal.bundle.min.js` — 13.1 KB (CSS + JS)
 
 ## Licencia
-Publicado bajo **Licencia GNU** — libre, abierta y comunitaria.
 
----
-**Terminus** © 2026 — Un proyecto GNU minimalista para terminales embebibles.
+GPL v3.
 
-**Última actualización**: Abril 2026 — v2.0.0: 7 primitivos de simulación (addOutputHTML, comandos función, enterMode TUI, play, readline, Tab, rows/cols)
+Desarrollado por [@memoriainfinita](https://github.com/memoriainfinita) con asistencia de Claude Sonnet 4.6 (Anthropic).
+│       └── page.min.js
+└── package.json
+```
 
-Desarrollado por [@memoriainfinita](https://github.com/memoriainfinita)
+## Desarrollo
+
+```bash
+git clone https://github.com/memoriainfinita/terminus.git
+cd terminus
+npm install
+node ./src/build.js   # genera docs/dist/
+npm run serve         # docs/ en http://localhost:8080
+```
+
+## Distribución (CDN)
+
+```
+https://cdn.jsdelivr.net/gh/memoriainfinita/terminus@main/docs/dist/
+```
+
+- `terminal.min.css` — 4.5 KB
+- `terminal.min.js` — 8.2 KB
+- `terminal.bundle.min.js` — 13.1 KB (CSS + JS)
+
+## Licencia
+
+GPL v3.
+
+Desarrollado por [@memoriainfinita](https://github.com/memoriainfinita) con asistencia de Claude Sonnet 4.6 (Anthropic).

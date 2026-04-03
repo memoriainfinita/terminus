@@ -2,7 +2,7 @@
 
 /**
  * TERMINUS - Build System
- * Script para generar archivos minificados y distribución
+ * Build script for minification and distribution
  * Versión: 2.0.0
  */
 
@@ -14,18 +14,6 @@ const PATHS = {
   src: './src',
   dist: './docs/dist',
   docs: './docs'
-};
-
-const FILES = {
-  css: {
-    terminal: 'terminal.css',
-    demo: 'demo.css',
-    pageStyles: 'page-styles.css'
-  },
-  js: {
-    terminal: 'terminal.js',
-    demo: 'demo.js'
-  }
 };
 
 const CDN_BASE = 'https://cdn.jsdelivr.net/gh/memoriainfinita/terminus@main/docs/dist';
@@ -53,11 +41,10 @@ class TerminusBuild {
     console.log('OK directorio dist');
   }
 
-  minifyCSS(inputFile, outputFile) {
-    const inputPath = path.join(PATHS.src, inputFile);
+  minifyCSS(inputPath, outputFile) {
     const outputPath = path.join(PATHS.dist, outputFile);
     try {
-      console.log(`CSS: ${inputFile} -> ${outputFile}`);
+      console.log(`CSS: ${path.basename(inputPath)} -> ${outputFile}`);
       execSync(`npx clean-css-cli ${inputPath} -o ${outputPath}`, { stdio: 'pipe' });
       const originalSize = fs.statSync(inputPath).size;
       const minifiedSize = fs.statSync(outputPath).size;
@@ -65,17 +52,16 @@ class TerminusBuild {
       console.log(`   ${this.formatBytes(originalSize)} -> ${this.formatBytes(minifiedSize)} (-${reduction}%)`);
       return true;
     } catch (error) {
-      console.error(`ERROR minificando ${inputFile}:`, error.message);
+      console.error(`ERROR minificando ${path.basename(inputPath)}:`, error.message);
       return false;
     }
   }
 
-  minifyJS(inputFile, outputFile) {
-    const inputPath = path.join(PATHS.src, inputFile);
+  minifyJS(inputPath, outputFile) {
     const outputPath = path.join(PATHS.dist, outputFile);
     const mapPath = `${outputPath}.map`;
     try {
-      console.log(`JS: ${inputFile} -> ${outputFile}`);
+      console.log(`JS: ${path.basename(inputPath)} -> ${outputFile}`);
       execSync(`npx uglify-js ${inputPath} -o ${outputPath} --source-map "filename='${path.basename(mapPath)}',url='${path.basename(mapPath)}'" -c -m`, { stdio: 'pipe' });
       const originalSize = fs.statSync(inputPath).size;
       const minifiedSize = fs.statSync(outputPath).size;
@@ -83,7 +69,7 @@ class TerminusBuild {
       console.log(`   ${this.formatBytes(originalSize)} -> ${this.formatBytes(minifiedSize)} (-${reduction}%)`);
       return true;
     } catch (error) {
-      console.error(`ERROR minificando ${inputFile}:`, error.message);
+      console.error(`ERROR minificando ${path.basename(inputPath)}:`, error.message);
       return false;
     }
   }
@@ -92,7 +78,7 @@ class TerminusBuild {
     console.log('Bundle: terminal.bundle.min.js...');
     const cssContent = fs.readFileSync(path.join(PATHS.dist, 'terminal.min.css'), 'utf8');
     const jsContent = fs.readFileSync(path.join(PATHS.dist, 'terminal.min.js'), 'utf8');
-    const bundleContent = `/**\n * TERMINUS - Terminal Embebible GNU v${this.version}\n * Bundle completo: CSS + JavaScript\n * Auto-genera terminales con clase 'gnu-terminal'\n */\n\n// Inyectar CSS automaticamente\n(function() {\n  const css = \`${cssContent}\`;\n  const style = document.createElement('style');\n  style.textContent = css;\n  document.head.appendChild(style);\n})();\n\n// JavaScript del terminal\n${jsContent}`;
+    const bundleContent = `/**\n * TERMINUS - Embeddable Terminal Component v${this.version}\n * Full bundle: CSS + JavaScript\n * Auto-initializes elements with class 'gnu-terminal'\n */\n\n// Auto-inject CSS\n(function() {\n  const css = \`${cssContent}\`;\n  const style = document.createElement('style');\n  style.textContent = css;\n  document.head.appendChild(style);\n})();\n\n// Terminal JavaScript\n${jsContent}`;
     const bundlePath = path.join(PATHS.dist, 'terminal.bundle.min.js');
     fs.writeFileSync(bundlePath, bundleContent);
     const bundleSize = fs.statSync(bundlePath).size;
@@ -105,8 +91,8 @@ class TerminusBuild {
       files: {
         'terminal.min.css': this.getFileSize('terminal.min.css'),
         'terminal.min.js': this.getFileSize('terminal.min.js'),
-        'demo.min.css': this.getFileSize('demo.min.css'),
-        'demo.min.js': this.getFileSize('demo.min.js'),
+        'page.min.css': this.getFileSize('page.min.css'),
+        'page.min.js': this.getFileSize('page.min.js'),
         'terminal.bundle.min.js': this.getFileSize('terminal.bundle.min.js')
       },
       cdn: {
@@ -143,12 +129,11 @@ class TerminusBuild {
     try {
       this.ensureDistDir();
       console.log('\nCSS...');
-      this.minifyCSS(FILES.css.terminal, 'terminal.min.css');
-      this.minifyCSS(FILES.css.demo, 'demo.min.css');
-      this.minifyCSS(FILES.css.pageStyles, 'page-styles.min.css');
+      this.minifyCSS(path.join(PATHS.src, 'terminal.css'), 'terminal.min.css');
+      this.minifyCSS(path.join(PATHS.docs, 'page.css'), 'page.min.css');
       console.log('\nJS...');
-      this.minifyJS(FILES.js.terminal, 'terminal.min.js');
-      this.minifyJS(FILES.js.demo, 'demo.min.js');
+      this.minifyJS(path.join(PATHS.src, 'terminal.js'), 'terminal.min.js');
+      this.minifyJS(path.join(PATHS.docs, 'page.js'), 'page.min.js');
       console.log('\nBundles...');
       this.createTerminalBundle();
       console.log('\nMetadatos...');
