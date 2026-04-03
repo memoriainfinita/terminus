@@ -47,7 +47,7 @@ body { overflow-x: hidden; }
 
 main { min-height: 100dvh; }
 
-section { padding-block: 48px; border-bottom: 1px solid var(--border); }
+section { padding-block: 10px; border-bottom: 1px solid var(--border); }
 
 /* --- Navbar --- */
 
