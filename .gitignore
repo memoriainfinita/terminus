@@ -21,6 +21,9 @@ Desktop.ini
 # Local session state (never push)
 state.md
 
+# Local scripts
+*.bat
+
 # Temporary files
 *.tmp
 *.temp
