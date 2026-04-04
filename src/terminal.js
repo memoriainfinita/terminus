@@ -19,16 +19,12 @@ class TerminalComponent {
 
     this.history = [];
     this.historyIndex = 0;
-    this.isTyping = false;
     this._modeHandler = null;
     this._modeKeyHandler = null;
 
     this.init();
   }
 
-  /**
-   * Parses data-attributes from the element
-   */
   parseDataAttributes() {
     const data = {};
     
@@ -56,9 +52,6 @@ class TerminalComponent {
     return data;
   }
 
-  /**
-   * Initializes the terminal
-   */
   init() {
     this.element.classList.add('gnu-terminal');
     this.render();
@@ -73,9 +66,6 @@ class TerminalComponent {
     }
   }
 
-  /**
-   * Renders the terminal structure
-   */
   render() {
     this.element.setAttribute('tabindex', '0');
     // data-titlebar="custom": preserve existing titlebar HTML written by the user
@@ -105,9 +95,6 @@ class TerminalComponent {
     this.promptElement = this.element.querySelector('.prompt');
   }
 
-  /**
-   * Sets up event listeners
-   */
   setupEventListeners() {
     this.inputElement.addEventListener('keydown', (e) => {
       // Prevent bubbling to document — avoids triggering _modeKeyHandler
@@ -199,17 +186,11 @@ class TerminalComponent {
     }
   }
 
-  /**
-   * Adds a command to history
-   */
   addToHistory(command) {
     this.history.push(command);
     this.historyIndex = this.history.length;
   }
 
-  /**
-   * Navigates command history
-   */
   navigateHistory(direction) {
     const newIndex = this.historyIndex + direction;
     
@@ -242,9 +223,6 @@ class TerminalComponent {
     this.viewportElement.scrollTop = this.viewportElement.scrollHeight;
   }
 
-  /**
-   * Clears the terminal
-   */
   clear() {
     this.outputElement.innerHTML = '';
   }
@@ -271,31 +249,18 @@ class TerminalComponent {
     }
   }
 
-  /**
-   * Applies the theme
-   */
   applyTheme() {
     // Remove existing theme
     this.element.removeAttribute('data-theme');
-    
     // Apply new theme
     this.element.setAttribute('data-theme', this.options.theme);
-    
-    // Force repaint
-    this.element.offsetHeight;
   }
 
-  /**
-   * Updates the prompt
-   */
   setPrompt(prompt) {
     this.options.prompt = prompt;
     this.promptElement.textContent = prompt;
   }
 
-  /**
-   * Updates commands
-   */
   setCommands(commands) {
     this.options.commands = { ...this.options.commands, ...commands };
   }
@@ -559,5 +524,5 @@ if (document.readyState === 'loading') {
   initTerminals();
 }
 
-// Exportar para uso manual
+// Export for manual use
 window.TerminalComponent = TerminalComponent;
