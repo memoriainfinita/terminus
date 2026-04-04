@@ -84,6 +84,29 @@ a {
   --dot-green:  #555b6e;
 }
 
+/* data-titlebar="windows" — Win-style buttons, right-aligned */
+.gnu-terminal[data-titlebar="windows"] .titlebar {
+  justify-content: flex-end;
+  padding: 0;
+  gap: 0;
+}
+
+.gnu-terminal .win-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 32px;
+  font-size: 13px;
+  color: #9aa2b2;
+  cursor: default;
+  transition: background 0.1s, color 0.1s;
+  user-select: none;
+}
+
+.gnu-terminal .win-btn:hover        { background: rgba(255,255,255,0.08); color: #e6e8ee; }
+.gnu-terminal .win-btn.win-close:hover { background: #e81123; color: #fff; }
+
 /* Prompt */
 .prompt {
   color: var(--accent);

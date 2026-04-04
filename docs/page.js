@@ -315,10 +315,12 @@ class TerminusDemo {
         const terminalInstance = window.terminalInstances.find(t => t.element === this.elements.terminal);
         if (terminalInstance) {
           terminalInstance.options.theme = this.config.theme;
+          terminalInstance.options.titlebar = this.config.titlebar;
           terminalInstance.options.prompt = this.config.prompt;
           terminalInstance.options.commands = this.config.commands;
-          
+
           terminalInstance.applyTheme();
+          terminalInstance.applyTitlebar();
           terminalInstance.setPrompt(this.config.prompt);
           terminalInstance.clear();
           terminalInstance.showWelcomeMessage();

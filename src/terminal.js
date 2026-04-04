@@ -74,7 +74,13 @@ class TerminalComponent {
       : '';
     const titlebarHTML = this.options.titlebar === 'none' || this.options.titlebar === 'custom'
       ? customTitlebar
-      : `<div class="titlebar">
+      : this.options.titlebar === 'windows'
+        ? `<div class="titlebar">
+        <span class="win-btn win-min">&#8722;</span>
+        <span class="win-btn win-max">&#9633;</span>
+        <span class="win-btn win-close">&#10005;</span>
+      </div>`
+        : `<div class="titlebar">
         <span class="dot"></span>
         <span class="dot yellow"></span>
         <span class="dot green"></span>
@@ -250,10 +256,28 @@ class TerminalComponent {
   }
 
   applyTheme() {
-    // Remove existing theme
     this.element.removeAttribute('data-theme');
-    // Apply new theme
     this.element.setAttribute('data-theme', this.options.theme);
+    this.element.setAttribute('data-titlebar', this.options.titlebar);
+  }
+
+  applyTitlebar() {
+    this.element.setAttribute('data-titlebar', this.options.titlebar);
+    if (this.options.titlebar === 'custom') return;
+
+    const newHTML = this.options.titlebar === 'none'
+      ? ''
+      : this.options.titlebar === 'windows'
+        ? `<div class="titlebar"><span class="win-btn win-min">&#8722;</span><span class="win-btn win-max">&#9633;</span><span class="win-btn win-close">&#10005;</span></div>`
+        : `<div class="titlebar"><span class="dot"></span><span class="dot yellow"></span><span class="dot green"></span></div>`;
+
+    const existing = this.element.querySelector('.titlebar');
+    if (existing) {
+      if (newHTML) existing.insertAdjacentHTML('afterend', newHTML);
+      existing.remove();
+    } else if (newHTML) {
+      this.element.insertAdjacentHTML('afterbegin', newHTML);
+    }
   }
 
   setPrompt(prompt) {
