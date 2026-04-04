@@ -30,6 +30,8 @@ class TerminusDemo {
       newCommandResponse: document.getElementById('newCommandResponse'),
       addCommandBtn: document.getElementById('addCommandBtn'),
       commandsList: document.getElementById('commandsList'),
+      titlebarSelector: document.getElementById('titlebarSelector'),
+      autofocusCheck: document.getElementById('autofocusCheck'),
       generateSnippetBtn: document.getElementById('generateSnippetBtn'),
       resetConfigBtn: document.getElementById('resetConfigBtn'),
       
@@ -101,6 +103,8 @@ class TerminusDemo {
     // Initialize default configuration
     this.config = {
       theme: 'matrix',
+      titlebar: 'mac',
+      autofocus: false,
       prompt: 'user@terminus:~$',
       welcome: 'Bienvenido a mi terminal personalizada!\n\nComandos disponibles:\n\u2022 help - Ver ayuda\n\u2022 about - Información del proyecto',
       commands: {
@@ -120,6 +124,22 @@ class TerminusDemo {
       this.elements.themeSelector.addEventListener('change', (e) => {
         this.config.theme = e.target.value;
         this.updatePreview();
+        this.generateSnippet();
+      });
+    }
+
+    // Titlebar selector
+    if (this.elements.titlebarSelector) {
+      this.elements.titlebarSelector.addEventListener('change', (e) => {
+        this.config.titlebar = e.target.value;
+        this.generateSnippet();
+      });
+    }
+
+    // Autofocus checkbox
+    if (this.elements.autofocusCheck) {
+      this.elements.autofocusCheck.addEventListener('change', (e) => {
+        this.config.autofocus = e.target.checked;
         this.generateSnippet();
       });
     }
@@ -330,6 +350,8 @@ class TerminusDemo {
 
     const welcomeAttr = this.config.welcome ? `\n     data-welcome="${this.escapeHtml(this.config.welcome)}"` : '';
     const commandsAttr = Object.keys(this.config.commands).length > 0 ? `\n     data-commands='${JSON.stringify(this.config.commands)}'` : '';
+    const titlebarAttr = this.config.titlebar !== 'mac' ? `\n     data-titlebar="${this.config.titlebar}"` : '';
+    const autofocusAttr = this.config.autofocus ? '\n     data-autofocus' : '';
 
     const linkTag = cssUrl ? `&lt;link rel="stylesheet" href="${cssUrl}"&gt;\n` : '';
     const snippet = `${linkTag}&lt;script src="${jsUrl}" defer&gt;&lt;/script&gt;
@@ -337,7 +359,7 @@ class TerminusDemo {
 &lt;div class="gnu-terminal"
      style="height: 400px;"
      data-theme="${this.config.theme}"
-     data-prompt="${this.escapeHtml(this.config.prompt)}"${welcomeAttr}${commandsAttr}&gt;
+     data-prompt="${this.escapeHtml(this.config.prompt)}"${titlebarAttr}${autofocusAttr}${welcomeAttr}${commandsAttr}&gt;
 &lt;/div&gt;`;
 
     this.elements.generatedCode.innerHTML = snippet;
@@ -390,6 +412,8 @@ class TerminusDemo {
 
     this.config = {
       theme: 'matrix',
+      titlebar: 'mac',
+      autofocus: false,
       prompt: 'user@terminus:~$',
       welcome: 'Bienvenido a mi terminal personalizada!\n\nComandos disponibles:\n\u2022 help - Ver ayuda\n\u2022 about - Información del proyecto',
       commands: {
@@ -408,6 +432,12 @@ class TerminusDemo {
   loadConfiguration() {
     if (this.elements.themeSelector) {
       this.elements.themeSelector.value = this.config.theme;
+    }
+    if (this.elements.titlebarSelector) {
+      this.elements.titlebarSelector.value = this.config.titlebar;
+    }
+    if (this.elements.autofocusCheck) {
+      this.elements.autofocusCheck.checked = this.config.autofocus;
     }
     if (this.elements.promptInput) {
       this.elements.promptInput.value = this.config.prompt;
