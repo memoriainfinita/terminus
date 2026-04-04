@@ -335,6 +335,7 @@ class TerminusDemo {
     const snippet = `${linkTag}&lt;script src="${jsUrl}" defer&gt;&lt;/script&gt;
 
 &lt;div class="gnu-terminal"
+     style="height: 400px;"
      data-theme="${this.config.theme}"
      data-prompt="${this.escapeHtml(this.config.prompt)}"${welcomeAttr}${commandsAttr}&gt;
 &lt;/div&gt;`;

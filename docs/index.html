@@ -291,8 +291,11 @@ Comandos disponibles:
                   <tr><td><code>t.clear()</code></td><td>Limpia el output</td></tr>
                   <tr><td><code>t.play(steps)</code></td><td>Secuencia animada. Tipos: <code>cmd</code> · <code>output</code> · <code>outputHTML</code> · <code>progress</code> · <code>clear</code> · <code>pause</code>. El tipo <code>progress</code> acepta <code>text</code>, <code>steps</code>, <code>stepDelay</code>.</td></tr>
                   <tr><td><code>t.readline(prompt)</code></td><td>Espera input del usuario (Promise)</td></tr>
-                  <tr><td><code>t.enterMode(handler)</code></td><td>Activa modo TUI (oculta input, captura teclado)</td></tr>
+                  <tr><td><code>t.enterMode(handler)</code></td><td>Activa modo TUI (oculta input, captura teclado). <code>handler</code>: <code>{ onKey(key, e, term), onClick(x, y, row, col, term), onCtrlC(term) }</code></td></tr>
                   <tr><td><code>t.exitMode()</code></td><td>Sale del modo TUI y restaura el input</td></tr>
+                  <tr><td><code>t.addToOutput(text)</code></td><td>Imprime texto plano (seguro). Ver <code>addOutputHTML</code> para HTML.</td></tr>
+                  <tr><td><code>t.rows</code> · <code>t.cols</code></td><td>Filas y columnas visibles del viewport (read-only)</td></tr>
+                  <tr><td><code>t.options.onTab</code></td><td>Función <code>(val, term)</code> para autocomplete contextual. Por defecto completa comandos de una sola palabra.</td></tr>
                 </tbody>
               </table>
             </div>
@@ -433,14 +436,14 @@ t.setCommands({
         { type: 'output',   text: 'remote: Counting objects: 100% (312/312), done.',  delay: 300 },
         { type: 'outputHTML', html: '<span style="color:var(--accent)">&#10003; clonado en ./terminus</span>', delay: 600 },
         { type: 'cmd',      text: 'cat terminus/docs/dist/terminal.min.js | wc -c',   delay: 900 },
-        { type: 'output',   text: '7372',                                              delay: 700 },
-        { type: 'output',   text: '7.2 KB. sin dependencias.',                        delay: 300 },
+        { type: 'output',   text: '8639',                                              delay: 700 },
+        { type: 'output',   text: '8.4 KB. sin dependencias.',                        delay: 300 },
         { type: 'cmd',      text: 'curl -sO https://cdn.jsdelivr.net/gh/memoriainfinita/terminus@main/docs/dist/terminal.min.css', delay: 900 },
         { type: 'progress', text: 'terminal.min.css', steps: 18, stepDelay: 55,       delay: 200 },
-        { type: 'outputHTML', html: '<span style="color:var(--accent)">&#10003; 5 KB</span>', delay: 200 },
+        { type: 'outputHTML', html: '<span style="color:var(--accent)">&#10003; 3.4 KB</span>', delay: 200 },
         { type: 'cmd',      text: 'curl -sO https://cdn.jsdelivr.net/gh/memoriainfinita/terminus@main/docs/dist/terminal.min.js',  delay: 600 },
         { type: 'progress', text: 'terminal.min.js ', steps: 18, stepDelay: 65,       delay: 200 },
-        { type: 'outputHTML', html: '<span style="color:var(--accent)">&#10003; 7.2 KB</span>', delay: 200 },
+        { type: 'outputHTML', html: '<span style="color:var(--accent)">&#10003; 8.4 KB</span>', delay: 200 },
         { type: 'clear',                                                               delay: 300 },
         { type: 'outputHTML', html: '<span style="color:var(--accent)">listo. copia dos lineas y funciona.</span>', delay: 400 },
       ];
