@@ -76,7 +76,6 @@
                    "ls":              "fsociety/  e-corp/  kontrol/  .secrets/  README.md",
                    "cat README.md":   "full-stack. infosec. actualmente: 5/9.",
                    "skills":          "python  c  ruby  bash  asm  social engineering",
-                   "nmap localhost":  "22/tcp open ssh\n80/tcp open http\n443/tcp open https",
                    "cd fsociety/":    "install.sh  members.txt  plan_5-9.md  darkweb/  exploit/",
                    "cd e-corp/":      "finance/  servers/  employees.csv  backup_keys.asc",
                    "cd kontrol/":     "Permission denied.",
@@ -398,6 +397,11 @@ t.setCommands({
       };
 
       tPortfolio.setCommands({
+        'nmap localhost': function(args, term) {
+          term.addToOutput('22/tcp open ssh');
+          term.addToOutput('80/tcp open http');
+          term.addToOutput('443/tcp open https');
+        },
         'login': async function(args, term) {
           term.addToOutput('fsociety secure shell v1.0');
           term.addToOutput('');
