@@ -1,6 +1,7 @@
 # Terminus
 
 [![jsDelivr](https://img.shields.io/badge/CDN-jsDelivr-orange)](https://cdn.jsdelivr.net/gh/memoriainfinita/terminus@main/docs/dist/)
+[![GitHub Pages](https://img.shields.io/badge/docs-GitHub%20Pages-blue)](https://memoriainfinita.github.io/terminus/)
 [![License](https://img.shields.io/badge/license-GPL--3.0-blue)](LICENSE)
 [![Version](https://img.shields.io/badge/version-2.0.0-informational)]()
 
@@ -36,6 +37,7 @@ Terminal embebible para la web. Vanilla HTML/CSS/JS — sin dependencias, sin fr
 | `data-welcome` | string | Mensaje inicial, soporta `\n` |
 | `data-commands` | JSON | Comandos estáticos como objeto JSON |
 | `data-autofocus` | flag | Enfoca el input al cargar la página |
+| `data-titlebar` | string | `mac` (default) · `linux` · `none` · `custom` |
 
 > El componente requiere `height` fijo (no `min-height`) para que el scroll sea interno. Sin él, el terminal crece y la página scrollea en lugar del contenido.
 
@@ -98,7 +100,7 @@ console.log(t.rows, t.cols);
 ## Estructura
 
 ```
-terminust/
+terminus/
 ├── src/
 │   ├── terminal.css    # Estilos del componente (distribuido via CDN)
 │   ├── terminal.js     # Lógica del componente (distribuido via CDN)
@@ -132,9 +134,9 @@ npm run serve         # docs/ en http://localhost:8080
 https://cdn.jsdelivr.net/gh/memoriainfinita/terminus@main/docs/dist/
 ```
 
-- `terminal.min.css` — 4.5 KB
-- `terminal.min.js` — 8.2 KB
-- `terminal.bundle.min.js` — 13.1 KB (CSS + JS)
+- `terminal.min.css` — 3.6 KB
+- `terminal.min.js` — 8.5 KB
+- `terminal.bundle.min.js` — 12.4 KB (CSS + JS)
 
 ## Licencia
 

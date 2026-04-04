@@ -10,17 +10,11 @@ class TerminusDemo {
     this.init();
   }
 
-  /**
-   * Initializes the demo
-   */
   init() {
     this.cacheElements();
     this.setupEventListeners();
   }
 
-  /**
-   * Caches DOM element references
-   */
   cacheElements() {
     this.elements = {
       // Navigation elements
@@ -50,17 +44,11 @@ class TerminusDemo {
     };
   }
 
-  /**
-   * Sets up all event listeners
-   */
   setupEventListeners() {
     this.setupModal();
     this.setupConfigurator();
   }
 
-  /**
-   * Shows a toast notification
-   */
   showToast(message, duration = 1600) {
     if (!this.elements.toast) return;
 
@@ -72,9 +60,6 @@ class TerminusDemo {
     }, duration);
   }
 
-  /**
-   * Sets up modal functionality
-   */
   setupModal() {
     if (!this.elements.backdrop) return;
 
@@ -100,27 +85,18 @@ class TerminusDemo {
     });
   }
 
-  /**
-   * Opens the modal
-   */
   openModal() {
     this.elements.backdrop.classList.add('open');
     this.elements.backdrop.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
   }
 
-  /**
-   * Closes the modal
-   */
   closeModal() {
     this.elements.backdrop.classList.remove('open');
     this.elements.backdrop.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
   }
 
-  /**
-   * Sets up the full configurator
-   */
   setupConfigurator() {
     // Initialize default configuration
     this.config = {
@@ -138,9 +114,6 @@ class TerminusDemo {
     this.updatePreview();
   }
 
-  /**
-   * Sets up all configurator event listeners
-   */
   setupConfiguratorEvents() {
     // Theme selector
     if (this.elements.themeSelector) {
@@ -224,9 +197,6 @@ class TerminusDemo {
     }
   }
 
-  /**
-   * Adds a new custom command
-   */
   addCommand() {
     const name = this.elements.newCommandName?.value.trim();
     const response = this.elements.newCommandResponse?.value.trim();
@@ -255,9 +225,6 @@ class TerminusDemo {
     this.showToast(`Comando "${name}" agregado`);
   }
 
-  /**
-   * Removes a command
-   */
   removeCommand(commandName) {
     delete this.config.commands[commandName];
     this.renderCommandsList();
@@ -266,9 +233,6 @@ class TerminusDemo {
     this.showToast(`Comando "${commandName}" eliminado`);
   }
 
-  /**
-   * Edits an existing command
-   */
   editCommand(commandName, currentResponse) {
     if (this.elements.newCommandName) {
       this.elements.newCommandName.value = commandName;
@@ -286,9 +250,6 @@ class TerminusDemo {
     this.showToast(`Editando "${commandName}" - Modifica y presiona Agregar`);
   }
 
-  /**
-   * Renders the commands list
-   */
   renderCommandsList() {
     if (!this.elements.commandsList) return;
 
@@ -297,7 +258,7 @@ class TerminusDemo {
         <span style="font-family: monospace; color: var(--accent);">${name}</span>
         <span style="flex: 1; margin-left: 8px; font-size: 12px; max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${response}</span>
         <div style="display: flex; gap: 4px;">
-          <button class="btn-edit" onclick="window.terminusDemo.editCommand('${name}', \`${response.replace(/`/g, '\\`')}\`)" 
+          <button onclick="window.terminusDemo.editCommand('${name}', \`${response.replace(/`/g, '\\`')}\`)"
                   style="background: none; border: none; color: var(--accent); cursor: pointer; padding: 2px 6px; font-size: 12px;" 
                   title="Editar comando">&#9998;</button>
           <button class="btn-remove" onclick="window.terminusDemo.removeCommand('${name}')" 
@@ -310,9 +271,6 @@ class TerminusDemo {
     this.elements.commandsList.innerHTML = commandsHTML || '<div style="text-align: center; color: var(--muted); padding: 16px;">No hay comandos personalizados</div>';
   }
 
-  /**
-   * Updates the terminal preview
-   */
   updatePreview() {
     if (!this.elements.terminal) return;
 
@@ -340,30 +298,15 @@ class TerminusDemo {
           terminalInstance.options.prompt = this.config.prompt;
           terminalInstance.options.commands = this.config.commands;
           
-          if (terminalInstance.applyTheme) {
-            terminalInstance.applyTheme();
-          }
-          
-          if (terminalInstance.setPrompt) {
-            terminalInstance.setPrompt(this.config.prompt);
-          }
-          
-          if (terminalInstance.clear && terminalInstance.showWelcomeMessage) {
-            terminalInstance.clear();
-            terminalInstance.showWelcomeMessage();
-          }
+          terminalInstance.applyTheme();
+          terminalInstance.setPrompt(this.config.prompt);
+          terminalInstance.clear();
+          terminalInstance.showWelcomeMessage();
         }
       }
-      
-      // Force repaint
-      this.elements.terminal.offsetHeight;
-      
     }, 10);
   }
 
-  /**
-   * Generates the code snippet
-   */
   generateSnippet() {
     if (!this.elements.generatedCode) return;
 
@@ -399,18 +342,12 @@ class TerminusDemo {
     this.elements.generatedCode.innerHTML = snippet;
   }
 
-  /**
-   * Escapes HTML for attributes
-   */
   escapeHtml(text) {
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML.replace(/"/g, '&quot;');
   }
 
-  /**
-   * Copies the generated snippet
-   */
   async copySnippet() {
     if (!this.elements.generatedCode) return;
 
@@ -431,9 +368,6 @@ class TerminusDemo {
     }
   }
 
-  /**
-   * Downloads the configuration as JSON
-   */
   downloadConfiguration() {
     const configJson = JSON.stringify(this.config, null, 2);
     const blob = new Blob([configJson], { type: 'application/json' });
@@ -450,9 +384,6 @@ class TerminusDemo {
     this.showToast('Configuración descargada');
   }
 
-  /**
-   * Resets configuration to defaults
-   */
   resetConfiguration() {
     if (!confirm('¿Estás seguro de que quieres resetear toda la configuración?')) return;
 
@@ -473,9 +404,6 @@ class TerminusDemo {
     this.showToast('Configuración reseteada');
   }
 
-  /**
-   * Loads configuration into the inputs
-   */
   loadConfiguration() {
     if (this.elements.themeSelector) {
       this.elements.themeSelector.value = this.config.theme;
@@ -491,12 +419,8 @@ class TerminusDemo {
     this.generateSnippet();
   }
 
-  destroy() {}
 }
 
-/**
- * Auto-initialization
- */
 function initDemo() {
   if (document.querySelector('.demo-page')) {
     window.terminusDemo = new TerminusDemo();

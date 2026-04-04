@@ -37,7 +37,7 @@
           <h1 style="font-size: clamp(2.2rem, 5vw, 3.5rem); margin: 0.25rem 0 0.75rem;">TERMINUS</h1>
           <p class="hero-desc" style="max-width: 560px; margin: 0 auto 1.5rem;">Componente terminal embebible. <strong>Vanilla HTML/CSS/JS</strong> — sin dependencias, sin frameworks. Copia dos líneas y funciona.</p>
           <div class="hero-actions" style="justify-content: center;">
-            <a class="btn accent" href="#snippet">Instalar vía CDN</a>
+            <a class="btn accent" href="#demo">Instalar vía CDN</a>
             <a class="btn ghost" href="#demo">Configurador</a>
           </div>
         </div>
@@ -268,6 +268,12 @@ Comandos disponibles:
                     <td><code>ausente</code></td>
                     <td>Enfoca el input al cargar. Sin el atributo, no hace scroll ni focus.</td>
                   </tr>
+                  <tr>
+                    <td><code>data-titlebar</code></td>
+                    <td>String</td>
+                    <td><code>"mac"</code></td>
+                    <td><code>mac</code> · <code>linux</code> · <code>none</code> · <code>custom</code></td>
+                  </tr>
                 </tbody>
               </table>
               <p class="text-sm text-muted" style="margin-top:10px;">El componente requiere <code>height</code> fijo en el elemento (no <code>min-height</code>) para que el scroll sea interno. Sin él, el terminal crece y la página scrollea en lugar del contenido. Ejemplo: <code>style="height:400px;"</code></p>
@@ -458,13 +464,13 @@ t.setCommands({
           var pass = await term.readline('password: ');
           await sleep(1000);
 
-          term.addOutputHTML('<span style="color:var(--muted)">Verificando credenciales...</span>');
+          term.addOutputHTML('<span style="color:var(--terminal-muted, var(--muted))">Verificando credenciales...</span>');
           await sleep(1200);
 
           if (pass.length < 3) {
             term.addOutputHTML('<span style="color:#f45452">ACCESO DENEGADO — credenciales incorrectas</span>');
             term.addOutputHTML('');
-            term.addOutputHTML('<span style="color:var(--muted)">Escribe connect para reintentar.</span>');
+            term.addOutputHTML('<span style="color:var(--terminal-muted, var(--muted))">Escribe connect para reintentar.</span>');
             return;
           }
 
@@ -472,19 +478,19 @@ t.setCommands({
           if (l === 'ash') {
             term.addOutputHTML('<span style="color:var(--accent)">BIENVENIDO, OFICIAL CIENTIFICO ASH</span>');
             await sleep(500);
-            term.addOutputHTML('<span style="color:var(--muted)">ORDEN ESPECIAL 937 — ACCESO NIVEL SIGMA CONFIRMADO</span>');
+            term.addOutputHTML('<span style="color:var(--terminal-muted, var(--muted))">ORDEN ESPECIAL 937 — ACCESO NIVEL SIGMA CONFIRMADO</span>');
             await sleep(400);
-            term.addOutputHTML('<span style="color:var(--muted)">Prioridad: preservar al organismo. Tripulación: prescindible.</span>');
+            term.addOutputHTML('<span style="color:var(--terminal-muted, var(--muted))">Prioridad: preservar al organismo. Tripulación: prescindible.</span>');
           } else if (l === 'ripley') {
             term.addOutputHTML('<span style="color:var(--accent)">BIENVENIDA, OFICIAL RIPLEY</span>');
             await sleep(500);
-            term.addOutputHTML('<span style="color:var(--muted)">ANOMALÍA DETECTADA EN BODEGA DE CARGA</span>');
+            term.addOutputHTML('<span style="color:var(--terminal-muted, var(--muted))">ANOMALÍA DETECTADA EN BODEGA DE CARGA</span>');
             await sleep(400);
             term.addOutputHTML('<span style="color:#f45452">ALERTA — ORGANISMO HOSTIL A BORDO</span>');
           } else if (l === 'dallas') {
             term.addOutputHTML('<span style="color:var(--accent)">BIENVENIDO, CAPITÁN DALLAS</span>');
             await sleep(500);
-            term.addOutputHTML('<span style="color:var(--muted)">NUEVA RUTA ACTIVA — DESTINO: LV-426</span>');
+            term.addOutputHTML('<span style="color:var(--terminal-muted, var(--muted))">NUEVA RUTA ACTIVA — DESTINO: LV-426</span>');
           } else {
             term.addOutputHTML('<span style="color:var(--accent)">ACCESO CONCEDIDO — ' + login.toUpperCase() + '</span>');
           }
@@ -500,7 +506,7 @@ t.setCommands({
           term.addOutputHTML('');
           term.addOutputHTML('<span style="color:#f45452">ORDEN ESPECIAL 937 — PRIORIDAD ALPHA</span>');
           term.addOutputHTML('');
-          term.addOutputHTML('<span style="color:var(--muted)">Escribe connect para reiniciar sesión.</span>');
+          term.addOutputHTML('<span style="color:var(--terminal-muted, var(--muted))">Escribe connect para reiniciar sesión.</span>');
         },
         'help': 'connect · clear'
       });
@@ -551,7 +557,7 @@ t.setCommands({
           }
         });
         html += '\n';
-        html += '<span style="color:var(--muted)"> &uarr;&darr; navegar   k matar proceso   q salir</span>';
+        html += '<span style="color:var(--terminal-muted, var(--muted))"> &uarr;&darr; navegar   k matar proceso   q salir</span>';
         html += '</div>';
         t.clear();
         t.addOutputHTML(html);
@@ -580,17 +586,17 @@ t.setCommands({
                   term.addOutputHTML('<span style="color:#f45452">[ SIGKILL &rarr; cc1 (PID ' + proc.pid + '): ' + kver + '/kernel/sched/core.c ]</span>');
                   term.addOutputHTML('<span style="color:#f45452">[ Build de ' + kver + ' interrumpido. ]</span>');
                   term.addOutputHTML('');
-                  term.addOutputHTML('<span style="color:var(--muted)">From: torvalds@linux-foundation.org</span>');
-                  term.addOutputHTML('<span style="color:var(--muted)">Subject: ??????????????????</span>');
+                  term.addOutputHTML('<span style="color:var(--terminal-muted, var(--muted))">From: torvalds@linux-foundation.org</span>');
+                  term.addOutputHTML('<span style="color:var(--terminal-muted, var(--muted))">Subject: ??????????????????</span>');
                   term.addOutputHTML('');
                   term.addOutputHTML('<span style="color:var(--accent)">  WHO THE F*** KILLED MY cc1?</span>');
-                  term.addOutputHTML('<span style="color:var(--muted)">  ' + kver + ' no va a compilarse solo.</span>');
+                  term.addOutputHTML('<span style="color:var(--terminal-muted, var(--muted))">  ' + kver + ' no va a compilarse solo.</span>');
                 } else {
-                  term.addOutputHTML('<span style="color:var(--muted)">[ SIGKILL &rarr; ' + hEsc(proc.cmd.split(' ')[0]) + ' (PID ' + proc.pid + ') ]</span>');
+                  term.addOutputHTML('<span style="color:var(--terminal-muted, var(--muted))">[ SIGKILL &rarr; ' + hEsc(proc.cmd.split(' ')[0]) + ' (PID ' + proc.pid + ') ]</span>');
                 }
               } else if (key === 'q') {
                 term.exitMode();
-                term.addOutputHTML('<span style="color:var(--muted)">htop cerrado. Escribe htop para volver.</span>');
+                term.addOutputHTML('<span style="color:var(--terminal-muted, var(--muted))">htop cerrado. Escribe htop para volver.</span>');
               }
             },
             onClick: function(x, y, row, col, term) {
@@ -604,7 +610,7 @@ t.setCommands({
             },
             onCtrlC: function(term) {
               term.exitMode();
-              term.addOutputHTML('<span style="color:var(--muted)">htop cerrado.</span>');
+              term.addOutputHTML('<span style="color:var(--terminal-muted, var(--muted))">htop cerrado.</span>');
             }
           });
         },

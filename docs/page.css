@@ -7,6 +7,12 @@
 /* --- Variables (extends terminal.css) --- */
 
 :root {
+  --bg-soft: #141821;
+  --muted: #9aa3b2;
+  --shadow: rgba(0,0,0,.25);
+  --accent-weak: #1b4b38;
+  --gap: 16px;
+
   --text-xs: 11px;
   --text-sm: 13px;
   --text-base: 14px;
@@ -114,8 +120,6 @@ header.navbar {
   border-color: var(--accent-weak);
 }
 
-.btn-lg { padding: var(--space-3) var(--space-6); }
-
 /* --- Grid --- */
 
 .grid { display: grid; gap: var(--gap); }
@@ -151,19 +155,6 @@ header.navbar {
 
 .card .card-b,
 .modal .card-b { padding: 16px; }
-
-/* --- Details / FAQ --- */
-
-details {
-  background: var(--bg-soft);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 12px 14px;
-}
-
-details + details { margin-top: 10px; }
-summary { cursor: pointer; font-weight: 600; }
-summary::marker { color: var(--accent); }
 
 /* --- Footer --- */
 
@@ -232,7 +223,6 @@ footer { padding: 24px 0; color: var(--muted); }
 /* --- Tags / Badges --- */
 
 .tag { font-size: 12px; color: var(--muted); }
-.badge { padding: 2px 8px; border: 1px solid var(--border); border-radius: 999px; background: var(--bg-softer); }
 
 /* --- API Table --- */
 
@@ -290,14 +280,6 @@ footer { padding: 24px 0; color: var(--muted); }
 
 .form-input.monospace { font-family: monospace; }
 
-.form-select {
-  padding: var(--space-2);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  background: var(--bg);
-  color: var(--fg);
-}
-
 .commands-list {
   background: var(--bg-softer);
   border: 1px solid var(--border);
@@ -322,49 +304,24 @@ footer { padding: 24px 0; color: var(--muted); }
 
 /* --- Utilities --- */
 
-.row { display: flex; align-items: center; gap: 10px; }
-.spacer { flex: 1; }
 .flex { display: flex; }
-.flex-col { flex-direction: column; }
 .flex-1 { flex: 1; }
 .flex-2 { flex: 2; min-width: 0; }
 .flex-wrap { flex-wrap: wrap; }
-.items-center { align-items: center; }
-.justify-center { justify-content: center; }
-.justify-between { justify-content: space-between; }
 
 .gap-2 { gap: var(--space-2); }
-.gap-3 { gap: var(--space-3); }
-.gap-4 { gap: var(--space-4); }
 
 .mb-2 { margin-bottom: var(--space-2); }
-.mb-3 { margin-bottom: var(--space-3); }
 .mb-4 { margin-bottom: var(--space-4); }
 .mb-6 { margin-bottom: var(--space-6); }
-.mt-2 { margin-top: var(--space-2); }
-.mt-4 { margin-top: var(--space-4); }
-.ml-2 { margin-left: var(--space-2); }
-.m-0 { margin: 0; }
-.mx-auto { margin-left: auto; margin-right: auto; }
 
-.p-3 { padding: var(--space-3); }
-.p-4 { padding: var(--space-4); }
-.p-6 { padding: var(--space-6); }
-.px-2 { padding-left: var(--space-2); padding-right: var(--space-2); }
 .px-3 { padding-left: var(--space-3); padding-right: var(--space-3); }
-.px-4 { padding-left: var(--space-4); padding-right: var(--space-4); }
-.py-3 { padding-top: var(--space-3); padding-bottom: var(--space-3); }
 
 .text-xs { font-size: var(--text-xs); }
 .text-sm { font-size: var(--text-sm); }
-.text-base { font-size: var(--text-base); }
-.text-lg { font-size: var(--text-lg); }
-.text-xl { font-size: var(--text-xl); }
 .text-center { text-align: center; }
-.text-accent { color: var(--accent); }
 .text-muted { color: var(--muted); }
 
-.w-full { width: 100%; }
 .resize-vertical { resize: vertical; }
 .monospace { font-family: monospace; }
 
@@ -376,7 +333,6 @@ footer { padding: 24px 0; color: var(--muted); }
 
 @media (max-width: 768px) {
   .hero-desc { max-width: 100%; }
-  .gap-4 { gap: var(--space-2); }
   .api-table { font-size: var(--text-xs); }
   .api-table th,
   .api-table td { padding: var(--space-1) var(--space-2); }
