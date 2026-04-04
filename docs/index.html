@@ -185,6 +185,21 @@ Comandos disponibles:
               </div>
 
               <div class="form-group">
+                <label for="titlebarSelector" class="form-label">Titlebar</label>
+                <select id="titlebarSelector" class="form-input">
+                  <option value="mac">Mac</option>
+                  <option value="linux">Linux</option>
+                  <option value="none">None</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+                  <input type="checkbox" id="autofocusCheck"> Autofocus al cargar
+                </label>
+              </div>
+
+              <div class="form-group">
                 <label for="promptInput" class="form-label">Prompt</label>
                 <input type="text" id="promptInput" value="user@terminus:~$" placeholder="admin@server:~#"
                        class="form-input monospace">
