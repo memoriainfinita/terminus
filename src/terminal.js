@@ -183,9 +183,9 @@ class TerminalComponent {
     if (handler !== undefined) {
       if (typeof handler === 'function') {
         const result = handler(args, this);
-        if (typeof result === 'string') this.addToOutput(result);
+        if (typeof result === 'string') result.split('\n').forEach(l => this.addToOutput(l));
       } else {
-        this.addToOutput(handler);
+        handler.split('\n').forEach(l => this.addToOutput(l));
       }
     } else {
       this.addToOutput(`Comando no encontrado: ${verb}. Escribe 'help' para ver comandos disponibles.`);
@@ -423,9 +423,9 @@ class TerminalComponent {
     if (handler !== undefined) {
       if (typeof handler === 'function') {
         const result = handler(args, this);
-        if (typeof result === 'string') this.addToOutput(result);
+        if (typeof result === 'string') result.split('\n').forEach(l => this.addToOutput(l));
       } else {
-        this.addToOutput(handler);
+        handler.split('\n').forEach(l => this.addToOutput(l));
       }
     }
   }
