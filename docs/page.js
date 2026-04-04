@@ -177,8 +177,11 @@ class TerminusDemo {
       });
     }
     if (this.elements.newCommandResponse) {
-      this.elements.newCommandResponse.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') this.addCommand();
+      this.elements.newCommandResponse.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && e.ctrlKey) {
+          e.preventDefault();
+          this.addCommand();
+        }
       });
     }
 
