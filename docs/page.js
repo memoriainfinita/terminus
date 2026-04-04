@@ -132,6 +132,7 @@ class TerminusDemo {
     if (this.elements.titlebarSelector) {
       this.elements.titlebarSelector.addEventListener('change', (e) => {
         this.config.titlebar = e.target.value;
+        this.updatePreview();
         this.generateSnippet();
       });
     }
