@@ -141,32 +141,3 @@ https://cdn.jsdelivr.net/gh/memoriainfinita/terminus@main/docs/dist/
 GPL v3.
 
 Desarrollado por [@memoriainfinita](https://github.com/memoriainfinita) con asistencia de Claude Sonnet 4.6 (Anthropic).
-│       └── page.min.js
-└── package.json
-```
-
-## Desarrollo
-
-```bash
-git clone https://github.com/memoriainfinita/terminus.git
-cd terminus
-npm install
-node ./src/build.js   # genera docs/dist/
-npm run serve         # docs/ en http://localhost:8080
-```
-
-## Distribución (CDN)
-
-```
-https://cdn.jsdelivr.net/gh/memoriainfinita/terminus@main/docs/dist/
-```
-
-- `terminal.min.css` — 4.5 KB
-- `terminal.min.js` — 8.2 KB
-- `terminal.bundle.min.js` — 13.1 KB (CSS + JS)
-
-## Licencia
-
-GPL v3.
-
-Desarrollado por [@memoriainfinita](https://github.com/memoriainfinita) con asistencia de Claude Sonnet 4.6 (Anthropic).

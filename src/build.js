@@ -3,7 +3,7 @@
 /**
  * TERMINUS - Build System
  * Build script for minification and distribution
- * Versión: 2.0.0
+ * Version: 2.0.0
  */
 
 const fs = require('fs');
@@ -38,7 +38,7 @@ class TerminusBuild {
     if (!fs.existsSync(PATHS.dist)) {
       fs.mkdirSync(PATHS.dist, { recursive: true });
     }
-    console.log('OK directorio dist');
+    console.log('dist directory ready');
   }
 
   minifyCSS(inputPath, outputFile) {
@@ -52,7 +52,7 @@ class TerminusBuild {
       console.log(`   ${this.formatBytes(originalSize)} -> ${this.formatBytes(minifiedSize)} (-${reduction}%)`);
       return true;
     } catch (error) {
-      console.error(`ERROR minificando ${path.basename(inputPath)}:`, error.message);
+      console.error(`ERROR minifying ${path.basename(inputPath)}:`, error.message);
       return false;
     }
   }
@@ -69,7 +69,7 @@ class TerminusBuild {
       console.log(`   ${this.formatBytes(originalSize)} -> ${this.formatBytes(minifiedSize)} (-${reduction}%)`);
       return true;
     } catch (error) {
-      console.error(`ERROR minificando ${path.basename(inputPath)}:`, error.message);
+      console.error(`ERROR minifying ${path.basename(inputPath)}:`, error.message);
       return false;
     }
   }
@@ -103,7 +103,7 @@ class TerminusBuild {
       }
     };
     fs.writeFileSync(path.join(PATHS.dist, 'build-info.json'), JSON.stringify(buildInfo, null, 2));
-    console.log('Metadatos guardados');
+    console.log('Build info saved');
   }
 
   getFileSize(filename) {
@@ -136,14 +136,14 @@ class TerminusBuild {
       this.minifyJS(path.join(PATHS.docs, 'page.js'), 'page.min.js');
       console.log('\nBundles...');
       this.createTerminalBundle();
-      console.log('\nMetadatos...');
+      console.log('\nBuild info...');
       this.createBuildInfo();
       const duration = Date.now() - startTime;
-      console.log(`\nBUILD OK en ${duration}ms`);
+      console.log(`\nBUILD OK in ${duration}ms`);
       console.log('=====================================');
-      console.log('Archivos generados en docs/dist/');
+      console.log('Output files in docs/dist/');
     } catch (error) {
-      console.error('\nBUILD FALLO:', error.message);
+      console.error('\nBUILD FAILED:', error.message);
       process.exit(1);
     }
   }
