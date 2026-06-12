@@ -37,8 +37,8 @@
           <h1 style="font-size: clamp(2.2rem, 5vw, 3.5rem); margin: 0.25rem 0 0.75rem;">TERMINUS</h1>
           <p class="hero-desc" style="max-width: 560px; margin: 0 auto 1.5rem;">Componente terminal embebible. <strong>Vanilla HTML/CSS/JS</strong> — sin dependencias, sin frameworks. Copia dos líneas y funciona.</p>
           <div class="hero-actions" style="justify-content: center;">
-            <a class="btn accent" href="#demo">Instalar vía CDN</a>
-            <a class="btn ghost" href="#demo">Configurador</a>
+            <a class="btn accent" href="#demo">Configurador</a>
+            <a class="btn ghost" href="#options">Referencia API</a>
           </div>
         </div>
 
@@ -112,7 +112,7 @@
               </div>
             </div>
             <div class="gnu-terminal" id="ex-vk" data-theme="ocean" data-titlebar="none" data-prompt="muthur>"
-                 data-welcome="USCSS NOSTROMO — NCC-1701&#10;MU/TH/UR 6000 / INTERFACE v4.7&#10;WEYLAND-YUTANI CORPORATION&#10;&#10;Escribe connect para iniciar sesión."
+                 data-welcome="USCSS NOSTROMO — 180924609&#10;MU/TH/UR 6000 / INTERFACE v4.7&#10;WEYLAND-YUTANI CORPORATION&#10;&#10;Escribe connect para iniciar sesión."
                  data-commands='{"help":"connect · clear"}'
                  style="height:380px;"></div>
           </div>
@@ -263,7 +263,7 @@ Comandos disponibles:
                   <tr>
                     <td><code>data-prompt</code></td>
                     <td>String</td>
-                    <td><code>"user@host:~$"</code></td>
+                    <td><code>"gnu$"</code></td>
                     <td>Texto del prompt</td>
                   </tr>
                   <tr>
@@ -289,6 +289,12 @@ Comandos disponibles:
                     <td>String</td>
                     <td><code>"mac"</code></td>
                     <td><code>mac</code> · <code>linux</code> · <code>windows</code> · <code>none</code> · <code>custom</code></td>
+                  </tr>
+                  <tr>
+                    <td><code>data-not-found</code></td>
+                    <td>String</td>
+                    <td>mensaje en español</td>
+                    <td>Mensaje para comandos desconocidos. <code>{cmd}</code> se sustituye por el comando.</td>
                   </tr>
                 </tbody>
               </table>
@@ -380,7 +386,6 @@ t.setCommands({
         <pre class="code" id="generatedCode"></pre>
         <div class="flex gap-2" style="margin-top: 12px;">
           <button class="btn accent" id="copyGeneratedSnippet">Copiar snippet</button>
-          <button class="btn ghost" id="downloadConfig">Descargar config JSON</button>
         </div>
       </div>
     </div>
@@ -453,14 +458,14 @@ t.setCommands({
         { type: 'output',   text: 'remote: Counting objects: 100% (312/312), done.',  delay: 300 },
         { type: 'outputHTML', html: '<span style="color:var(--accent)">&#10003; clonado en ./terminus</span>', delay: 600 },
         { type: 'cmd',      text: 'cat terminus/docs/dist/terminal.min.js | wc -c',   delay: 900 },
-        { type: 'output',   text: '8639',                                              delay: 700 },
-        { type: 'output',   text: '8.4 KB. sin dependencias.',                        delay: 300 },
+        { type: 'output',   text: '9705',                                              delay: 700 },
+        { type: 'output',   text: '9.5 KB. sin dependencias.',                        delay: 300 },
         { type: 'cmd',      text: 'curl -sO https://cdn.jsdelivr.net/gh/memoriainfinita/terminus@main/docs/dist/terminal.min.css', delay: 900 },
         { type: 'progress', text: 'terminal.min.css', steps: 18, stepDelay: 55,       delay: 200 },
-        { type: 'outputHTML', html: '<span style="color:var(--accent)">&#10003; 3.4 KB</span>', delay: 200 },
+        { type: 'outputHTML', html: '<span style="color:var(--accent)">&#10003; 3.5 KB</span>', delay: 200 },
         { type: 'cmd',      text: 'curl -sO https://cdn.jsdelivr.net/gh/memoriainfinita/terminus@main/docs/dist/terminal.min.js',  delay: 600 },
         { type: 'progress', text: 'terminal.min.js ', steps: 18, stepDelay: 65,       delay: 200 },
-        { type: 'outputHTML', html: '<span style="color:var(--accent)">&#10003; 8.4 KB</span>', delay: 200 },
+        { type: 'outputHTML', html: '<span style="color:var(--accent)">&#10003; 9.5 KB</span>', delay: 200 },
         { type: 'clear',                                                               delay: 300 },
         { type: 'outputHTML', html: '<span style="color:var(--accent)">listo. copia dos lineas y funciona.</span>', delay: 400 },
       ];
