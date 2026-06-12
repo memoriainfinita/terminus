@@ -37,7 +37,8 @@ Terminal embebible para la web. Vanilla HTML/CSS/JS — sin dependencias, sin fr
 | `data-welcome` | string | Mensaje inicial, soporta `\n` |
 | `data-commands` | JSON | Comandos estáticos como objeto JSON |
 | `data-autofocus` | flag | Enfoca el input al cargar la página |
-| `data-titlebar` | string | `mac` (default) · `linux` · `none` · `custom` |
+| `data-titlebar` | string | `mac` (default) · `linux` · `windows` · `none` · `custom` |
+| `data-not-found` | string | Mensaje para comandos desconocidos. `{cmd}` se sustituye por el comando |
 
 > El componente requiere `height` fijo (no `min-height`) para que el scroll sea interno. Sin él, el terminal crece y la página scrollea en lugar del contenido.
 
@@ -134,9 +135,9 @@ npm run serve         # docs/ en http://localhost:8080
 https://cdn.jsdelivr.net/gh/memoriainfinita/terminus@main/docs/dist/
 ```
 
-- `terminal.min.css` — 3.6 KB
-- `terminal.min.js` — 8.5 KB
-- `terminal.bundle.min.js` — 12.4 KB (CSS + JS)
+- `terminal.min.css` — 3.5 KB
+- `terminal.min.js` — 9.5 KB
+- `terminal.bundle.min.js` — 13.3 KB (CSS + JS)
 
 ## Licencia
 
