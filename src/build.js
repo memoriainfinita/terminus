@@ -149,9 +149,4 @@ class TerminusBuild {
   }
 }
 
-if (require.main === module) {
-  const builder = new TerminusBuild();
-  builder.build();
-}
-
-module.exports = TerminusBuild;
+new TerminusBuild().build();
