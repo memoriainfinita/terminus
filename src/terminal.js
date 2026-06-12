@@ -13,6 +13,7 @@ class TerminalComponent {
       titlebar: 'mac',
       commands: {},
       onTab: null,
+      notFound: "Comando no encontrado: {cmd}. Escribe 'help' para ver comandos disponibles.",
       ...this.parseDataAttributes(),
       ...options
     };
@@ -48,7 +49,11 @@ class TerminalComponent {
     if (this.element.dataset.titlebar) {
       data.titlebar = this.element.dataset.titlebar;
     }
-    
+
+    if (this.element.dataset.notFound) {
+      data.notFound = this.element.dataset.notFound;
+    }
+
     return data;
   }
 
@@ -134,15 +139,13 @@ class TerminalComponent {
     this.element.addEventListener('click', (e) => {
       if (this._modeHandler && this._modeHandler.onClick) {
         // Find the row by matching the clicked element to an output-line index
+        const outRect = this.outputElement.getBoundingClientRect();
         const lines = Array.from(this.outputElement.querySelectorAll('.output-line'));
         let row = lines.findIndex(l => l.contains(e.target) || l === e.target);
         if (row === -1) {
           // Fallback: calculate from pixel position relative to output element
-          const outRect = this.outputElement.getBoundingClientRect();
-          const lh = this._lineHeight();
-          row = Math.floor((e.clientY - outRect.top) / lh);
+          row = Math.floor((e.clientY - outRect.top) / this._lineHeight());
         }
-        const outRect = this.outputElement.getBoundingClientRect();
         const cw = this._charWidth();
         const x = e.clientX - outRect.left;
         const y = e.clientY - outRect.top;
@@ -188,7 +191,7 @@ class TerminalComponent {
         handler.split('\n').forEach(l => this.addToOutput(l));
       }
     } else {
-      this.addToOutput(`Comando no encontrado: ${verb}. Escribe 'help' para ver comandos disponibles.`);
+      this.addToOutput(this.options.notFound.replace('{cmd}', verb));
     }
   }
 
@@ -256,7 +259,6 @@ class TerminalComponent {
   }
 
   applyTheme() {
-    this.element.removeAttribute('data-theme');
     this.element.setAttribute('data-theme', this.options.theme);
     this.element.setAttribute('data-titlebar', this.options.titlebar);
   }
