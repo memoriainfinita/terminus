@@ -37,7 +37,6 @@ class TerminusDemo {
       
       // Generated snippet elements
       copyGeneratedSnippet: document.getElementById('copyGeneratedSnippet'),
-      downloadConfig: document.getElementById('downloadConfig'),
       cdnProvider: document.getElementById('cdnProvider'),
       generatedCode: document.getElementById('generatedCode'),
       
@@ -206,13 +205,6 @@ class TerminusDemo {
       });
     }
 
-    // Download config
-    if (this.elements.downloadConfig) {
-      this.elements.downloadConfig.addEventListener('click', () => {
-        this.downloadConfiguration();
-      });
-    }
-
     // CDN provider change
     if (this.elements.cdnProvider) {
       this.elements.cdnProvider.addEventListener('change', () => {
@@ -298,39 +290,27 @@ class TerminusDemo {
   updatePreview() {
     if (!this.elements.terminal) return;
 
-    // Remove previous theme to force re-render
-    this.elements.terminal.removeAttribute('data-theme');
-    
-    // Apply new configuration
-    setTimeout(() => {
-      this.elements.terminal.dataset.theme = this.config.theme;
-      this.elements.terminal.dataset.prompt = this.config.prompt;
-      this.elements.terminal.dataset.welcome = this.config.welcome;
-      this.elements.terminal.dataset.commands = JSON.stringify(this.config.commands);
+    this.elements.terminal.dataset.theme = this.config.theme;
+    this.elements.terminal.dataset.prompt = this.config.prompt;
+    this.elements.terminal.dataset.welcome = this.config.welcome;
+    this.elements.terminal.dataset.commands = JSON.stringify(this.config.commands);
 
-      // Update visual elements
-      const promptElement = this.elements.terminal.querySelector('.prompt');
-      if (promptElement) {
-        promptElement.textContent = this.config.prompt;
+    // Update terminal instance if it exists
+    if (window.terminalInstances) {
+      const terminalInstance = window.terminalInstances.find(t => t.element === this.elements.terminal);
+      if (terminalInstance) {
+        terminalInstance.options.theme = this.config.theme;
+        terminalInstance.options.titlebar = this.config.titlebar;
+        terminalInstance.options.prompt = this.config.prompt;
+        terminalInstance.options.commands = this.config.commands;
+
+        terminalInstance.applyTheme();
+        terminalInstance.applyTitlebar();
+        terminalInstance.setPrompt(this.config.prompt);
+        terminalInstance.clear();
+        terminalInstance.showWelcomeMessage();
       }
-
-      // Update terminal instance if it exists
-      if (window.terminalInstances) {
-        const terminalInstance = window.terminalInstances.find(t => t.element === this.elements.terminal);
-        if (terminalInstance) {
-          terminalInstance.options.theme = this.config.theme;
-          terminalInstance.options.titlebar = this.config.titlebar;
-          terminalInstance.options.prompt = this.config.prompt;
-          terminalInstance.options.commands = this.config.commands;
-
-          terminalInstance.applyTheme();
-          terminalInstance.applyTitlebar();
-          terminalInstance.setPrompt(this.config.prompt);
-          terminalInstance.clear();
-          terminalInstance.showWelcomeMessage();
-        }
-      }
-    }, 10);
+    }
   }
 
   generateSnippet() {
@@ -395,22 +375,6 @@ class TerminusDemo {
       document.body.removeChild(textarea);
       this.showToast('Snippet copiado');
     }
-  }
-
-  downloadConfiguration() {
-    const configJson = JSON.stringify(this.config, null, 2);
-    const blob = new Blob([configJson], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'terminus-config.json';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-    
-    this.showToast('Configuración descargada');
   }
 
   resetConfiguration() {
