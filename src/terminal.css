@@ -1,50 +1,28 @@
 /**
  * TERMINUS — terminal.css
  * Styles for the terminal component: themes, layout, input.
+ * All rules scoped to .gnu-terminal — safe to embed in any host page.
  * v2.0.0
  */
 
-/* --- CSS Variables - Theme System --- */
-:root {
-  /* Dark theme (default) */
-  --bg: #0f1115;        /* charcoal */
-  --bg-softer: #0b0d12; /* sidebar */
-  --fg: #e6e8ee;        /* text */
-  --border: #232837;    /* borders */
-  --accent: #00ff88;    /* terminal green */
-  --radius: 10px;
-}
-
-/* --- Reset and Base --- */
-* {
-  box-sizing: border-box;
-}
-
-html, body {
-  height: 100%;
-}
-
-body {
-  margin: 0;
-  font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, 'Helvetica Neue', Arial, "Noto Sans", sans-serif;
-  background: var(--bg);
-  color: var(--fg);
-}
-
-a {
-  color: var(--fg);
-  text-decoration: none;
-}
-
 /* --- Terminal - Main Component --- */
 .gnu-terminal {
+  --terminal-radius: 10px;
+  box-sizing: border-box;
   font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  background: #0a0c10;
-  border: 1px solid #1d2330;
-  border-radius: var(--radius);
+  background: var(--terminal-bg, #0a0c10);
+  border: 1px solid var(--terminal-border, #1d2330);
+  border-radius: var(--terminal-radius);
   box-shadow: inset 0 0 0 1px rgba(255,255,255,.02);
+  color: var(--terminal-fg, #e6e8ee);
   display: flex;
   flex-direction: column;
+}
+
+.gnu-terminal *,
+.gnu-terminal *::before,
+.gnu-terminal *::after {
+  box-sizing: border-box;
 }
 
 .gnu-terminal .titlebar {
@@ -54,8 +32,8 @@ a {
   padding: 10px 12px;
   border-bottom: 1px solid #1d2330;
   background: linear-gradient(180deg,#0c0f14,#0a0c10);
-  border-top-left-radius: var(--radius);
-  border-top-right-radius: var(--radius);
+  border-top-left-radius: var(--terminal-radius);
+  border-top-right-radius: var(--terminal-radius);
 }
 
 .gnu-terminal .viewport {
@@ -108,8 +86,8 @@ a {
 .gnu-terminal .win-btn.win-close:hover { background: #e81123; color: #fff; }
 
 /* Prompt */
-.prompt {
-  color: var(--accent);
+.gnu-terminal .prompt {
+  color: var(--terminal-accent, #00ff88);
 }
 
 /* Input - transparent and integrated */
@@ -123,7 +101,7 @@ a {
   background: transparent !important;
   border: none !important;
   outline: none !important;
-  color: var(--fg) !important;
+  color: var(--terminal-fg, #e6e8ee) !important;
   font-family: inherit !important;
   font-size: inherit !important;
   line-height: inherit !important;
@@ -135,7 +113,7 @@ a {
   appearance: none !important;
   -webkit-appearance: none !important;
   -moz-appearance: none !important;
-  caret-color: var(--accent) !important; /* caret color matches theme accent */
+  caret-color: var(--terminal-accent, #00ff88) !important; /* caret color matches theme accent */
 }
 
 .gnu-terminal .terminal-input:focus {
@@ -146,35 +124,14 @@ a {
 }
 
 .gnu-terminal .terminal-input::selection {
-  background: var(--accent);
-  color: var(--bg);
+  background: var(--terminal-accent, #00ff88);
+  color: var(--terminal-bg, #0a0c10);
 }
 
 .gnu-terminal .output-line {
   margin-bottom: 4px;
   overflow-wrap: break-word;
   word-break: break-word;
-}
-
-/* --- Code Blocks --- */
-pre.code {
-  background: #0a0c10;
-  color: #d6deeb;
-  border: 1px solid #1d2330;
-  padding: 14px;
-  border-radius: 10px;
-  overflow: auto;
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 13px;
-}
-
-.kbd {
-  font-family: 'IBM Plex Mono', monospace;
-  background: var(--bg-softer);
-  border: 1px solid var(--border);
-  padding: 2px 6px;
-  border-radius: 6px;
-  font-size: 12px;
 }
 
 /* --- Terminal Themes --- */

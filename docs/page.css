@@ -4,10 +4,16 @@
  * v2.0.0
  */
 
-/* --- Variables (extends terminal.css) --- */
+/* --- Variables --- */
 
 :root {
+  --bg: #0f1115;        /* charcoal */
   --bg-soft: #141821;
+  --bg-softer: #0b0d12; /* sidebar */
+  --fg: #e6e8ee;        /* text */
+  --border: #232837;    /* borders */
+  --accent: #00ff88;    /* terminal green */
+  --radius: 10px;
   --muted: #9aa3b2;
   --shadow: rgba(0,0,0,.25);
   --accent-weak: #1b4b38;
@@ -39,11 +45,21 @@
   --danger: #f45452;
 }
 
-/* --- Reset --- */
+/* --- Reset and Base --- */
 
 *, *::before, *::after { box-sizing: border-box; }
 
-body { overflow-x: hidden; }
+html, body { height: 100%; }
+
+body {
+  margin: 0;
+  font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, 'Helvetica Neue', Arial, "Noto Sans", sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  overflow-x: hidden;
+}
+
+a { color: var(--fg); text-decoration: none; }
 
 /* --- Layout --- */
 
