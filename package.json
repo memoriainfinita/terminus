@@ -5,9 +5,7 @@
   "main": "docs/dist/terminal.min.js",
   "scripts": {
     "build": "node src/build.js",
-    "dev": "python -m http.server 8000",
-    "serve": "cd docs && python -m http.server 8080",
-    "clean": "rimraf docs/dist/*"
+    "serve": "cd docs && python -m http.server 8080"
   },
   "repository": {
     "type": "git",
