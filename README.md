@@ -143,4 +143,6 @@ https://cdn.jsdelivr.net/gh/memoriainfinita/terminus@main/docs/dist/
 
 GPL v3.
 
-Desarrollado por [@memoriainfinita](https://github.com/memoriainfinita) con asistencia de Claude Sonnet 4.6 (Anthropic).
+## Credits
+
+Desarrollado por [@memoriainfinita](https://github.com/memoriainfinita) con la asistencia de Claude (Anthropic): Sonnet 4.6 y Fable 5.
