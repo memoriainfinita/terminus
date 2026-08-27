@@ -35,6 +35,7 @@ state.md
 test-*
 demo-*
 _archive/
+.archive/
 
 # Editor / AI config
 .copilot-instructions
