@@ -1,4 +1,4 @@
-# Terminus
+# terminus
 
 [![jsDelivr](https://img.shields.io/badge/CDN-jsDelivr-orange)](https://cdn.jsdelivr.net/gh/memoriainfinita/terminus@main/docs/dist/)
 [![GitHub Pages](https://img.shields.io/badge/docs-GitHub%20Pages-blue)](https://memoriainfinita.github.io/terminus/)
@@ -6,6 +6,10 @@
 [![Version](https://img.shields.io/badge/version-2.0.0-informational)]()
 
 Terminal embebible para la web. Vanilla HTML/CSS/JS — sin dependencias, sin frameworks.
+
+**[Ver la demo](https://memoriainfinita.github.io/terminus/)**
+
+![Cuatro terminus en la página de ejemplos, cada uno con una capa distinta de la API: atributos HTML, play(), readline() y modo TUI](docs/terminus-demo.png)
 
 ## Instalación
 
