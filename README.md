@@ -9,7 +9,7 @@ Terminal embebible para la web. Vanilla HTML/CSS/JS — sin dependencias, sin fr
 
 **[Ver la demo](https://memoriainfinita.github.io/terminus/)**
 
-![Cuatro terminus en la página de ejemplos, cada uno con una capa distinta de la API: atributos HTML, play(), readline() y modo TUI](docs/terminus-demo.png)
+![La página de terminus: la cabecera y los dos primeros casos de uso, uno con el comando help ya ejecutado y el instalador esperando a play()](docs/terminus-demo.png)
 
 ## Instalación
 
