@@ -32,7 +32,15 @@ Terminal embebible para la web. Vanilla HTML/CSS/JS — sin dependencias, sin fr
 <div class="gnu-terminal" style="height:400px;" data-theme="dark" data-prompt="gnu$"></div>
 ```
 
+## Configurador
+
+Define tema, prompt, mensaje de bienvenida y comandos. Genera el snippet listo para pegar. Está en la [demo](https://memoriainfinita.github.io/terminus/#demo).
+
+![El configurador interactivo de la demo: preview en vivo a la izquierda y, a la derecha, tema, titlebar, prompt, mensaje de bienvenida y comandos personalizados](docs/terminus-configurator.png)
+
 ## Atributos HTML
+
+![La referencia API de la demo: tabla de atributos HTML, tabla de métodos JavaScript y acceso a la instancia](docs/terminus-api.png)
 
 | Atributo | Tipo | Descripción |
 |----------|------|-------------|
